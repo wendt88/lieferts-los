@@ -1,0 +1,56 @@
+{
+  "name": "ilos-homepage",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "stylelint:fix": "./node_modules/.bin/stylelint \"**/*.scss\" --fix",
+    "watch": "parcel watch ./html/* --public-url / -d ./output",
+    "build": "parcel build ./html/* --public-url / -d ./output --no-source-maps"
+  },
+  "stylelint": {
+    "extends": "stylelint-config-twbs-bootstrap/scss",
+    "rules": {
+      "selector-max-id": null,
+      "declaration-no-important": null,
+      "selector-max-class": 6,
+      "selector-max-combinators": 8,
+      "selector-max-compound-selectors": 8,
+      "scss/dollar-variable-default": null,
+      "scss/at-import-no-partial-leading-underscore": null
+    }
+  },
+  "sasslintConfig": {
+    "config-file": "stylelint-config-twbs-bootstrap/scss",
+    "rules": {
+      "selector-max-id": null,
+      "declaration-no-important": null,
+      "selector-max-class": 6,
+      "selector-max-combinators": 8,
+      "selector-max-compound-selectors": 8,
+      "scss/dollar-variable-default": null,
+      "scss/at-import-no-partial-leading-underscore": null
+    }
+  },
+  "dependencies": {
+    "vue-hot-reload-api": "^2.3.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@vue/component-compiler-utils": "^3.1.1",
+    "bootstrap": "^4.4.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "jquery": "^3.4.1",
+    "parcel": "^1.12.4",
+    "parcel-plugin-clean-dist": "0.0.6",
+    "popper.js": "^1.16.1",
+    "roboto-fontface": "^0.10.0",
+    "sass": "^1.26.3",
+    "sass-lint": "^1.13.1",
+    "stylelint": "^13.2.1",
+    "stylelint-config-twbs-bootstrap": "^2.0.1",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.6",
+    "vue-template-compiler": "^2.6.11"
+  }
+}
