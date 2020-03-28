@@ -1,13 +1,11 @@
 <template>
     <div>
         <h1>Orders</h1>
-        <div
-            v-if="orders"
-            class="list-group"
-        >
+        <div class="list-group">
             <router-link
                 v-for="order in orders"
                 :key="order.id"
+                ref="orders"
                 :to="{
                     name: 'order detail',
                     params: {
@@ -28,7 +26,7 @@
             </router-link>
         </div>
         <div
-            v-else
+            v-if="isRequesting"
             class="my-5 text-center"
         >
             <div
@@ -49,18 +47,39 @@ export default {
             default: 1
         }
     },
-    // computed: {
-    //     lastOrder () {
-    //         if (this.orders && this.orders.length)
-    //             return this.orders[this.orders.length - 1].id
-    //         return null
-    //     }
-    // },
-    asyncComputed: {
-        orders () {
-            return this.$db.queryOrders({
-                limit: 100
-            })
+    data () {
+        return {
+            orders: [],
+            isRequesting: false,
+            lastDocument: null
+        }
+    },
+    watch: {
+        lastDocument: {
+            async handler (lastDocument) {
+                this.$set(this, 'isRequesting', true)
+                let orders = await this.$db.queryOrders({
+                    lastDocument
+                })
+                this.orders.push(...orders)
+                if (!orders.length) {
+                    $(window)
+                        .off('scroll', this.onScroll)
+                }
+                this.$set(this, 'isRequesting', false)
+            },
+            immediate: true
+        }
+    },
+    mounted () {
+        $(window)
+            .scroll(this.onScroll)
+    },
+    methods: {
+        onScroll () {
+            if (!this.isRequesting && (window.outerHeight - window.pageYOffset) < 50) {
+                this.$set(this, 'lastDocument', this.orders[this.orders.length - 1].snapshot)
+            }
         }
     }
 }
