@@ -1,5 +1,5 @@
-import Supplier from './Supplier';
+import Supplier from './Supplier'
 
 module.exports = {
     Supplier
-};
+}

@@ -95,7 +95,7 @@
 
 
 <script>
-import firebase from 'firebase';
+import firebase from 'firebase'
 
 export default {
     data () {
@@ -106,7 +106,7 @@ export default {
                 password: ''
             },
             error: null
-        };
+        }
     },
     methods: {
         submit () {
@@ -118,12 +118,12 @@ export default {
                         .updateProfile({
                             displayName: this.form.name
                         })
-                        .then(() => {});
+                        .then(() => {})
                 })
                 .catch(err => {
-                    this.error = err.message;
-                });
+                    this.error = err.message
+                })
         }
     }
-};
+}
 </script>
