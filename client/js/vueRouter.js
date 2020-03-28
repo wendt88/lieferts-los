@@ -1,9 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Index from "./components/Index";
+import NotFound from './components/NotFound';
 
-const supplier = import("./components/supplier/index");
-const customer = import("./components/customer/index");
+const supplier = import('./components/supplier/index');
+const customer = import('./components/customer/index');
 
 Vue.use(VueRouter);
 export default new VueRouter({
@@ -28,16 +29,20 @@ export default new VueRouter({
       component: () => customer.then(components => components.Customer),
       children: [
         {
-          path: "/login",
+          path: "login",
           name: "login",
           component: () => customer.then(components => components.Login)
         },
         {
-          path: "/register",
+          path: "register",
           name: "register",
           component: () => customer.then(components => components.Register)
-        }
-      ]
+        },
+      ],
+    },
+    {
+        path: '*',
+        component: NotFound
     }
   ]
 });
