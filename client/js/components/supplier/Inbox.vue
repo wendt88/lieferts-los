@@ -3,7 +3,7 @@
         <header class="header">
             <h1>Bestellungen</h1>
             <input
-                v-model="newOrder"
+                v-model="newTodo"
                 autofocus
                 autocomplete="off"
                 placeholder="What needs to be shipped?"
