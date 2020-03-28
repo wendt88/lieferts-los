@@ -92,7 +92,7 @@ export default {
                 .auth()
                 .signInWithEmailAndPassword(this.form.email, this.form.password)
                 .then(() => {
-                    this.$router.replace({ name: 'Customer' })
+                    this.$router.replace({ name: 'customer' })
                 })
                 .catch(err => {
                     this.error = err.message
