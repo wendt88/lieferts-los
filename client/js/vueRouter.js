@@ -77,7 +77,9 @@ router.beforeEach((to, from, next) => {
         && to.meta
         && to.meta.isProtected
     ) {
-        next(to.matched[to.matched.length - 2])
+        next({
+            name: 'login'
+        })
         return
     }
     next()

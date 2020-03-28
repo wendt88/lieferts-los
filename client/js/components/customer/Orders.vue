@@ -16,7 +16,15 @@
                 }"
                 class="list-group-item list-group-item-action"
             >
-                {{ order }}
+                <h3>{{ order.supplier }}</h3>
+                <ul>
+                    <li
+                        v-for="(product, i) in order.products"
+                        :key="i"
+                    >
+                        {{ product.amount }} {{ product.unit }} {{ product.description }}
+                    </li>
+                </ul>
             </router-link>
         </div>
         <div
@@ -37,7 +45,7 @@
 export default {
     asyncComputed: {
         orders () {
-            return this.$db.orders()
+            return this.$db.queryOrders({})
         }
     }
 }
