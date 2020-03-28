@@ -191,6 +191,7 @@ export default {
 
             this.editable = false
             this.errorMessage = ''
+            this.successMessage = ''
             try {
                 this.order = await this.$db.saveOrder(this.order)
                 this.$router.push({ name: 'order detail', params: { orderID: this.order.id } })

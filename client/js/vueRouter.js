@@ -59,6 +59,14 @@ const router = new VueRouter({
                         isProtected: true
                     }
                 },
+                {
+                    path: 'profile',
+                    name: 'profile',
+                    component: () => customer.then(components => components.Profile),
+                    meta: {
+                        isProtected: true
+                    }
+                },
             ],
         },
         {
