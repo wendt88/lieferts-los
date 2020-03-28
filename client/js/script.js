@@ -10,6 +10,8 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import router from './vueRouter'
 import store from './store'
 import db from './db'
+import auth from './auth'
+import firebase from 'firebase'
 
 global.$ = global.jQuery = $
 
@@ -18,14 +20,19 @@ Vue.use(AsyncComputed)
 Vue.use({
     install: (Vue) => {
         Object.assign(Vue.prototype, {
-            $db: db
+            $db: db,
+            $auth: auth
         })
     }
 })
 
-new Vue({
-    render: createElement => createElement('router-view'),
-    store,
-    router,
+firebase.auth().onAuthStateChanged(user => {
+    store.dispatch('fetchUser', user)
+
+    new Vue({
+        render: createElement => createElement('router-view'),
+        store,
+        router,
+    })
+        .$mount('body > div')
 })
-    .$mount('body > div')

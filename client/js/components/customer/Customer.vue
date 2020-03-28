@@ -25,16 +25,51 @@
                 class="collapse navbar-collapse"
             >
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <router-link
-                            class="nav-link"
-                            :to="{
-                                name: 'orders'
-                            }"
+                    <template v-if="user.loggedIn">
+                        <li class="nav-item">
+                            <router-link
+                                class="nav-link"
+                                :to="{
+                                    name: 'orders'
+                                }"
+                            >
+                                Orders
+                            </router-link>
+                        </li>
+                        <li
+                            v-if="user.loggedIn"
+                            class="nav-item"
                         >
-                            Orders
-                        </router-link>
-                    </li>
+                            <div
+                                class="nav-link"
+                                @click="signOut"
+                            >
+                                Gea loss mi aussi
+                            </div>
+                        </li>
+                    </template>
+                    <template v-if="!user.loggedIn">
+                        <li class="nav-item">
+                            <router-link
+                                class="nav-link"
+                                :to="{
+                                    name: 'login'
+                                }"
+                            >
+                                Inloggn
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link
+                                class="nav-link"
+                                :to="{
+                                    name: 'register'
+                                }"
+                            >
+                                Die Datn einipfuschn
+                            </router-link>
+                        </li>
+                    </template>
                 </ul>
             </div>
         </nav>
@@ -42,13 +77,36 @@
             <h1 class="fa fa-user mb-4">
                 Customer Area
             </h1>
+            <div
+                v-if="user.loggedIn"
+                class="alert alert-success"
+                role="alert"
+            >
+                Ungmeldn bische!
+            </div>
             <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex'
 
+export default {
+    computed: {
+    // map `this.user` to `this.$store.getters.user`
+        ...mapGetters({
+            user: 'user'
+        })
+    },
+    methods: {
+        signOut () {
+            this.$auth.signOut().then(() => {
+                this.$router.replace({
+                    name: 'customer'
+                })
+            })
+        }
+    }
 }
 </script>

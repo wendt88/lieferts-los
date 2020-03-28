@@ -22,17 +22,47 @@ const COLLECTIONS = {
 
 const db = {
     async order (id) {
-        const doc = await firestore.collection(COLLECTIONS.ORDERS)
+        const doc = (await firestore.collection(COLLECTIONS.ORDERS)
             .doc(id)
+            .get())
+            .data()
         return doc
     },
     async odersBySupplier (supplierName) {
         return await firestore.collection(COLLECTIONS.ORDERS).where('supplier', '==', supplierName)
     },
-    async createOrder (orderData) {
+    /**
+     * query orders
+     * @param {Array<Object>} where Array of objects of the form { field: 'pathOfFieldToQuery', operator: '==', value: 'valueToCompare' } https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#where
+     * @param {Object} lastDocument the last document of the previous fetched list in order to display only documents after the one handed in
+     * @param {Integer} limit number of documents to extract
+     * @param {String} orderBy path of field
+     * @param {String} orderDirection
+     */
+    async queryOrders ({where = [], lastDocument = null, limit = 10, orderBy = 'created_at', orderDirection = 'desc'}) {
+        const col = firestore.collection(COLLECTIONS.ORDERS)
+        for (const cond of where) {
+            col.where(cond.field, cond.operator, cond.value)
+        }
+        if (lastDocument) {
+            col.startAfter(lastDocument)
+        }
+        col.limit(limit)
+        col.orderBy(orderBy, orderDirection)
+        return col.get()
+    },
+    async saveOrder (orderData) {
+        if (orderData.id) {
+            await firestore.collection(COLLECTIONS.ORDERS)
+                .doc(orderData.id)
+                .update(orderData)
+            return orderData
+        }
+        orderData.created_at = new Date()
         const docRef = await firestore.collection(COLLECTIONS.ORDERS)
             .add(orderData)
-        return { ...orderData, ...docRef }
+        orderData.id = docRef.id
+        return orderData
     },
     subscribe (collection, filter, fn) {
         firestore.collection(collection).where(filter)
