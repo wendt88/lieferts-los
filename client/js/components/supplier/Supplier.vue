@@ -6,8 +6,8 @@
                 class="fas fa-user-astronaut"
             ></i>
             <div>
-                <span>Username</span>
-                <span>Company</span>
+                <!-- <span>{currentUser.name}</span>
+                <span>{currentUser.company}</span> -->
             </div>
         </header>
         <section class="list">
@@ -21,7 +21,13 @@
 </template>
 
 <script>
+
 export default {
-    mounted: () => {}
+    // data: () => {
+    //     return {
+    //         currentUser: {name: 'Hannes', company: 'Veggie sh*t'}
+    //     }
+    // }
+
 }
 </script>
