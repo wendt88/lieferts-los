@@ -99,7 +99,6 @@
             >
                 Ungmeldn bische, du schmugu! SCHWEIIIIN: {{ user.data.email }}, {{ this.$auth.currentUserId() }}
             </div>
-            <div class="display-1 my-5 fa fa-drumstick-bite"></div>
             <router-view></router-view>
         </div>
     </div>

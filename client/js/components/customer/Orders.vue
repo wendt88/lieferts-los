@@ -2,6 +2,7 @@
     <div>
         <div class="d-flex align-items-center mb-3">
             <h1 class="mb-0">
+                <span class="fa fa-shopping-bag"></span>
                 Orders
             </h1>
             <router-link
