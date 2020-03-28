@@ -82,7 +82,7 @@
                 class="alert alert-success"
                 role="alert"
             >
-                Ungmeldn bische!
+                Ungmeldn bische, du schmuchtl!
             </div>
             <router-view></router-view>
         </div>

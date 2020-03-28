@@ -35,13 +35,13 @@ const router = new VueRouter({
             path: '/supplier',
             name: 'supplier',
             component: () => supplier.then(components => components.Supplier),
-            children: [
-                {
-                    path: 'inbox',
-                    name: 'inbox',
-                    component: () => supplier.then(components => components.Inbox)
-                }
-            ]
+            children: []
+        },
+        {
+            path: '/supplier/inbox',
+            name: 'inbox',
+            component: () => supplier.then(components => components.Inbox),
+            children: []
         },
         {
             path: '/customer',
@@ -49,9 +49,10 @@ const router = new VueRouter({
             component: () => customer.then(components => components.Customer),
             children: [
                 {
-                    path: 'orders/',
+                    path: 'orders/:p(page)?/:page?',
                     name: 'orders',
                     component: () => customer.then(components => components.Orders),
+                    props: true,
                     meta: {
                         isProtected: true
                     }
@@ -79,7 +80,9 @@ router.beforeEach((to, from, next) => {
         && to.meta
         && to.meta.isProtected
     ) {
-        next(to.matched[to.matched.length - 2])
+        next({
+            name: 'login'
+        })
         return
     }
     next()
