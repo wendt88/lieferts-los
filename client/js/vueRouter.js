@@ -47,7 +47,7 @@ const router = new VueRouter({
                     component: () => customer.then(components => components.Register)
                 },
                 {
-                    path: 'orders/:p(page)?/:page?',
+                    path: 'orders',
                     name: 'orders',
                     component: () => customer.then(components => components.Orders),
                     props: true,
