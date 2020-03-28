@@ -5,9 +5,11 @@
             <div class="form-group">
                 <label>Lieferant</label>
                 <input
+                    v-model="order.supplier"
                     type="text"
                     class="form-control"
                     placeholder="Liefernant inenspeibn"
+                    :readonly="readonly"
                 >
             </div>
             <div
@@ -40,6 +42,7 @@
                             id="exampleFormControlSelect1"
                             v-model="order.products[index].unit"
                             class="form-control"
+                            :disabled="disabled"
                         >
                             <option value="kg">
                                 Kilo
@@ -59,6 +62,9 @@
                             <option value="tiggisch">
                                 Wollten awian
                             </option>
+                            <option value="flietscha">
+                                Schun awian a flietscha
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -69,6 +75,7 @@
                             type="number"
                             class="form-control"
                             placeholder="Menge - sollet a Zohl sein bittschian 😘"
+                            :readonly="readonly"
                         >
                     </div>
                 </div>
@@ -79,11 +86,27 @@
                             type="text"
                             class="form-control"
                             placeholder="Is Produkt woses gern hett"
+                            :readonly="readonly"
                             @keyup="addNewRowIfLast(index)"
                         >
                     </div>
                 </div>
             </div>
+            <div
+                v-if="errorMessage"
+                class="alert alert-danger"
+                role="alert"
+            >
+                {{ errorMessage }}
+            </div>
+            <button
+                v-if="editable"
+                type="button"
+                class="btn btn-primary"
+                @click="saveOrder"
+            >
+                Ouschickn
+            </button>
         </form>
     </div>
 </template>
@@ -100,12 +123,30 @@ export default {
                 products: [
                     {},
                 ],
-            }
+            },
+            editable: false,
+            errorMessage: '',
+        }
+    },
+    computed: {
+        readonly () {
+            return this.editable ? false : 'readonly'
+        },
+        disabled () {
+            return this.editable ? false : 'disabled'
         }
     },
     watch: {
-        async $route (to, from) {
-            if (from === 'new') {
+        async $route (to) {
+            this.getOrder(to)
+        }
+    },
+    created () {
+        this.getOrder(this.$route.params.orderID)
+    },
+    methods: {
+        async getOrder (id) {
+            if (id === 'new') {
                 this.editable = true
                 this.order = {
                     products: [
@@ -115,16 +156,28 @@ export default {
             }
             else {
                 this.editable = false
-                this.order = await this.$db.order(to)
+                this.order = await this.$db.order(id)
             }
-        }
-    },
-    methods: {
+        },
         addNewRowIfLast (index) {
+            if (!this.editable) {
+                return
+            }
             if (this.order.products.length-1 === index) {
                 this.order.products.push({})
             }
-            console.log(this.order.products)
+        },
+        async saveOrder () {
+            this.editable = false
+            this.errorMessage = ''
+            try {
+                this.order = await this.$db.saveOrder(this.order)
+                this.$router.push({ name: 'order detail', params: { orderID: this.order.id } })
+            }
+            catch (e) {
+                this.errorMessage = e.message
+                this.editable = true
+            }
         }
     }
 }
