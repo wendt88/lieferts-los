@@ -11,6 +11,7 @@ import router from './vueRouter'
 import store from './store'
 import db from './db'
 import auth from './auth'
+import firebase from 'firebase'
 
 global.$ = global.jQuery = $
 
@@ -25,9 +26,13 @@ Vue.use({
     }
 })
 
-new Vue({
-    render: createElement => createElement('router-view'),
-    store,
-    router,
+firebase.auth().onAuthStateChanged(user => {
+    store.dispatch('fetchUser', user)
+
+    new Vue({
+        render: createElement => createElement('router-view'),
+        store,
+        router,
+    })
+        .$mount('body > div')
 })
-    .$mount('body > div')
