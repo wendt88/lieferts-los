@@ -18,7 +18,8 @@ const firestore = firebase.firestore()
 const COLLECTIONS = {
     ORDERS: 'orders',
     STOCK: 'stock',
-    SUPPLIERS: 'suppliers'
+    SUPPLIERS: 'suppliers',
+    USER_PROFILES: 'user_profiles',
 }
 
 const db = {
@@ -65,6 +66,21 @@ const db = {
             .add(orderData)
         orderData.id = docRef.id
         return orderData
+    },
+    async saveUserProfile (data) {
+        if (data.id) {
+            data.updated_at = new Date()
+            await firestore.collection(COLLECTIONS.USER_PROFILES)
+                .doc(data.id)
+                .update(data)
+            return data
+        }
+        data.created_at = new Date()
+        data.user_id = auth.currentUserId()
+        const docRef = await firestore.collection(COLLECTIONS.USER_PROFILES)
+            .add(data)
+        data.id = docRef.id
+        return data
     },
     subscribe (collection, filter, fn) {
         firestore.collection(collection).where(filter)
