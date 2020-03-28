@@ -75,8 +75,7 @@ export default {
             async handler (lastDocument) {
                 this.$set(this, 'isRequesting', true)
                 let orders = await this.$db.queryOrders({
-                    lastDocument,
-                    limit: 2
+                    lastDocument
                 })
                 this.orders.push(...orders)
                 if (!orders.length) {
