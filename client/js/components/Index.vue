@@ -1,6 +1,11 @@
 <template>
     <div>
         <div class="container mx-auto d-flex align-items-center justify-content-center">
+            <h4>Bringr.io</h4>
+            <h5>local shopping made easy</h5>
+            <p>Suppliers manage their orders and clients can track them, all by supporting local businesses and the environment!</p>
+        </div>
+        <div class="container mx-auto d-flex align-items-center justify-content-center">
             <routerLink
                 :to="{
                     name: 'login'
