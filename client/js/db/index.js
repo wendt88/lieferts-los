@@ -21,6 +21,10 @@ const COLLECTIONS = {
     SUPPLIERS: 'suppliers'
 }
 
+const FIELDS = {
+    USER_ID: 'user_id'
+}
+
 const db = {
     async order (id) {
         const doc = (await firestore.collection(COLLECTIONS.ORDERS)
@@ -42,6 +46,7 @@ const db = {
      */
     async queryOrders ({where = [], lastDocument = null, limit = 10, orderBy = 'created_at', orderDirection = 'desc'}) {
         const col = firestore.collection(COLLECTIONS.ORDERS)
+        col.where(FIELDS.USER_ID, '==', auth.currentUserId())
         for (const cond of where) {
             col.where(cond.field, cond.operator, cond.value)
         }
@@ -60,7 +65,7 @@ const db = {
             return orderData
         }
         orderData.created_at = new Date()
-        orderData.userId = auth.currentUserId()
+        orderData[FIELDS.USER_ID] = auth.currentUserId()
         const docRef = await firestore.collection(COLLECTIONS.ORDERS)
             .add(orderData)
         orderData.id = docRef.id
