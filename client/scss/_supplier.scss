@@ -187,7 +187,6 @@ button {
 
 .footer:before {
 	content: '';
-	
 	height: 50px;
 	overflow: hidden;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
@@ -210,9 +209,6 @@ button {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	position: absolute;
-	right: 0;
-	left: 0;
 }
 
 .filters li {
@@ -240,6 +236,7 @@ button {
 html .clear-completed:active {
 	float: right;
 	position: relative;
+	top: -25px;
 	line-height: 20px;
 	text-decoration: none;
 	cursor: pointer;
