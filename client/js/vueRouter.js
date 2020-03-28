@@ -73,7 +73,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (
-        !store.state.loggedIn
+        !store.state.user.loggedIn
         && to.meta
         && to.meta.isProtected
     ) {
