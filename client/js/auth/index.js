@@ -1,8 +1,6 @@
 import * as firebase from 'firebase'
 
 const auth = {
-    user: firebase.auth().currentUser,
-    email: auth.user ? auth.user.email : undefined,
     currentUserId () {
         return firebase.auth().currentUser.uid
     },
