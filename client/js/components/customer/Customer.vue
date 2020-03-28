@@ -49,7 +49,7 @@
                     </template>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <tamplate v-if="!user.loggedIn">
+                    <template v-if="!user.loggedIn">
                         <li class="nav-item">
                             <router-link
                                 class="nav-link"
@@ -70,7 +70,7 @@
                                 Registriern
                             </router-link>
                         </li>
-                    </tamplate>
+                    </template>
                     <li
                         v-else
                         class="nav-item"
@@ -99,6 +99,7 @@
             >
                 Ungmeldn bische, du schmugu! SCHWEIIIIN: {{ user.data.email }}, {{ this.$auth.currentUserId() }}
             </div>
+            <div class="display-1 my-5 fa fa-drumstick-bite"></div>
             <router-view></router-view>
         </div>
     </div>
