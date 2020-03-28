@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import * as firebase from 'firebase'
+import AsyncComputed from 'vue-async-computed'
 import $ from 'jquery'
 require('bootstrap/js/src/collapse')
 require('bootstrap/js/src/modal')
@@ -25,6 +26,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
+Vue.use(AsyncComputed)
 Vue.use({
     install: (Vue) => {
         Object.assign(Vue.prototype, {
