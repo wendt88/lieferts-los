@@ -40,7 +40,7 @@ export default new VueRouter({
                 },
                 {
                     path: 'orders/',
-                    name: 'order',
+                    name: 'orders',
                     component: () => customer.then(components => components.Orders)
                 },
                 {
