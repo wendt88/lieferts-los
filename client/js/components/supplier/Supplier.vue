@@ -65,20 +65,23 @@
             <ul class="filters">
                 <li>
                     <a
-                        href="#/all"
+                        href="#all"
                         :class="{ selected: visibility == 'all' }"
+                        @click="visibility = 'all'"
                     >All</a>
                 </li>
                 <li>
                     <a
-                        href="#/active"
+                        href="#active"
                         :class="{ selected: visibility == 'active' }"
+                        @click="visibility = 'active'"
                     >Active</a>
                 </li>
                 <li>
                     <a
-                        href="#/completed"
+                        href="#completed"
                         :class="{ selected: visibility == 'completed' }"
+                        @click="visibility = 'completed'"
                     >Completed</a>
                 </li>
             </ul>
@@ -98,37 +101,37 @@
 // and hash-based routing in ~120 effective lines of JavaScript.
 
 // localStorage persistence
-var STORAGE_KEY = 'todos-vuejs-2.0';
+var STORAGE_KEY = 'todos-vuejs-2.0'
 var todoStorage = {
     fetch: function () {
-        var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
         todos.forEach(function (todo, index) {
-            todo.id = index;
-        });
-        todoStorage.uid = todos.length;
-        return todos;
+            todo.id = index
+        })
+        todoStorage.uid = todos.length
+        return todos
     },
     save: function (todos) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
     }
-};
+}
 
 // visibility filters
 var filters = {
     all: function (todos) {
-        return todos;
+        return todos
     },
     active: function (todos) {
         return todos.filter(function (todo) {
-            return !todo.completed;
-        });
+            return !todo.completed
+        })
     },
     completed: function (todos) {
         return todos.filter(function (todo) {
-            return todo.completed;
-        });
+            return todo.completed
+        })
     }
-};
+}
 
 
 
@@ -137,7 +140,7 @@ export default {
 
     filters: {
         pluralize: function (n) {
-            return n === 1 ? 'item' : 'items';
+            return n === 1 ? 'item' : 'items'
         }
     },
 
@@ -147,7 +150,7 @@ export default {
     directives: {
         'todo-focus': function (el, binding) {
             if (binding.value) {
-                el.focus();
+                el.focus()
             }
         }
     },
@@ -158,26 +161,27 @@ export default {
             newTodo: '',
             editedTodo: null,
             visibility: 'all'
-        };
+        }
     },
 
     // computed properties
     // http://vuejs.org/guide/computed.html
     computed: {
         filteredTodos: function () {
-            return filters[this.visibility](this.todos);
+            console.log(this.todos, this.visibility, filters[this.visibility](this.todos))
+            return filters[this.visibility](this.todos)
         },
         remaining: function () {
-            return filters.active(this.todos).length;
+            return filters.active(this.todos).length
         },
         allDone: {
             get: function () {
-                return this.remaining === 0;
+                return this.remaining === 0
             },
             set: function (value) {
                 this.todos.forEach(function (todo) {
-                    todo.completed = value;
-                });
+                    todo.completed = value
+                })
             }
         }
     },
@@ -186,7 +190,7 @@ export default {
     watch: {
         todos: {
             handler: function (todos) {
-                todoStorage.save(todos);
+                todoStorage.save(todos)
             },
             deep: true
         }
@@ -196,62 +200,48 @@ export default {
     // note there's no DOM manipulation here at all.
     methods: {
         addTodo: function () {
-            var value = this.newTodo && this.newTodo.trim();
+            var value = this.newTodo && this.newTodo.trim()
             if (!value) {
-                return;
+                return
             }
             this.todos.push({
                 id: todoStorage.uid++,
                 title: value,
                 completed: false
-            });
-            this.newTodo = '';
+            })
+            this.newTodo = ''
         },
 
         removeTodo: function (todo) {
-            this.todos.splice(this.todos.indexOf(todo), 1);
+            this.todos.splice(this.todos.indexOf(todo), 1)
         },
 
         editTodo: function (todo) {
-            this.beforeEditCache = todo.title;
-            this.editedTodo = todo;
+            this.beforeEditCache = todo.title
+            this.editedTodo = todo
         },
 
         doneEdit: function (todo) {
             if (!this.editedTodo) {
-                return;
+                return
             }
-            this.editedTodo = null;
-            todo.title = todo.title.trim();
+            this.editedTodo = null
+            todo.title = todo.title.trim()
             if (!todo.title) {
-                this.removeTodo(todo);
+                this.removeTodo(todo)
             }
         },
 
         cancelEdit: function (todo) {
-            this.editedTodo = null;
-            todo.title = this.beforeEditCache;
+            this.editedTodo = null
+            todo.title = this.beforeEditCache
         },
 
         removeCompleted: function () {
-            this.todos = filters.active(this.todos);
+            this.todos = filters.active(this.todos)
         }
     }
-};
-
-// // handle routing
-// function onHashChange () {
-//     var visibility = window.location.hash.replace(/#\/?/, '');
-//     if (filters[visibility]) {
-//         app.visibility = visibility;
-//     }
-//     else {
-//         window.location.hash = '';
-//         app.visibility = 'all';
-//     }
-// }
-// window.addEventListener('hashchange', onHashChange);
-// onHashChange();
+}
 
 
 </script>
