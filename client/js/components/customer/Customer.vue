@@ -103,7 +103,7 @@ export default {
         signOut () {
             this.$auth.signOut().then(() => {
                 this.$router.replace({
-                    name: '/'
+                    name: 'customer'
                 })
             })
         }
