@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@vue/component-compiler-utils": "^3.1.1",
     "bootstrap": "^4.4.1",
     "eslint": "^6.8.0",
@@ -44,6 +45,7 @@
     "firebase": "^7.13.1",
     "jquery": "^3.4.1",
     "parcel": "^1.12.4",
+    "parcel-bundler": "^1.12.4",
     "parcel-plugin-clean-dist": "0.0.6",
     "popper.js": "^1.16.1",
     "roboto-fontface": "^0.10.0",
