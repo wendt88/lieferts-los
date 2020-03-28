@@ -25,24 +25,51 @@
                 class="collapse navbar-collapse"
             >
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <router-link
-                            class="nav-link"
-                            :to="{
-                                name: 'orders'
-                            }"
+                    <template v-if="user.loggedIn">
+                        <li class="nav-item">
+                            <router-link
+                                class="nav-link"
+                                :to="{
+                                    name: 'orders'
+                                }"
+                            >
+                                Orders
+                            </router-link>
+                        </li>
+                        <li
+                            v-if="user.loggedIn"
+                            class="nav-item"
                         >
-                            Orders
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <div
-                            class="nav-link"
-                            @click="signOut"
-                        >
-                            Omeldn
-                        </div>
-                    </li>
+                            <div
+                                class="nav-link"
+                                @click="signOut"
+                            >
+                                Gea loss mi aussi
+                            </div>
+                        </li>
+                    </template>
+                    <template v-if="!user.loggedIn">
+                        <li class="nav-item">
+                            <router-link
+                                class="nav-link"
+                                :to="{
+                                    name: 'login'
+                                }"
+                            >
+                                Inloggn
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link
+                                class="nav-link"
+                                :to="{
+                                    name: 'register'
+                                }"
+                            >
+                                Die Datn einipfuschn
+                            </router-link>
+                        </li>
+                    </template>
                 </ul>
             </div>
         </nav>
@@ -51,7 +78,7 @@
                 Customer Area
             </h1>
             <div
-                v-if="user"
+                v-if="user.loggedIn"
                 class="alert alert-success"
                 role="alert"
             >
@@ -64,7 +91,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import firebase from 'firebase'
 
 export default {
     computed: {
@@ -76,11 +102,9 @@ export default {
     methods: {
         signOut () {
             this.$auth.signOut().then(() => {
-                console.log('signout')
-                this.$store.dispatch('fetchUser', firebase.auth().currentUser)
-                // this.$router.replace({
-                //     name: ''
-                // })
+                this.$router.replace({
+                    name: '/'
+                })
             })
         }
     }
