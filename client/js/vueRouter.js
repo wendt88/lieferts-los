@@ -38,6 +38,11 @@ export default new VueRouter({
           name: "register",
           component: () => customer.then(components => components.Register)
         },
+        {
+            path: "order",
+            name: "order",
+            component: () => customer.then(components => components.Order)
+          },
       ],
     },
     {
