@@ -37,8 +37,8 @@ export default new VueRouter({
           path: "register",
           name: "register",
           component: () => customer.then(components => components.Register)
-        },
-      ],
+        }
+      ]
     },
     {
         path: '*',
