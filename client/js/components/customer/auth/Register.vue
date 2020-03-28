@@ -13,7 +13,8 @@
                         {{ error }}
                     </div>
                     <form
-                        action="#"
+                        class="needs-validation"
+                        novalidate
                         @submit.prevent="submit"
                     >
                         <div class="form-group row">
@@ -90,3 +91,25 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data () {
+        return {
+            form: {
+
+            },
+            error: null
+        };
+    },
+    methods: {
+        submit (e) {
+            // if (form.checkValidity() === false) {
+            // }
+            // form.classList.add('was-validated');
+            // console.log('hoi sepp');
+        }
+    }
+
+};
+</script>
