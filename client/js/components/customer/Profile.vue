@@ -57,6 +57,73 @@
                         >
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Kaff</label>
+                        <input
+                            v-model="profile.city"
+                            type="text"
+                            class="form-control"
+                            placeholder="Kaff"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Straßl Numra</label>
+                        <input
+                            v-model="profile.street_no"
+                            type="text"
+                            class="form-control"
+                            placeholder="Straßl Numra"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Straßl</label>
+                        <input
+                            v-model="profile.street"
+                            type="text"
+                            class="form-control"
+                            placeholder="Straßl"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Postleitzohl</label>
+                        <input
+                            v-model="profile.zipcode"
+                            type="text"
+                            class="form-control"
+                            placeholder="Postleitzohl"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Hinweiß</label>
+                        <textarea
+                            v-model="profile.advice"
+                            type="text"
+                            class="form-control"
+                            placeholder="Wia find i hin?"
+                            required
+                            :readonly="readonly"
+                        ></textarea>
+                    </div>
+                </div>
             </div>
             <div
                 v-if="errorMessage"
