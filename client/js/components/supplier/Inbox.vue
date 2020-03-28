@@ -97,6 +97,7 @@
 
 
 <script>
+import db from '../../db'
 // Full spec-compliant TodoMVC with localStorage persistence
 // and hash-based routing in ~120 effective lines of JavaScript.
 
@@ -137,7 +138,6 @@ var filters = {
 
 // mount
 export default {
-
     filters: {
         pluralize: (n) => {
             return n === 1 ? 'Eintrag' : 'Einträge'
@@ -154,6 +154,9 @@ export default {
             }
         }
     },
+    props: {
+        usermail: String
+    },
     // app initial state
     data: function () {
         return {
@@ -168,7 +171,6 @@ export default {
     // http://vuejs.org/guide/computed.html
     computed: {
         filteredTodos: function () {
-            console.log(this.todos, this.visibility, filters[this.visibility](this.todos))
             return filters[this.visibility](this.todos)
         },
         remaining: function () {
@@ -194,6 +196,11 @@ export default {
             },
             deep: true
         }
+    },
+    mounted: () => {
+        // db.odersBySupplier(this.usermail).then(res => {
+        //     res.forEach(x => this.addTodo(x))
+        // })
     },
 
     // methods that implement data logic.

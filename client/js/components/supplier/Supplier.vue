@@ -1,6 +1,12 @@
 <template>
-    <div class="container scroll">
-        <header class="setting-header scroll-content">
+    <div
+        ref="scrollable"
+        class="container scroll"
+    >
+        <header
+            ref="setting"
+            class="setting-header scroll-content"
+        >
             <i
                 style="font-size: 5em; border-radius: 1em; background-color: #898989;"
                 class="fas fa-user-astronaut"
@@ -36,7 +42,7 @@
         </nav>
         <inbox
             class="scroll-content"
-            style="height: 100vh;"
+            user-mail="asdf"
         />
     </div>
 </template>
@@ -52,6 +58,9 @@ export default {
         return {
             currentUser: {name: 'Hannes makes', company: 'Cool sh*t'}
         }
+    },
+    mounted () {
+        this.$refs.scrollable.scrollTop = this.$refs.setting.scrollHeight
     },
     methods: {
         debug: () => {
