@@ -139,7 +139,7 @@ var filters = {
 export default {
 
     filters: {
-        pluralize: function (n) {
+        pluralize: (n) => {
             return n === 1 ? 'item' : 'items'
         }
     },

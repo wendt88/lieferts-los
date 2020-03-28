@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Index from './components/Index'
+import Login from './components/auth/Login'
+import Register from './components/auth/Register'
 import NotFound from './components/NotFound'
 import store from './store'
 
@@ -18,6 +20,16 @@ const router = new VueRouter({
             path: '/',
             name: 'index',
             component: Index
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register
         },
         {
             path: '/supplier',
@@ -37,19 +49,10 @@ const router = new VueRouter({
             component: () => customer.then(components => components.Customer),
             children: [
                 {
-                    path: 'login',
-                    name: 'login',
-                    component: () => customer.then(components => components.Login)
-                },
-                {
-                    path: 'register',
-                    name: 'register',
-                    component: () => customer.then(components => components.Register)
-                },
-                {
-                    path: 'orders/',
+                    path: 'orders/:p(page)?/:page?',
                     name: 'orders',
                     component: () => customer.then(components => components.Orders),
+                    props: true,
                     meta: {
                         isProtected: true
                     }

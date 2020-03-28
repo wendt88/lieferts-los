@@ -43,9 +43,24 @@
 
 <script>
 export default {
+    props: {
+        page: {
+            type: [String, Number],
+            default: 1
+        }
+    },
+    // computed: {
+    //     lastOrder () {
+    //         if (this.orders && this.orders.length)
+    //             return this.orders[this.orders.length - 1].id
+    //         return null
+    //     }
+    // },
     asyncComputed: {
         orders () {
-            return this.$db.queryOrders({})
+            return this.$db.queryOrders({
+                limit: 100
+            })
         }
     }
 }
