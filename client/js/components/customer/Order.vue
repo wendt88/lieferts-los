@@ -1,6 +1,9 @@
 <template>
     <div>
-        <h1>Bestellung</h1>
+        <h1>
+            <span class="fa fa-drumstick-bite"></span>
+            Bestellung
+        </h1>
         <form @submit="saveOrder">
             <div class="form-group">
                 <label>Lieferant</label>
@@ -127,6 +130,12 @@
 // TODO: barcode scanner per product
 
 export default {
+    props: {
+        orderID: {
+            type: [String, Number],
+            required: true
+        }
+    },
     data: function () {
         return {
             order: {
@@ -152,11 +161,12 @@ export default {
             if (from.params.orderID === 'new') {
                 return
             }
+            this.$set(this, 'successMessage', '')
             this.getOrder(to.params.orderID)
         }
     },
     async created () {
-        this.getOrder(this.$route.params.orderID)
+        this.getOrder(this.orderID)
     },
     methods: {
         async getOrder (id) {
@@ -198,6 +208,7 @@ export default {
                 this.successMessage = 'Erfolgreich ogschickt!'
             }
             catch (e) {
+                console.error(e)
                 this.errorMessage = e.message
                 this.editable = true
             }
@@ -205,7 +216,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>

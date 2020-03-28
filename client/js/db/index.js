@@ -79,6 +79,9 @@ const db = {
             .doc(auth.currentUserId())
             .get())
             .data()
+        if (doc) {
+            doc.id = auth.currentUserId()
+        }
         return doc
     },
     async saveUser (data) {
@@ -90,10 +93,10 @@ const db = {
             return data
         }
         data[FIELDS.CREATED_AT] = new Date()
-        const docRef = await firestore.collection(COLLECTIONS.USER_PROFILES)
+        await firestore.collection(COLLECTIONS.USERS)
             .doc(auth.currentUserId())
             .set(data)
-        data.id = docRef.id
+        data.id = auth.currentUserId()
         return data
     },
     subscribe (collection, filter, fn) {

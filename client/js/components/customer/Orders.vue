@@ -2,6 +2,7 @@
     <div>
         <div class="d-flex align-items-center mb-3">
             <h1 class="mb-0">
+                <span class="fa fa-shopping-bag"></span>
                 Orders
             </h1>
             <router-link
@@ -93,7 +94,7 @@ export default {
     },
     methods: {
         onScroll () {
-            if (!this.isRequesting && (window.outerHeight - window.pageYOffset) < 50) {
+            if (!this.isRequesting && $(window).scrollTop() + $(window).height() > $(document).height() - 50) {
                 this.$set(this, 'lastDocument', this.orders[this.orders.length - 1])
             }
         }
