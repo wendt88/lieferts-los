@@ -1,4 +1,5 @@
 import * as firebase from 'firebase'
+import { auth } from '../auth'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDNOkG57a_ZYl8qbwn5YMSIO9BGjbwHkFU',
@@ -62,6 +63,7 @@ const db = {
         const docRef = await firestore.collection(COLLECTIONS.ORDERS)
             .add(orderData)
         orderData.id = docRef.id
+        orderData.userId = auth.currentUserId
         return orderData
     },
     subscribe (collection, filter, fn) {
