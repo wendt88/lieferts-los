@@ -40,12 +40,13 @@
                             v-if="user.loggedIn"
                             class="nav-item"
                         >
-                            <div
+                            <a
                                 class="nav-link"
-                                @click="signOut"
+                                href="#"
+                                @click.prevent="signOut"
                             >
                                 Gea loss mi aussi
-                            </div>
+                            </a>
                         </li>
                     </template>
                     <template v-if="!user.loggedIn">
