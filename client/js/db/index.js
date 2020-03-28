@@ -50,7 +50,7 @@ const db = {
         }
         col.limit(limit)
         col.orderBy(orderBy, orderDirection)
-        return (await col.get()).docs.map(d => ({ id: d.id, ...d.data(), snapshot: d }))
+        return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
     },
     async saveOrder (orderData) {
         if (orderData.id) {

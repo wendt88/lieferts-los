@@ -1,16 +1,27 @@
 <template>
-    <div class="container">
-        <header class="header">
+    <div class="container scroll">
+        <header class="header scroll-content">
             <i
-                style="font-size: 3em; "
+                style="font-size: 5em; border-radius: 1em; background-color: #898989;"
                 class="fas fa-user-astronaut"
             ></i>
-            <div>
+            <div
+                style="flex-direction: column; display: flex;"
+            >
                 <span>{{ currentUser.name }}</span>
                 <span>{{ currentUser.company }}</span>
             </div>
+            <button
+                class="clear-completed"
+                @click="debug"
+            >
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
         </header>
-        <inbox />
+        <inbox
+            class="scroll-content"
+            style="height: 100vh;"
+        />
     </div>
 </template>
 
@@ -23,7 +34,12 @@ export default {
     },
     data: () => {
         return {
-            currentUser: {name: 'Hannes makes', company: 'Veggie sh*t'}
+            currentUser: {name: 'Hannes makes', company: 'Cool sh*t'}
+        }
+    },
+    methods: {
+        debug: () => {
+            console.log('Debug!')
         }
     }
 }
