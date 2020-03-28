@@ -16,17 +16,17 @@
             <div
                 class="row"
             >
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <h4>Moß</h4>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <h4>Menge</h4>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <h4>Zuig</h4>
                     </div>
@@ -37,7 +37,7 @@
                 :key="product.id"
                 class="row"
             >
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <select
                             id="exampleFormControlSelect1"
@@ -70,7 +70,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <input
                             v-model="order.products[index].amount"
@@ -82,7 +82,7 @@
                         >
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <input
                             v-model="order.products[index].description"
