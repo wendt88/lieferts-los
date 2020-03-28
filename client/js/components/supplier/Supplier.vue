@@ -242,6 +242,23 @@ export default {
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+// // handle routing
+// function onHashChange () {
+//     var visibility = window.location.hash.replace(/#\/?/, '');
+//     if (filters[visibility]) {
+//         app.visibility = visibility;
+//     }
+//     else {
+//         window.location.hash = '';
+//         app.visibility = 'all';
+//     }
+// }
+// window.addEventListener('hashchange', onHashChange);
+// onHashChange();
+>>>>>>> ecbbea9d49a71731b4f5ca7a4420dbbf212010a3
 
 
 </script>
