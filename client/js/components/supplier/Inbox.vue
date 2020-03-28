@@ -197,10 +197,8 @@ export default {
             deep: true
         }
     },
-    mounted: () => {
-        // db.odersBySupplier(this.usermail).then(res => {
-        //     res.forEach(x => this.addTodo(x))
-        // })
+    mounted () {
+        db.odersBySupplier(this.usermail).then(res => res.forEach(x => console.log(x.data())))
     },
 
     // methods that implement data logic.

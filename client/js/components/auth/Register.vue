@@ -92,6 +92,30 @@
                                 </div>
                             </div>
 
+                            <div
+                                v-show="form.shopOwner"
+                                class="form-group row"
+                            >
+                                <label
+                                    for="shopOwner"
+                                    class="col-md-4 col-form-label text-md-right"
+                                >Company name</label>
+
+                                <div class="col-md-6">
+                                    <input
+                                        v-show="form.shopOwner"
+                                        id="company"
+                                        v-model="form.company"
+                                        type="text"
+                                        class="form-control"
+                                        name="company"
+                                        value
+                                        required="form.shopOwner"
+                                        autofocus
+                                    />
+                                </div>
+                            </div>
+
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button
@@ -126,7 +150,8 @@ export default {
                 name: '',
                 email: '',
                 password: '',
-                shopOwner: false
+                shopOwner: false,
+                company: ''
             },
             error: null
         }
