@@ -92,13 +92,6 @@
                 <span class="fa fa-user"></span>
                 Customer Area
             </h1>
-            <div
-                v-if="user.loggedIn"
-                class="alert alert-success"
-                role="alert"
-            >
-                Ungmeldn bische, du schmugu! SCHWEIIIIN: {{ user.data.email }}, {{ this.$auth.currentUserId() }}
-            </div>
             <router-view></router-view>
         </div>
     </div>
