@@ -46,7 +46,7 @@ const db = {
             col.where(cond.field, cond.operator, cond.value)
         }
         if (lastDocument) {
-            col.startAfter(lastDocument[orderBy])
+            col.startAfter(lastDocument[orderBy] || null)
         }
         col.limit(limit)
         col.orderBy(orderBy, orderDirection)
