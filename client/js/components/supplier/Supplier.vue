@@ -3,7 +3,7 @@
         <header class="header">
             <h1>Send this to outer space 🚀</h1>
             <input
-                v-model="newOrder"
+                v-model="newTodo"
                 autofocus
                 autocomplete="off"
                 placeholder="What needs to be shipped?"
@@ -84,13 +84,13 @@
                     >Completed</a>
                 </li>
             </ul>
-            <button
+            <!-- <button
                 v-show="todos.length > remaining"
                 class="clear-completed"
                 @click="removeCompleted"
             >
                 Clear completed
-            </button>
+            </button> -->
         </footer>
     </section>
 </template>
@@ -119,49 +119,44 @@
 </template> -->
 
 <script>
-// Full spec-compliant TodoMVC with localStorage persistence
-// and hash-based routing in ~120 effective lines of JavaScript.
-
+import db from '../../db'
 // localStorage persistence
-var STORAGE_KEY = 'todos-vuejs-2.0'
+var STORAGE_KEY = 'lieferts-los_orders'
 var todoStorage = {
-    fetch: function () {
-        var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-        todos.forEach(function (todo, index) {
-            todo.id = index
+    fetch: () => {
+        let orders = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]').map((o, idx) => {
+            o.id = idx
+            return o
         })
-        todoStorage.uid = todos.length
-        return todos
+        todoStorage.uid = orders.length
+        return orders
     },
-    save: function (todos) {
+    save: (todos) => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
     }
 }
 
 // visibility filters
 var filters = {
-    all: function (todos) {
+    all: (todos) => {
         return todos
     },
-    active: function (todos) {
-        return todos.filter(function (todo) {
+    active: (todos) => {
+        return todos.filter((todo) => {
             return !todo.completed
         })
     },
-    completed: function (todos) {
-        return todos.filter(function (todo) {
+    completed: (todos) => {
+        return todos.filter((todo) => {
             return todo.completed
         })
     }
 }
 
-
-
-// mount
 export default {
 
     filters: {
-        pluralize: function (n) {
+        pluralize: (n) => {
             return n === 1 ? 'item' : 'items'
         }
     },
@@ -170,14 +165,14 @@ export default {
     // before focusing on the input field.
     // http://vuejs.org/guide/custom-directive.html
     directives: {
-        'todo-focus': function (el, binding) {
+        'todo-focus': (el, binding) => {
             if (binding.value) {
                 el.focus()
             }
         }
     },
     // app initial state
-    data: function () {
+    data: () => {
         return {
             todos: todoStorage.fetch(),
             newTodo: '',
@@ -189,19 +184,19 @@ export default {
     // computed properties
     // http://vuejs.org/guide/computed.html
     computed: {
-        filteredTodos: function () {
+        filteredTodos: () => {
             console.log(this.todos, this.visibility, filters[this.visibility](this.todos))
             return filters[this.visibility](this.todos)
         },
-        remaining: function () {
+        remaining: () => {
             return filters.active(this.todos).length
         },
         allDone: {
-            get: function () {
+            get: () => {
                 return this.remaining === 0
             },
-            set: function (value) {
-                this.todos.forEach(function (todo) {
+            set: (value) => {
+                this.todos.forEach((todo) => {
                     todo.completed = value
                 })
             }
@@ -211,17 +206,22 @@ export default {
     // watch todos change for localStorage persistence
     watch: {
         todos: {
-            handler: function (todos) {
+            handler: (todos) => {
                 todoStorage.save(todos)
             },
             deep: true
         }
     },
 
+    mounted: () => {
+        console.log('Mounted!')
+        db.orderList().then(res => console.log(res))
+    },
+
     // methods that implement data logic.
     // note there's no DOM manipulation here at all.
     methods: {
-        addTodo: function () {
+        addTodo: () => {
             var value = this.newTodo && this.newTodo.trim()
             if (!value) {
                 return
@@ -234,16 +234,16 @@ export default {
             this.newTodo = ''
         },
 
-        removeTodo: function (todo) {
+        removeTodo: (todo) => {
             this.todos.splice(this.todos.indexOf(todo), 1)
         },
 
-        editTodo: function (todo) {
+        editTodo: (todo) => {
             this.beforeEditCache = todo.title
             this.editedTodo = todo
         },
 
-        doneEdit: function (todo) {
+        doneEdit: (todo) => {
             if (!this.editedTodo) {
                 return
             }
@@ -254,12 +254,12 @@ export default {
             }
         },
 
-        cancelEdit: function (todo) {
+        cancelEdit: (todo) => {
             this.editedTodo = null
             todo.title = this.beforeEditCache
         },
 
-        removeCompleted: function () {
+        removeCompleted: () => {
             this.todos = filters.active(this.todos)
         }
     }

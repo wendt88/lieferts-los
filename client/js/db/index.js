@@ -16,6 +16,8 @@ firebase.initializeApp(firebaseConfig)
 const firestore = firebase.firestore()
 const COLLECTIONS = {
     ORDERS: 'orders',
+    STOCK: 'stock',
+    SUPPLIERS: 'suppliers'
 }
 
 const db = {
@@ -24,11 +26,18 @@ const db = {
             .doc(id)
         return doc
     },
+    async odersBySupplier (supplierName) {
+        return await firestore.collection(COLLECTIONS.ORDERS).where('supplier', '==', supplierName)
+    },
     async createOrder (orderData) {
         const docRef = await firestore.collection(COLLECTIONS.ORDERS)
             .add(orderData)
         return { ...orderData, ...docRef }
     },
+    subscribe (collection, filter, fn) {
+        firestore.collection(collection).where(filter)
+            .onSnapshot((doc) => fn(doc))
+    }
 }
 
 export default db
