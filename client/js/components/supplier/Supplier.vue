@@ -15,16 +15,24 @@
                 class="clear-completed"
                 @click="debug"
             >
-                <i class="fas fa-sign-out-alt"></i>
+                <i class="fas fa-sign-out-alt fa-3x"></i>
             </button>
         </header>
-        <nav class="navbar navbar-light bg-light">
-            <a
-                class="navbar-brand"
-                href="#"
-            >
-
-            </a>
+        <nav
+            class="navbar navbar-light bg-light mt-5 mb-4"
+        >
+            <div>
+                <a
+                    href="#"
+                    class="mr-3 fg-dark"
+                ><i class="fas fa-inbox fa-3x"></i>
+                </a>
+                <a
+                    href="#"
+                >
+                    <i class="fas fa-cogs fa-3x"></i>
+                </a>
+            </div>
         </nav>
         <inbox
             class="scroll-content"
