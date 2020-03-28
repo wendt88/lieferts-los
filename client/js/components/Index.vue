@@ -38,7 +38,7 @@ export default {
         return {
             sections: [
                 'customer',
-                'inbox'
+                'supplier'
             ]
         }
     }

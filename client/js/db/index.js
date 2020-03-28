@@ -51,11 +51,11 @@ const db = {
             col.where(cond.field, cond.operator, cond.value)
         }
         if (lastDocument) {
-            col.startAfter(lastDocument[orderBy])
+            col.startAfter(lastDocument[orderBy] || null)
         }
         col.limit(limit)
         col.orderBy(orderBy, orderDirection)
-        return (await col.get()).docs.map(d => ({ id: d.id, ...d.data(), snapshot: d }))
+        return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
     },
     async saveOrder (orderData) {
         if (orderData.id) {
