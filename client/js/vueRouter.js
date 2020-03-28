@@ -38,12 +38,6 @@ const router = new VueRouter({
             children: []
         },
         {
-            path: '/supplier/inbox',
-            name: 'inbox',
-            component: () => supplier.then(components => components.Inbox),
-            children: []
-        },
-        {
             path: '/customer',
             name: 'customer',
             component: () => customer.then(components => components.Customer),

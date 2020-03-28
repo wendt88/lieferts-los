@@ -6,28 +6,25 @@
                 class="fas fa-user-astronaut"
             ></i>
             <div>
-                <!-- <span>{currentUser.name}</span>
-                <span>{currentUser.company}</span> -->
+                <span>{{ currentUser.name }}</span>
+                <span>{{ currentUser.company }}</span>
             </div>
         </header>
-        <section class="list">
-            <h1>Orders</h1>
-            <div class="filters">
-            </div>
-            <ul class="order-list">
-            </ul>
-        </section>
+        <inbox />
     </div>
 </template>
 
 <script>
+import Inbox from './Inbox'
 
 export default {
-    // data: () => {
-    //     return {
-    //         currentUser: {name: 'Hannes', company: 'Veggie sh*t'}
-    //     }
-    // }
-
+    components: {
+        'inbox': Inbox
+    },
+    data: () => {
+        return {
+            currentUser: {name: 'Hannes makes', company: 'Veggie sh*t'}
+        }
+    }
 }
 </script>
