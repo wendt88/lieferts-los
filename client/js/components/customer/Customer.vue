@@ -82,7 +82,7 @@
                 class="alert alert-success"
                 role="alert"
             >
-                Ungmeldn bische, du schmugu! SCHWEIIIIN
+                Ungmeldn bische, du schmugu! SCHWEIIIIN: {{ user.data.email }}
             </div>
             <router-view></router-view>
         </div>
