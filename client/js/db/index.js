@@ -44,7 +44,7 @@ const db = {
         }
         col.limit(limit)
         col.orderBy(orderBy, orderDirection)
-        return col.get()
+        return (await col.get()).docs.map(d => d.data())
     },
     async saveOrder (orderData) {
         if (orderData.id) {
