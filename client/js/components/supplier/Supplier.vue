@@ -8,7 +8,7 @@
             class="setting-header scroll-content"
         >
             <i
-                style="font-size: 5em; border-radius: 1em; background-color: #898989;"
+                style="font-size: 5em; border-radius: 1em;"
                 class="fas fa-user-astronaut"
             ></i>
             <div
@@ -42,7 +42,7 @@
         </nav>
         <inbox
             class="scroll-content"
-            user-mail="asdf"
+            usermail="asdf"
         />
     </div>
 </template>
