@@ -23,13 +23,13 @@ const router = new VueRouter({
             path: '/supplier',
             name: 'supplier',
             component: () => supplier.then(components => components.Supplier),
-            children: [
-                {
-                    path: 'inbox',
-                    name: 'inbox',
-                    component: () => supplier.then(components => components.Inbox)
-                }
-            ]
+            children: []
+        },
+        {
+            path: '/supplier/inbox',
+            name: 'inbox',
+            component: () => supplier.then(components => components.Inbox),
+            children: []
         },
         {
             path: '/customer',
