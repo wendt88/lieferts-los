@@ -26,7 +26,34 @@ const db = {
             .data()
         return doc
     },
+    /**
+     * query orders
+     * @param {Array<Object>} where Array of objects of the form { field: 'pathOfFieldToQuery', operator: '==', value: 'valueToCompare' } https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#where
+     * @param {Object} lastDocument the last document of the previous fetched list in order to display only documents after the one handed in
+     * @param {Integer} limit number of documents to extract
+     * @param {String} orderBy path of field
+     * @param {String} orderDirection
+     */
+    async queryOrders ({where = [], lastDocument = null, limit = 10, orderBy = 'created_at', orderDirection = 'desc'}) {
+        const col = firestore.collection(COLLECTIONS.ORDERS)
+        for (const cond of where) {
+            col.where(cond.field, cond.operator, cond.value)
+        }
+        if (lastDocument) {
+            col.startAfter(lastDocument)
+        }
+        col.limit(limit)
+        col.orderBy(orderBy, orderDirection)
+        return (await col.get()).docs.map(d => d.data())
+    },
     async saveOrder (orderData) {
+        if (orderData.id) {
+            await firestore.collection(COLLECTIONS.ORDERS)
+                .doc(orderData.id)
+                .update(orderData)
+            return orderData
+        }
+        orderData.created_at = new Date()
         const docRef = await firestore.collection(COLLECTIONS.ORDERS)
             .add(orderData)
         orderData.id = docRef.id
