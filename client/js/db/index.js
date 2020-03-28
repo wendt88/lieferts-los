@@ -45,16 +45,14 @@ const db = {
      * @param {String} orderDirection
      */
     async queryOrders ({where = [], lastDocument = null, limit = 10, orderBy = 'created_at', orderDirection = 'desc'}) {
-        const col = firestore.collection(COLLECTIONS.ORDERS)
-        col.where(FIELDS.USER_ID, '==', auth.currentUserId())
-        for (const cond of where) {
-            col.where(cond.field, cond.operator, cond.value)
-        }
-        if (lastDocument) {
-            col.startAfter(lastDocument[orderBy] || null)
-        }
-        col.limit(limit)
-        col.orderBy(orderBy, orderDirection)
+        let col = firestore.collection(COLLECTIONS.ORDERS)
+            .where(FIELDS.USER_ID, '==', auth.currentUserId())
+            .limit(limit)
+            .orderBy(orderBy, orderDirection)
+        for (const cond of where)
+            col = col.where(cond.field, cond.operator, cond.value)
+        if (lastDocument)
+            col = col.startAfter(lastDocument[orderBy] || null)
         return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
     },
     async saveOrder (orderData) {
