@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Bestellung</h1>
-        <form>
+        <form @submit="saveOrder">
             <div class="form-group">
                 <label>Lieferant</label>
                 <input
@@ -10,22 +10,23 @@
                     class="form-control"
                     placeholder="Liefernant inenspeibn"
                     :readonly="readonly"
+                    required
                 >
             </div>
             <div
                 class="row"
             >
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <h4>Moß</h4>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <h4>Menge</h4>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <h4>Zuig</h4>
                     </div>
@@ -36,13 +37,14 @@
                 :key="product.id"
                 class="row"
             >
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <select
                             id="exampleFormControlSelect1"
                             v-model="order.products[index].unit"
                             class="form-control"
                             :disabled="disabled"
+                            required
                         >
                             <option value="kg">
                                 Kilo
@@ -68,18 +70,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <input
                             v-model="order.products[index].amount"
                             type="number"
                             class="form-control"
                             placeholder="Menge - sollet a Zohl sein bittschian 😘"
+                            required
                             :readonly="readonly"
                         >
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <input
                             v-model="order.products[index].description"
@@ -87,6 +90,7 @@
                             class="form-control"
                             placeholder="Is Produkt woses gern hett"
                             :readonly="readonly"
+                            required
                             @keyup="addNewRowIfLast(index)"
                         >
                     </div>
@@ -99,14 +103,20 @@
             >
                 {{ errorMessage }}
             </div>
-            <button
-                v-if="editable"
-                type="button"
-                class="btn btn-primary"
-                @click="saveOrder"
+            <div
+                v-if="successMessage"
+                class="alert alert-success"
+                role="alert"
             >
-                Ouschickn
-            </button>
+                {{ successMessage }}
+            </div>
+            <input
+                v-if="editable"
+                type="submit"
+                class="btn btn-primary"
+                value="Ouschickn"
+                @click="sanitizeProducts"
+            >
         </form>
     </div>
 </template>
@@ -126,6 +136,7 @@ export default {
             },
             editable: false,
             errorMessage: '',
+            successMessage: '',
         }
     },
     computed: {
@@ -137,11 +148,14 @@ export default {
         }
     },
     watch: {
-        async $route (to) {
-            this.getOrder(to)
+        async $route (to, from) {
+            if (from.params.orderID === 'new') {
+                return
+            }
+            this.getOrder(to.params.orderID)
         }
     },
-    created () {
+    async created () {
         this.getOrder(this.$route.params.orderID)
     },
     methods: {
@@ -167,12 +181,20 @@ export default {
                 this.order.products.push({})
             }
         },
-        async saveOrder () {
+        sanitizeProducts () {
+            if (this.order.products.length > 1 && !this.order.products[this.order.products.length-1].description) {
+                this.order.products.pop()
+            }
+        },
+        async saveOrder (event) {
+            event.preventDefault()
+
             this.editable = false
             this.errorMessage = ''
             try {
                 this.order = await this.$db.saveOrder(this.order)
                 this.$router.push({ name: 'order detail', params: { orderID: this.order.id } })
+                this.successMessage = 'Erfolgreich ogschickt!'
             }
             catch (e) {
                 this.errorMessage = e.message
