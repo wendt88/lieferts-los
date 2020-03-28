@@ -75,7 +75,8 @@ export default {
             async handler (lastDocument) {
                 this.$set(this, 'isRequesting', true)
                 let orders = await this.$db.queryOrders({
-                    lastDocument
+                    lastDocument,
+                    limit: 2
                 })
                 this.orders.push(...orders)
                 if (!orders.length) {
@@ -93,7 +94,7 @@ export default {
     },
     methods: {
         onScroll () {
-            if (!this.isRequesting && (window.outerHeight - window.pageYOffset) < 50) {
+            if (!this.isRequesting && $(window).scrollTop() + $(window).height() > $(document).height() - 50) {
                 this.$set(this, 'lastDocument', this.orders[this.orders.length - 1])
             }
         }
