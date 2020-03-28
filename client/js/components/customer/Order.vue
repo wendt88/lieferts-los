@@ -127,6 +127,12 @@
 // TODO: barcode scanner per product
 
 export default {
+    props: {
+        orderID: {
+            type: [String, Number],
+            required: true
+        }
+    },
     data: function () {
         return {
             order: {
@@ -152,11 +158,12 @@ export default {
             if (from.params.orderID === 'new') {
                 return
             }
+            this.$set(this, 'successMessage', '')
             this.getOrder(to.params.orderID)
         }
     },
     async created () {
-        this.getOrder(this.$route.params.orderID)
+        this.getOrder(this.orderID)
     },
     methods: {
         async getOrder (id) {

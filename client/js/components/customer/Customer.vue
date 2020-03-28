@@ -75,7 +75,8 @@
             </div>
         </nav>
         <div class="container mx-auto py-5">
-            <h1 class="fa fa-user mb-4">
+            <h1 class="mb-4">
+                <span class="fa fa-user"></span>
                 Customer Area
             </h1>
             <div
