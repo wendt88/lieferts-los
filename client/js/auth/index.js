@@ -17,7 +17,10 @@ const auth = {
                 firebase.firestore()
                     .collection('users')
                     .doc(data.user.uid)
-                    .set({ 'shop-owner': form.shopOwner })
+                    .set({
+                        'shop-owner': form.shopOwner,
+                        company: form.company
+                    })
             })
             .catch(err => {
                 this.error = err.message
