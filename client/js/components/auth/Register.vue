@@ -75,6 +75,23 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label
+                                    for="shopOwner"
+                                    class="col-md-4 col-form-label text-md-right"
+                                >Shop Owner</label>
+
+                                <div class="col-md-6">
+                                    <input
+                                        id="shopOwner"
+                                        v-model="form.shopOwner"
+                                        type="checkbox"
+                                        class="form-control"
+                                        name="shopOwner"
+                                    />
+                                </div>
+                            </div>
+
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button
@@ -102,34 +119,21 @@
 
 
 <script>
-import firebase from 'firebase'
-
 export default {
     data () {
         return {
             form: {
                 name: '',
                 email: '',
-                password: ''
+                password: '',
+                shopOwner: false
             },
             error: null
         }
     },
     methods: {
         submit () {
-            firebase
-                .auth()
-                .createUserWithEmailAndPassword(this.form.email, this.form.password)
-                .then(data => {
-                    data.user
-                        .updateProfile({
-                            displayName: this.form.name
-                        })
-                        .then(() => {})
-                })
-                .catch(err => {
-                    this.error = err.message
-                })
+            this.$auth.createUserWithEmailAndPassword(this.form)
         }
     }
 }
