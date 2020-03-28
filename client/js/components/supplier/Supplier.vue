@@ -1,6 +1,6 @@
 <template>
     <div class="container scroll">
-        <header class="header scroll-content">
+        <header class="setting-header scroll-content">
             <i
                 style="font-size: 5em; border-radius: 1em; background-color: #898989;"
                 class="fas fa-user-astronaut"
