@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import AsyncComputed from 'vue-async-computed'
 import $ from 'jquery'
 require('bootstrap/js/src/collapse')
 require('bootstrap/js/src/modal')
@@ -11,7 +12,7 @@ import store from './store'
 
 global.$ = global.jQuery = $
 
-Vue.use({})
+Vue.use(AsyncComputed)
 
 new Vue({
     render: createElement => createElement('router-view'),
