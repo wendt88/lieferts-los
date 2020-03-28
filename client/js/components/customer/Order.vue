@@ -1,6 +1,9 @@
 <template>
     <div>
-        <h1>Bestellung</h1>
+        <h1>
+            <span class="fa fa-drumstick-bite"></span>
+            Bestellung
+        </h1>
         <form @submit="saveOrder">
             <div class="form-group">
                 <label>Lieferant</label>
