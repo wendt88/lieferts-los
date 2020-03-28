@@ -34,8 +34,8 @@ const db = {
             .data()
         return doc
     },
-    async odersBySupplier (supplierName) {
-        return await firestore.collection(COLLECTIONS.ORDERS).where('supplier', '==', supplierName)
+    async odersBySupplier (supplierMail) {
+        return await firestore.collection(COLLECTIONS.ORDERS).where('supplier', '==', supplierMail)
     },
     /**
      * query orders
