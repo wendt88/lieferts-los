@@ -1,13 +1,12 @@
 <template>
     <section class="todoapp">
         <header class="header">
-            <h1>todos</h1>
+            <h1>Send this to outer space 🚀</h1>
             <input
-                v-model="newTodo"
-                class="new-todo"
+                v-model="newOrder"
                 autofocus
                 autocomplete="off"
-                placeholder="What needs to be done?"
+                placeholder="What needs to be shipped?"
                 @keyup.enter="addTodo"
             />
         </header>
@@ -95,6 +94,29 @@
         </footer>
     </section>
 </template>
+<!--
+<template>
+    <div class="container">
+        <header class="header">
+            <h1>Send this to outer space 🚀</h1>
+            <input
+                v-model="newOrder"
+                autofocus
+                autocomplete="off"
+                placeholder="What needs to be shipped?"
+                @keyup.enter="addTodo"
+            />
+        </header>
+        <section class="list">
+            <h1>Orders</h1>
+            <div class="filters">
+            </div>
+            <ul class="order-list">
+                <li class="order"></li>
+            </ul>
+        </section>
+    </div>
+</template> -->
 
 <script>
 // Full spec-compliant TodoMVC with localStorage persistence
