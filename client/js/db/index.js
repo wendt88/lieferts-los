@@ -19,16 +19,16 @@ const COLLECTIONS = {
 }
 
 const db = {
-    async order (documentPath) {
+    async order (id) {
         const doc = await firestore.collection(COLLECTIONS.ORDERS)
-            .doc(documentPath)
+            .doc(id)
         return doc
     },
     async createOrder (orderData) {
         const docRef = await firestore.collection(COLLECTIONS.ORDERS)
             .add(orderData)
         return { ...orderData, ...docRef }
-    }
+    },
 }
 
 export default db
