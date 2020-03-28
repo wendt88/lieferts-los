@@ -99,16 +99,6 @@ export default {
             user: 'user'
         })
     },
-    beforeRouteEnter (to, from, next) {
-        // if (
-        //     !this.$store.state.loggedIn
-        //     && to.meta
-        //     && to.meta.isProtected
-        // ) {
-        console.log(to)
-        // }
-        next()
-    },
     methods: {
         signOut () {
             this.$auth.signOut().then(() => {
