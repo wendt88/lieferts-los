@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Index from './components/Index';
+import NotFound from './components/NotFound';
 const supplier = import('./components/supplier/index');
 const customer = import('./components/customer/index');
 
@@ -31,6 +32,10 @@ export default new VueRouter({
             children: [
 
             ]
+        },
+        {
+            path: '*',
+            component: NotFound
         }
     ]
 });
