@@ -19,7 +19,7 @@ const COLLECTIONS = {
     ORDERS: 'orders',
     STOCK: 'stock',
     SUPPLIERS: 'suppliers',
-    USER_PROFILES: 'user_profiles',
+    USERS: 'users',
 }
 
 const FIELDS = {
@@ -75,18 +75,25 @@ const db = {
         orderData.id = docRef.id
         return orderData
     },
-    async saveUserProfile (data) {
+    async user () {
+        const doc = (await firestore.collection(COLLECTIONS.USERS)
+            .doc(auth.currentUserId())
+            .get())
+            .data()
+        return doc
+    },
+    async saveUser (data) {
         if (data.id) {
             data[FIELDS.UPDATED_AT] = new Date()
-            await firestore.collection(COLLECTIONS.USER_PROFILES)
+            await firestore.collection(COLLECTIONS.USERS)
                 .doc(data.id)
                 .update(data)
             return data
         }
         data[FIELDS.CREATED_AT] = new Date()
-        data[FIELDS.USER_ID] = auth.currentUserId()
         const docRef = await firestore.collection(COLLECTIONS.USER_PROFILES)
-            .add(data)
+            .doc(auth.currentUserId())
+            .set(data)
         data.id = docRef.id
         return data
     },
