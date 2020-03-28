@@ -21,7 +21,13 @@ export default new VueRouter({
             path: '/supplier',
             name: 'supplier',
             component: () => supplier.then(components => components.Supplier),
-            children: []
+            children: [
+                {
+                    path: 'inbox',
+                    name: 'inbox',
+                    component: () => supplier.then(components => components.Inbox)
+                }
+            ]
         },
         {
             path: '/customer',
