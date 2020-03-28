@@ -89,7 +89,7 @@
                 class="clear-completed"
                 @click="removeCompleted"
             >
-                Clear completed
+                Erledigte löschen
             </button>
         </footer>
     </section>

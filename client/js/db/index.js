@@ -19,11 +19,13 @@ const COLLECTIONS = {
     ORDERS: 'orders',
     STOCK: 'stock',
     SUPPLIERS: 'suppliers',
-    USER_PROFILES: 'user_profiles',
+    USERS: 'users',
 }
 
 const FIELDS = {
-    USER_ID: 'user_id'
+    USER_ID: 'user_id',
+    CREATED_AT: 'created_at',
+    UPDATED_AT: 'updated_at',
 }
 
 const db = {
@@ -46,44 +48,50 @@ const db = {
      * @param {String} orderDirection
      */
     async queryOrders ({where = [], lastDocument = null, limit = 10, orderBy = 'created_at', orderDirection = 'desc'}) {
-        const col = firestore.collection(COLLECTIONS.ORDERS)
-        col.where(FIELDS.USER_ID, '==', auth.currentUserId())
-        for (const cond of where) {
-            col.where(cond.field, cond.operator, cond.value)
-        }
-        if (lastDocument) {
-            col.startAfter(lastDocument[orderBy] || null)
-        }
-        col.limit(limit)
-        col.orderBy(orderBy, orderDirection)
+        let col = firestore.collection(COLLECTIONS.ORDERS)
+            .where(FIELDS.USER_ID, '==', auth.currentUserId())
+            .limit(limit)
+            .orderBy(orderBy, orderDirection)
+        for (const cond of where)
+            col = col.where(cond.field, cond.operator, cond.value)
+        if (lastDocument)
+            col = col.startAfter(lastDocument[orderBy] || null)
         return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
     },
     async saveOrder (orderData) {
         if (orderData.id) {
+            orderData[FIELDS.UPDATED_AT] = new Date()
             await firestore.collection(COLLECTIONS.ORDERS)
                 .doc(orderData.id)
                 .update(orderData)
             return orderData
         }
-        orderData.created_at = new Date()
+        orderData[FIELDS.CREATED_AT] = new Date()
         orderData[FIELDS.USER_ID] = auth.currentUserId()
         const docRef = await firestore.collection(COLLECTIONS.ORDERS)
             .add(orderData)
         orderData.id = docRef.id
         return orderData
     },
-    async saveUserProfile (data) {
+    async user () {
+        const doc = (await firestore.collection(COLLECTIONS.USERS)
+            .doc(auth.currentUserId())
+            .get())
+            .data()
+        return doc
+    },
+    async saveUser (data) {
         if (data.id) {
-            data.updated_at = new Date()
-            await firestore.collection(COLLECTIONS.USER_PROFILES)
+            data[FIELDS.UPDATED_AT] = new Date()
+            await firestore.collection(COLLECTIONS.USERS)
                 .doc(data.id)
                 .update(data)
             return data
         }
-        data.created_at = new Date()
-        data.user_id = auth.currentUserId()
+        data[FIELDS.CREATED_AT] = new Date()
         const docRef = await firestore.collection(COLLECTIONS.USER_PROFILES)
-            .add(data)
+            .doc(auth.currentUserId())
+            .set(data)
         data.id = docRef.id
         return data
     },
