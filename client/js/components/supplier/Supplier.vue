@@ -65,20 +65,23 @@
             <ul class="filters">
                 <li>
                     <a
-                        href="#/all"
+                        href="#all"
                         :class="{ selected: visibility == 'all' }"
+                        @click="visibility = 'all'"
                     >All</a>
                 </li>
                 <li>
                     <a
-                        href="#/active"
+                        href="#active"
                         :class="{ selected: visibility == 'active' }"
+                        @click="visibility = 'active'"
                     >Active</a>
                 </li>
                 <li>
                     <a
-                        href="#/completed"
+                        href="#completed"
                         :class="{ selected: visibility == 'completed' }"
+                        @click="visibility = 'completed'"
                     >Completed</a>
                 </li>
             </ul>
@@ -165,6 +168,7 @@ export default {
     // http://vuejs.org/guide/computed.html
     computed: {
         filteredTodos: function () {
+            console.log(this.todos, this.visibility, filters[this.visibility](this.todos))
             return filters[this.visibility](this.todos)
         },
         remaining: function () {
@@ -238,6 +242,8 @@ export default {
         }
     }
 }
+<<<<<<< HEAD
+=======
 
 // // handle routing
 // function onHashChange () {
@@ -252,6 +258,7 @@ export default {
 // }
 // window.addEventListener('hashchange', onHashChange);
 // onHashChange();
+>>>>>>> ecbbea9d49a71731b4f5ca7a4420dbbf212010a3
 
 
 </script>
