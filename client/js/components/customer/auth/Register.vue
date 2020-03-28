@@ -13,7 +13,8 @@
                         {{ error }}
                     </div>
                     <form
-                        action="#"
+                        class="needs-validation"
+                        novalidate
                         @submit.prevent="submit"
                     >
                         <div class="form-group row">
@@ -92,35 +93,23 @@
 </template>
 
 <script>
-import firebase from 'firebase';
-
 export default {
     data () {
         return {
             form: {
-                name: '',
-                email: '',
-                password: ''
+
             },
             error: null
         };
     },
     methods: {
-        submit () {
-            firebase
-                .auth()
-                .createUserWithEmailAndPassword(this.form.email, this.form.password)
-                .then(data => {
-                    data.user
-                        .updateProfile({
-                            displayName: this.form.name
-                        })
-                        .then(() => {});
-                })
-                .catch(err => {
-                    this.error = err.message;
-                });
+        submit (e) {
+            // if (form.checkValidity() === false) {
+            // }
+            // form.classList.add('was-validated');
+            // console.log('hoi sepp');
         }
     }
+
 };
 </script>
