@@ -18,6 +18,14 @@
                 <i class="fas fa-sign-out-alt"></i>
             </button>
         </header>
+        <nav class="navbar navbar-light bg-light">
+            <a
+                class="navbar-brand"
+                href="#"
+            >
+
+            </a>
+        </nav>
         <inbox
             class="scroll-content"
             style="height: 100vh;"
