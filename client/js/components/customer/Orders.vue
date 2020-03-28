@@ -37,7 +37,7 @@
 export default {
     asyncComputed: {
         orders () {
-            console.log(this.$firebase)
+            return this.$db.orders()
         }
     }
 }
