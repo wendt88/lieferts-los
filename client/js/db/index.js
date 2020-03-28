@@ -44,10 +44,9 @@ const db = {
         }
         col.limit(limit)
         col.orderBy(orderBy, orderDirection)
-        return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
+        return (await col.get()).docs.map(d => ({ id: d.id, ...d.data(), snapshot: d }))
     },
     async saveOrder (orderData) {
-        orderData.products
         if (orderData.id) {
             await firestore.collection(COLLECTIONS.ORDERS)
                 .doc(orderData.id)
