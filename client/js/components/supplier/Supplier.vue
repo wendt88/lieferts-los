@@ -1,7 +1,14 @@
 <template>
     <div class="container">
         <header class="header">
-            <h1>Send this to outer space 🚀</h1>
+            <i
+                style="font-size: 3em; "
+                class="fas fa-user-astronaut"
+            ></i>
+            <div>
+                <span>Username</span>
+                <span>Company</span>
+            </div>
         </header>
         <section class="list">
             <h1>Orders</h1>
@@ -15,5 +22,6 @@
 
 <script>
 export default {
+    mounted: () => {}
 }
 </script>
