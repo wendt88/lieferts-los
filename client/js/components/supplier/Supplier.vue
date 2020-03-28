@@ -10,6 +10,14 @@
                 <span>{{ currentUser.company }}</span>
             </div>
         </header>
+        <nav class="navbar navbar-light bg-light">
+            <a
+                class="navbar-brand"
+                href="#"
+            >
+
+            </a>
+        </nav>
         <inbox />
     </div>
 </template>
