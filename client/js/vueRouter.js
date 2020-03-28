@@ -46,7 +46,6 @@ const router = new VueRouter({
                     path: 'orders',
                     name: 'orders',
                     component: () => customer.then(components => components.Orders),
-                    props: true,
                     meta: {
                         isProtected: true
                     }
@@ -55,6 +54,7 @@ const router = new VueRouter({
                     path: 'orders/:orderID',
                     name: 'order detail',
                     component: () => customer.then(components => components.Order),
+                    props: true,
                     meta: {
                         isProtected: true
                     }

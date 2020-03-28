@@ -7,7 +7,7 @@
                     name: 'customer'
                 }"
             >
-                Customer
+                Customer Area
             </router-link>
             <button
                 class="navbar-toggler"
@@ -46,20 +46,10 @@
                                 Meina Adressa
                             </router-link>
                         </li>
-                        <li
-                            v-if="user.loggedIn"
-                            class="nav-item"
-                        >
-                            <a
-                                class="nav-link"
-                                href="#"
-                                @click.prevent="signOut"
-                            >
-                                Gea loss mi aussi
-                            </a>
-                        </li>
                     </template>
-                    <template v-if="!user.loggedIn">
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <tamplate v-if="!user.loggedIn">
                         <li class="nav-item">
                             <router-link
                                 class="nav-link"
@@ -77,15 +67,29 @@
                                     name: 'register'
                                 }"
                             >
-                                Die Datn einipfuschn
+                                Registriern
                             </router-link>
                         </li>
-                    </template>
+                    </tamplate>
+                    <li
+                        v-else
+                        class="nav-item"
+                    >
+                        <a
+                            class="nav-link"
+                            href="#"
+                            @click.prevent="signOut"
+                        >
+                            <span class="fa fa-sign-out-alt"></span>
+                            Oufliagn
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
         <div class="container mx-auto py-5">
-            <h1 class="fa fa-user mb-4">
+            <h1 class="mb-4">
+                <span class="fa fa-user"></span>
                 Customer Area
             </h1>
             <div
