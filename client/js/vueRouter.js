@@ -39,6 +39,11 @@ export default new VueRouter({
                     component: () => customer.then(components => components.Register)
                 },
                 {
+                    path: 'orders/',
+                    name: 'order',
+                    component: () => customer.then(components => components.Orders)
+                },
+                {
                     path: 'orders/:orderID',
                     name: 'order detail',
                     component: () => customer.then(components => components.Order)
