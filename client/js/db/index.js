@@ -20,14 +20,17 @@ const COLLECTIONS = {
 
 const db = {
     async order (id) {
-        const doc = await firestore.collection(COLLECTIONS.ORDERS)
+        const doc = (await firestore.collection(COLLECTIONS.ORDERS)
             .doc(id)
+            .get())
+            .data()
         return doc
     },
-    async createOrder (orderData) {
+    async saveOrder (orderData) {
         const docRef = await firestore.collection(COLLECTIONS.ORDERS)
             .add(orderData)
-        return { ...orderData, ...docRef }
+        orderData.id = docRef.id
+        return orderData
     },
 }
 
