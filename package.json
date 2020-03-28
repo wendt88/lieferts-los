@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "stylelint:fix": "./node_modules/.bin/stylelint \"**/*.scss\" --fix",
-    "watch": "parcel watch ./html/* --public-url / -d ./output",
-    "build": "parcel build ./html/* --public-url / -d ./output --no-source-maps"
+    "watch": "parcel watch ./client/html/* --public-url / -d ./output",
+    "build": "parcel build ./client/html/* --public-url / -d ./output --no-source-maps"
   },
   "stylelint": {
     "extends": "stylelint-config-twbs-bootstrap/scss",

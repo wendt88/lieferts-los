@@ -7,7 +7,7 @@ const customer = import('./components/customer/index');
 
 Vue.use(VueRouter);
 export default new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     linkActiveClass: 'active',
     linkExactActiveClass: 'active',
     routes: [
