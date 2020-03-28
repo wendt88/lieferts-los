@@ -51,7 +51,7 @@
         ],
         "semi": [
             "error",
-            "always"
+            "never"
         ],
         "key-spacing": [
             "error"
