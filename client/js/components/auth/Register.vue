@@ -4,7 +4,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        Login
+                        Register
                     </div>
                     <div class="card-body">
                         <div
@@ -17,6 +17,26 @@
                             action="#"
                             @submit.prevent="submit"
                         >
+                            <div class="form-group row">
+                                <label
+                                    for="name"
+                                    class="col-md-4 col-form-label text-md-right"
+                                >Name</label>
+
+                                <div class="col-md-6">
+                                    <input
+                                        id="name"
+                                        v-model="form.name"
+                                        type="name"
+                                        class="form-control"
+                                        name="name"
+                                        value
+                                        required
+                                        autofocus
+                                    />
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label
                                     for="email"
@@ -61,8 +81,15 @@
                                         type="submit"
                                         class="btn btn-primary"
                                     >
-                                        Login
+                                        Register
                                     </button>
+                                    <router-link
+                                        to="/login"
+                                        tag="button"
+                                        class="btn"
+                                    >
+                                        Login
+                                    </router-link>
                                 </div>
                             </div>
                         </form>
@@ -73,6 +100,7 @@
     </div>
 </template>
 
+
 <script>
 import firebase from 'firebase'
 
@@ -80,6 +108,7 @@ export default {
     data () {
         return {
             form: {
+                name: '',
                 email: '',
                 password: ''
             },
@@ -90,9 +119,13 @@ export default {
         submit () {
             firebase
                 .auth()
-                .signInWithEmailAndPassword(this.form.email, this.form.password)
-                .then(() => {
-                    this.$router.replace({ name: 'customer' })
+                .createUserWithEmailAndPassword(this.form.email, this.form.password)
+                .then(data => {
+                    data.user
+                        .updateProfile({
+                            displayName: this.form.name
+                        })
+                        .then(() => {})
                 })
                 .catch(err => {
                     this.error = err.message
