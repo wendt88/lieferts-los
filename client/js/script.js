@@ -10,6 +10,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import router from './vueRouter'
 import store from './store'
 import db from './db'
+import auth from './auth'
 
 global.$ = global.jQuery = $
 
@@ -18,7 +19,8 @@ Vue.use(AsyncComputed)
 Vue.use({
     install: (Vue) => {
         Object.assign(Vue.prototype, {
-            $db: db
+            $db: db,
+            $auth: auth
         })
     }
 })

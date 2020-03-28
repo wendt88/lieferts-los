@@ -35,6 +35,14 @@
                             Orders
                         </router-link>
                     </li>
+                    <li class="nav-item">
+                        <div
+                            class="nav-link"
+                            @click="signOut"
+                        >
+                            Omeldn
+                        </div>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -42,13 +50,39 @@
             <h1 class="fa fa-user mb-4">
                 Customer Area
             </h1>
+            <div
+                v-if="user"
+                class="alert alert-success"
+                role="alert"
+            >
+                Ungmeldn bische!
+            </div>
             <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex'
+import firebase from 'firebase'
 
+export default {
+    computed: {
+    // map `this.user` to `this.$store.getters.user`
+        ...mapGetters({
+            user: 'user'
+        })
+    },
+    methods: {
+        signOut () {
+            this.$auth.signOut().then(() => {
+                console.log('signout')
+                this.$store.dispatch('fetchUser', firebase.auth().currentUser)
+                // this.$router.replace({
+                //     name: ''
+                // })
+            })
+        }
+    }
 }
 </script>
