@@ -1,6 +1,22 @@
 <template>
     <div>
-        <h1>Orders</h1>
+        <div class="d-flex align-items-center mb-3">
+            <h1 class="mb-0">
+                Orders
+            </h1>
+            <router-link
+                :to="{
+                    name: 'order detail',
+                    params: {
+                        orderID: 'new'
+                    }
+                }"
+                class="btn btn-primary ml-auto"
+            >
+                <span class="fa fa-plus"></span>&nbsp;
+                Nui
+            </router-link>
+        </div>
         <div class="list-group">
             <router-link
                 v-for="order in orders"
@@ -78,7 +94,7 @@ export default {
     methods: {
         onScroll () {
             if (!this.isRequesting && (window.outerHeight - window.pageYOffset) < 50) {
-                this.$set(this, 'lastDocument', this.orders[this.orders.length - 1].snapshot)
+                this.$set(this, 'lastDocument', this.orders[this.orders.length - 1])
             }
         }
     }
