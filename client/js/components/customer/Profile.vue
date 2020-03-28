@@ -58,6 +58,20 @@
                     </div>
                 </div>
             </div>
+            <div
+                v-if="errorMessage"
+                class="alert alert-danger"
+                role="alert"
+            >
+                {{ errorMessage }}
+            </div>
+            <div
+                v-if="successMessage"
+                class="alert alert-success"
+                role="alert"
+            >
+                {{ successMessage }}
+            </div>
             <input
                 v-if="editable"
                 type="submit"
@@ -98,10 +112,11 @@ export default {
             this.errorMessage = ''
             this.successMessage = ''
             try {
-                this.order = await this.$db.saveUser(this.profile)
+                this.profile = await this.$db.saveUser(this.profile)
                 this.successMessage = 'Erfolgreich gschpeichert!'
             }
             catch (e) {
+                console.error(e)
                 this.errorMessage = e.message
             }
             this.editable = true

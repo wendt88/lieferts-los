@@ -198,6 +198,7 @@ export default {
                 this.successMessage = 'Erfolgreich ogschickt!'
             }
             catch (e) {
+                console.error(e)
                 this.errorMessage = e.message
                 this.editable = true
             }

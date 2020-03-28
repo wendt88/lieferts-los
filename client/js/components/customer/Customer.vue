@@ -36,6 +36,16 @@
                                 Orders
                             </router-link>
                         </li>
+                        <li class="nav-item">
+                            <router-link
+                                class="nav-link"
+                                :to="{
+                                    name: 'profile'
+                                }"
+                            >
+                                Meina Adressa
+                            </router-link>
+                        </li>
                         <li
                             v-if="user.loggedIn"
                             class="nav-item"
