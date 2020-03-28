@@ -6,7 +6,7 @@
                 v-model="newTodo"
                 autofocus
                 autocomplete="off"
-                placeholder="What needs to be shipped?"
+                placeholder="Eintrag hier hinzufügen"
                 @keyup.enter="addTodo"
             />
         </header>
@@ -21,7 +21,7 @@
                 class="toggle-all"
                 type="checkbox"
             />
-            <label for="toggle-all"></label>
+            <label for="toggle-all">Alles markieren</label>
             <ul class="todo-list">
                 <li
                     v-for="todo in filteredTodos"
@@ -59,7 +59,7 @@
             class="footer"
         >
             <span class="todo-count">
-                <strong>{{ remaining }}</strong> {{ remaining | pluralize }} left
+                <strong>{{ remaining }}</strong> {{ remaining | pluralize }} übrig
             </span>
             <ul class="filters">
                 <li>
@@ -67,21 +67,21 @@
                         href="#all"
                         :class="{ selected: visibility == 'all' }"
                         @click="visibility = 'all'"
-                    >All</a>
+                    >Alle</a>
                 </li>
                 <li>
                     <a
                         href="#active"
                         :class="{ selected: visibility == 'active' }"
                         @click="visibility = 'active'"
-                    >Active</a>
+                    >Nur aktive</a>
                 </li>
                 <li>
                     <a
                         href="#completed"
                         :class="{ selected: visibility == 'completed' }"
                         @click="visibility = 'completed'"
-                    >Completed</a>
+                    >Erledigte</a>
                 </li>
             </ul>
             <button
@@ -140,7 +140,7 @@ export default {
 
     filters: {
         pluralize: (n) => {
-            return n === 1 ? 'item' : 'items'
+            return n === 1 ? 'Eintrag' : 'Einträge'
         }
     },
 
