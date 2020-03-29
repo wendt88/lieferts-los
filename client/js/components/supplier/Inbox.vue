@@ -203,6 +203,12 @@ export default {
             }
         }
     },
+    mounted () {
+        console.log(this.$auth.currentUserMail())
+        db.getOrdersForShop({ mail: this.shopmail }).then(res => {
+            console.log(res)
+        })
+    },
 
     // methods that implement data logic.
     // note there's no DOM manipulation here at all.
