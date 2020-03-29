@@ -198,7 +198,10 @@ export default {
         }
     },
     mounted () {
-        db.getOrdersForShop({ mail: this.shopmail }).then(res => res.forEach(x => console.log(x.data())))
+        console.log(this.$auth.currentUserMail())
+        db.getOrdersForShop({ mail: this.shopmail }).then(res => {
+            console.log(res)
+        })
     },
 
     // methods that implement data logic.

@@ -39,7 +39,7 @@
         <inbox
             style="min-height: 100vh;"
             class="scroll-content"
-            shopmail="$auth.currentUserMail()"
+            :shopmail="$auth.currentUserMail()"
         />
     </div>
 </template>
