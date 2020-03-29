@@ -34,8 +34,7 @@ const router = new VueRouter({
         {
             path: '/supplier',
             name: 'supplier',
-            component: () => supplier.then(components => components.Supplier),
-            children: []
+            component: () => supplier.then(components => components.Supplier)
         },
         {
             path: '/customer',

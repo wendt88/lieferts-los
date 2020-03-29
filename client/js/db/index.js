@@ -17,8 +17,6 @@ firebase.initializeApp(firebaseConfig)
 const firestore = firebase.firestore()
 const COLLECTIONS = {
     ORDERS: 'orders',
-    STOCK: 'stock',
-    SUPPLIERS: 'suppliers',
     USERS: 'users',
 }
 
@@ -37,6 +35,7 @@ const db = {
         return doc
     },
     async odersBySupplier (supplier_id) {
+        console.log(supplier_id)
         return await firestore.collection(COLLECTIONS.ORDERS).where('supplier_id', '==', supplier_id)
             .get()
     },
