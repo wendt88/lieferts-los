@@ -155,7 +155,7 @@ export default {
         }
     },
     props: {
-        usermail: String
+        shopmail: String
     },
     // app initial state
     data: function () {
@@ -198,7 +198,7 @@ export default {
         }
     },
     mounted () {
-        db.odersBySupplier(this.usermail).then(res => res.forEach(x => console.log(x.data())))
+        db.getOrdersForShop({ mail: this.shopmail }).then(res => res.forEach(x => console.log(x.data())))
     },
 
     // methods that implement data logic.

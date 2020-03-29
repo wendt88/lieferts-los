@@ -4,6 +4,9 @@ const auth = {
     currentUserId () {
         return firebase.auth().currentUser.uid
     },
+    currentUserMail () {
+        return firebase.auth().currentUser.email
+    },
     createUserWithEmailAndPassword (form) {
         firebase
             .auth()

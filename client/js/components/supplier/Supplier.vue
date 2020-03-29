@@ -42,7 +42,7 @@
         </nav>
         <inbox
             class="scroll-content"
-            usermail="asdf"
+            shopmail="$auth.currentUserMail()"
         />
     </div>
 </template>
@@ -63,8 +63,8 @@ export default {
         this.$refs.scrollable.scrollTop = this.$refs.setting.scrollHeight
     },
     methods: {
-        debug: () => {
-            console.log('Debug!')
+        debug () {
+            console.log(this.$auth.currentUserMail())
         }
     }
 }
