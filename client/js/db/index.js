@@ -17,8 +17,6 @@ firebase.initializeApp(firebaseConfig)
 const firestore = firebase.firestore()
 const COLLECTIONS = {
     ORDERS: 'orders',
-    STOCK: 'stock',
-    SUPPLIERS: 'suppliers',
     USERS: 'users',
 }
 

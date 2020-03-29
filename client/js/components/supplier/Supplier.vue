@@ -8,7 +8,7 @@
             class="setting-header scroll-content"
         >
             <i
-                style="font-size: 5em; border-radius: 1em;"
+                style="font-size: 4em; border-radius: 1em;"
                 class="fas fa-user-astronaut"
             ></i>
             <div
@@ -17,30 +17,27 @@
                 <span>{{ currentUser.name }}</span>
                 <span>{{ currentUser.company }}</span>
             </div>
-            <button
-                class="clear-completed"
-                @click="debug"
-            >
-                <i class="fas fa-sign-out-alt fa-3x"></i>
-            </button>
+            <i class="fas fa-sign-out-alt fa-3x"></i>
         </header>
         <nav
-            class="navbar navbar-light bg-light mt-5 mb-4"
+            style="border-radius: 1em;"
+            class="navbar navbar-light bg-light mt-1 mb-2"
         >
-            <div>
-                <a
-                    href="#"
-                    class="mr-3 fg-dark"
-                ><i class="fas fa-inbox fa-3x"></i>
-                </a>
-                <a
-                    href="#"
-                >
-                    <i class="fas fa-cogs fa-3x"></i>
-                </a>
-            </div>
+            <a
+                href="#"
+                style="color: black;"
+                class="mr-3 fg-dark"
+            ><i class="fas fa-inbox fa-3x"></i>
+            </a>
+            <a
+                href="#"
+                style="color: black;"
+            >
+                <i class="fas fa-cogs fa-3x"></i>
+            </a>
         </nav>
         <inbox
+            style="min-height: 100vh;"
             class="scroll-content"
             shopmail="$auth.currentUserMail()"
         />
@@ -49,6 +46,7 @@
 
 <script>
 import Inbox from './Inbox'
+import db from '../../db'
 
 export default {
     components: {
@@ -56,11 +54,15 @@ export default {
     },
     data: () => {
         return {
-            currentUser: {name: 'Hannes makes', company: 'Cool sh*t'}
+            currentUser: {id: '', name: '', company: ''}
         }
     },
     mounted () {
         this.$refs.scrollable.scrollTop = this.$refs.setting.scrollHeight
+        db.user().then(res => {
+            console.log(res)
+            this.currentUser = { ...res }
+        })
     },
     methods: {
         debug () {
