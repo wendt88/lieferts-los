@@ -3,6 +3,7 @@
         <header class="header">
             <h1>Bestellungen</h1>
             <input
+                v-show="false"
                 v-model="newTodo"
                 autofocus
                 autocomplete="off"
@@ -195,15 +196,32 @@ export default {
                 todoStorage.save(todos)
             },
             deep: true
+        },
+        userId: {
+            handler: function (id) {
+                if (id !== '') this.fetchOrders(id)
+            }
         }
-    },
-    mounted () {
-        db.getOrdersForShop({ mail: this.shopmail }).then(res => res.forEach(x => console.log(x.data())))
     },
 
     // methods that implement data logic.
     // note there's no DOM manipulation here at all.
     methods: {
+        fetchOrders: function (id) {
+            db.odersBySupplier(id).then(res => {
+                console.log(res, this.todos.length)
+                if (res.size !== this.todos.length) {
+                    res.forEach(x => {
+                        console.log(x.data())
+                        this.addOrder({
+                            id: x.data().id,
+                            name: x.data().products.map(v => v.description).join(', ')
+                        })
+
+                    })
+                }
+            })
+        },
         addTodo: function () {
             var value = this.newTodo && this.newTodo.trim()
             if (!value) {

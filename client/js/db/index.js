@@ -35,6 +35,10 @@ const db = {
             .data()
         return doc
     },
+    async odersBySupplier (suppliermail) {
+        return await firestore.collection(COLLECTIONS.ORDERS).where('supplier', '==', suppliermail)
+            .get()
+    },
     /**
      * query orders
      * @param {Array<Object>} where Array of objects of the form { field: 'pathOfFieldToQuery', operator: '==', value: 'valueToCompare' } https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#where
