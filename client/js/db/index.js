@@ -22,6 +22,7 @@ const COLLECTIONS = {
 
 const FIELDS = {
     USER_ID: 'user_id',
+    SHOP_MAIL: 'shop_mail',
     CREATED_AT: 'created_at',
     UPDATED_AT: 'updated_at',
 }
@@ -54,6 +55,15 @@ const db = {
             .orderBy(orderBy, orderDirection)
         for (const cond of where)
             col = col.where(cond.field, cond.operator, cond.value)
+        if (lastDocument)
+            col = col.startAfter(lastDocument[orderBy] || null)
+        return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
+    },
+    async getOrdersForShop ({mail, lastDocument = null, limit = 10, orderBy = 'created_at', orderDirection = 'desc'}) {
+        let col = firestore.collection(COLLECTIONS.ORDERS)
+            .where(FIELDS.SHOP_MAIL, '==', mail)
+            .limit(limit)
+            .orderBy(orderBy, orderDirection)
         if (lastDocument)
             col = col.startAfter(lastDocument[orderBy] || null)
         return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
@@ -97,6 +107,12 @@ const db = {
             .set(data)
         data.id = auth.currentUserId()
         return data
+    },
+    async findShop (email) {
+        return (await firestore.collection(COLLECTIONS.USERS)
+            .where('email', '==', email)
+            .get())
+            .docs.map(d => ({ id: d.id, ...d.data() }))
     },
     subscribe (collection, filter, fn) {
         firestore.collection(collection).where(filter)
