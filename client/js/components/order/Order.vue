@@ -4,6 +4,11 @@
             <span class="fa fa-drumstick-bite"></span>
             Bestellung
         </h1>
+        <order-status
+            class="mt-2"
+            :order="order"
+            :update-token="updateToken"
+        ></order-status>
         <form @submit="saveOrder">
             <div class="form-group">
                 <label>Lieferant</label>
@@ -43,7 +48,6 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <select
-                            id="exampleFormControlSelect1"
                             v-model="order.products[index].unit"
                             class="form-control"
                             :disabled="disabled"
@@ -126,15 +130,23 @@
 
 <script>
 
+import OrderStatus from './OrderStatus'
+
 // TODO: photo upload per product
 // TODO: barcode scanner per product
 
 export default {
+    components: {
+        OrderStatus,
+    },
     props: {
         orderID: {
             type: [String, Number],
             required: true
-        }
+        },
+        updateToken: {
+            type: String,
+        },
     },
     data: function () {
         return {
