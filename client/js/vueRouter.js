@@ -9,6 +9,7 @@ import store from './store'
 
 const supplier = import('./components/supplier/index')
 const customer = import('./components/customer/index')
+const order = import('./pages/Order')
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -37,6 +38,12 @@ const router = new VueRouter({
             component: () => supplier.then(components => components.Supplier)
         },
         {
+            path: '/orders/:orderID',
+            name: 'order detail',
+            component: () => order.then(components => components.default),
+            props: true,
+        },
+        {
             path: '/customer',
             name: 'customer',
             component: () => customer.then(components => components.Customer),
@@ -45,15 +52,6 @@ const router = new VueRouter({
                     path: 'orders',
                     name: 'orders',
                     component: () => customer.then(components => components.Orders),
-                    meta: {
-                        isProtected: true
-                    }
-                },
-                {
-                    path: 'orders/:orderID',
-                    name: 'order detail',
-                    component: () => customer.then(components => components.Order),
-                    props: true,
                     meta: {
                         isProtected: true
                     }
