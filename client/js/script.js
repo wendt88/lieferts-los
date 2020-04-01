@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import AsyncComputed from 'vue-async-computed'
 import $ from 'jquery'
-require('bootstrap/js/src/collapse')
-require('bootstrap/js/src/modal')
-require('bootstrap/js/src/scrollspy')
-require('bootstrap/js/src/dropdown')
+require('bootstrap')
+import 'pc-bootstrap4-datetimepicker'
+import moment from 'moment'
 import '@fortawesome/fontawesome-free/css/all.css'
 
 import router from './vueRouter'
@@ -13,15 +12,18 @@ import db from './db'
 import auth from './auth'
 import firebase from 'firebase'
 
+import DatePicker from './components/DatePicker'
+
 global.$ = global.jQuery = $
 
+Vue.component('DatePicker', DatePicker)
 Vue.use(AsyncComputed)
-
 Vue.use({
     install: (Vue) => {
         Object.assign(Vue.prototype, {
             $db: db,
-            $auth: auth
+            $auth: auth,
+            $moment: moment
         })
     }
 })

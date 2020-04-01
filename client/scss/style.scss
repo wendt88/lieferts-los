@@ -42,6 +42,8 @@ $roboto-font-path: "../../node_modules/roboto-fontface/fonts";
 @import "~bootstrap/scss/_utilities";
 @import "~bootstrap/scss/_print";
 
+@import "~pc-bootstrap4-datetimepicker/src/sass/bootstrap-datetimepicker-build";
+
 @import "custom";
 @import "supplier";
 
