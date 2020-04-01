@@ -1,37 +1,48 @@
 <template>
-    <div>
-        <div class="container mx-auto d-flex align-items-center justify-content-center">
-            <h4>Bringr.io</h4>
-            <h5>local shopping made easy</h5>
-            <p>Suppliers manage their orders and clients can track them, all by supporting local businesses and the environment!</p>
-        </div>
-        <div class="container mx-auto d-flex align-items-center justify-content-center">
-            <routerLink
-                :to="{
-                    name: 'login'
-                }"
-            >
-                <h1>Login</h1>
-            </routerLink>
-        </div>
-        <div class="min-vh-100 container mx-auto row my-5">
-            <div
-                v-for="section in sections"
-                :key="section"
-                class="col-sm-6"
-            >
-                <div class="card h-100">
-                    <div class="card-body d-flex align-items-center justify-content-center">
-                        <router-link
-                            :to="{
-                                name: section
-                            }"
-                            class="stretched-link"
-                        >
-                            <h1>{{ section }}</h1>
-                        </router-link>
+    <div class="min-vh-100 d-flex align-items-center">
+        <div
+            class="container mx-auto my-5"
+            style="max-width: 1000px;"
+        >
+            <div class="jumbotron">
+                <h1 class="display-4">
+                    Bringr.io
+                </h1>
+                <h2 class="display-5 mb-5">
+                    local shopping made easy
+                </h2>
+                <p class="lead">
+                    Suppliers manage their orders and clients can track them, all by supporting local businesses and the environment!
+                </p>
+                <hr class="my-4">
+                <form
+                    class="needs-validation"
+                    novalidate
+                    @submit.prevent="submit"
+                >
+                    <div class="form-row mb-3">
+                        <div class="col-md-6">
+                            <label for="email">Insert the Email address of your desired supplier</label>
+                            <input
+                                id="email"
+                                ref="email"
+                                v-model="email"
+                                type="email"
+                                class="form-control"
+                                required
+                            >
+                            <div class="invalid-feedback">
+                                {{ validationError }}
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <button
+                        class="btn btn-lg btn-primary"
+                        type="submit"
+                    >
+                        Create your order
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -41,10 +52,31 @@
 export default {
     data () {
         return {
-            sections: [
-                'customer',
-                'supplier'
-            ]
+            email: '',
+            validationError: ''
+        }
+    },
+    methods: {
+        submit (e) {
+            e.target.classList.add('was-validated')
+            if (e.target.checkValidity()) {
+                e.target.classList.remove('was-validated')
+                this.$set(this, 'validationError', '')
+
+                this.$router
+                    .push({
+                        name: 'order detail',
+                        params: {
+                            orderID: 'new'
+                        },
+                        query: {
+                            email: this.email
+                        }
+                    })
+            }
+            else {
+                this.$set(this, 'validationError', this.$refs.email.validationMessage)
+            }
         }
     }
 }
