@@ -10,17 +10,109 @@
             :update-token="updateToken"
         ></order-status>
         <form @submit="saveOrder">
+            <h4>Lieferant</h4>
             <div class="form-group">
-                <label>Lieferant</label>
+                <label>Email</label>
                 <input
-                    v-model="order.supplier"
+                    v-model="order.supplier_email"
+                    name="supplier_email"
                     type="text"
                     class="form-control"
                     placeholder="Liefernant inenspeibn"
-                    :readonly="readonly"
+                    :readonly="readonly || readonlySupplierEmail"
                     required
                 >
             </div>
+            <h4>Kunde</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Vornum</label>
+                        <input
+                            v-model="order.name"
+                            name="name"
+                            type="text"
+                            class="form-control"
+                            placeholder="Vornum"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Nochnum</label>
+                        <input
+                            v-model="order.surname"
+                            name="surname"
+                            type="text"
+                            class="form-control"
+                            placeholder="Nochnum"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Stroße</label>
+                        <input
+                            v-model="order.street"
+                            name="street"
+                            type="text"
+                            class="form-control"
+                            placeholder="Stroße"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Straßennummer</label>
+                        <input
+                            v-model="order.street_number"
+                            name="street_number"
+                            type="text"
+                            class="form-control"
+                            placeholder="Straßennummer"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Ort</label>
+                        <input
+                            v-model="order.city"
+                            name="city"
+                            type="text"
+                            class="form-control"
+                            placeholder="Ort"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Postleitzohl</label>
+                        <input
+                            v-model="order.zip_code"
+                            name="zip_code"
+                            type="text"
+                            class="form-control"
+                            placeholder="Postleitzohl"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+            </div>
+            <h3>Bstellung</h3>
             <div
                 class="row"
             >
@@ -147,6 +239,9 @@ export default {
         updateToken: {
             type: String,
         },
+        email: {
+            type: String,
+        },
     },
     data: function () {
         return {
@@ -158,6 +253,7 @@ export default {
             editable: false,
             errorMessage: '',
             successMessage: '',
+            readonlySupplierEmail: false,
         }
     },
     computed: {
@@ -169,16 +265,20 @@ export default {
         }
     },
     watch: {
-        async $route (to, from) {
-            if (from.params.orderID === 'new') {
+        async orderID (to, from) {
+            if (from === 'new') {
                 return
             }
             this.$set(this, 'successMessage', '')
-            this.getOrder(to.params.orderID)
+            this.getOrder(to)
         }
     },
-    async created () {
+    created () {
         this.getOrder(this.orderID)
+        if (this.email && this.editable) {
+            this.order.supplier_email = this.email
+            this.readonlySupplierEmail = true
+        }
     },
     methods: {
         async getOrder (id) {

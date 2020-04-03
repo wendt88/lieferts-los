@@ -41,7 +41,11 @@ const router = new VueRouter({
             path: '/orders/:orderID',
             name: 'order detail',
             component: () => order.then(components => components.default),
-            props: true,
+            props: (route) => ({
+                updateToken: route.query.updateToken,
+                orderID: route.params.orderID,
+                email: route.query.email,
+            }),
         },
         {
             path: '/customer',

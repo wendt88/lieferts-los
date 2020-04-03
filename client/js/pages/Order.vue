@@ -4,7 +4,11 @@
             <span class="fa fa-user"></span>
             Bestellung
         </h1>
-        <Order :order-i-d="orderID">
+        <Order
+            :order-i-d="orderID"
+            :update-token="updateToken"
+            :email="email"
+        >
         </order>
     </div>
 </template>
@@ -19,6 +23,12 @@ export default {
         orderID: {
             type: [String, Number],
             required: true
+        },
+        updateToken: {
+            type: String,
+        },
+        email: {
+            type: String,
         }
     },
 }
