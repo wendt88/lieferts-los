@@ -169,12 +169,12 @@ export default {
         }
     },
     watch: {
-        async $route (to, from) {
-            if (from.params.orderID === 'new') {
+        async orderID (to, from) {
+            if (from === 'new') {
                 return
             }
             this.$set(this, 'successMessage', '')
-            this.getOrder(to.params.orderID)
+            this.getOrder(to)
         }
     },
     async created () {
