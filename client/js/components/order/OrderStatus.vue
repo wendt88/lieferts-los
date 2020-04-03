@@ -8,22 +8,17 @@
                     class="form-control"
                     required
                 >
-                    <option value="unrecognized">
-                        Nicht gewohrnt
-                    </option>
-                    <option value="processing">
-                        Sein derbei
-                    </option>
-                    <option value="done">
-                        Erledigt
-                    </option>
-                    <option value="rejected">
-                        Noa, des mochmer net
+                    <option
+                        v-for="(value, key) in STATUS_TEXT"
+                        :key="key"
+                        :value="key"
+                    >
+                        {{ value }}
                     </option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Voraussichtliche lieferung am</label>
+                <label>Voraussichtliche Lieferung am</label>
                 <input
                     v-model="order.estimated_deliverey"
                     type="text"
@@ -31,9 +26,28 @@
                     placeholder="Geschätztes Datum und Uhrzeit der Lieferung"
                 >
             </div>
+            <div
+                v-if="errorMessage"
+                class="alert alert-danger"
+                role="alert"
+            >
+                {{ errorMessage }}
+            </div>
+            <div
+                v-if="successMessage"
+                class="alert alert-success"
+                role="alert"
+            >
+                {{ successMessage }}
+            </div>
+            <input
+                type="submit"
+                class="btn btn-primary mb-1"
+                value="Ouschickn"
+            >
         </form>
         <div v-else>
-            <span :class="`badge badge-pill badge-${STATUS_MAPPING[order.status]}`">{{ order.status }}</span>
+            <span :class="`badge badge-pill badge-${STATUS_MAPPING[order.status]}`">{{ STATUS_TEXT[order.status] }}</span>
         </div>
     </div>
 </template>
@@ -47,10 +61,10 @@ const STATUS_MAPPING = {
 }
 
 const STATUS_TEXT = {
-    'unrecognized': 'secondary',
-    'processing': 'warning',
-    'done': 'success',
-    'rejected': 'danger',
+    'unrecognized': 'Nicht gewohrnt',
+    'processing': 'Sein derbei',
+    'done': 'Erledigt',
+    'rejected': 'Noa, des mochmer net',
 }
 
 export default {
@@ -67,6 +81,8 @@ export default {
         return {
             STATUS_MAPPING,
             STATUS_TEXT,
+            errorMessage: '',
+            successMessage: '',
         }
     },
     created () {

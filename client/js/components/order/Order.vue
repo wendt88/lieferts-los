@@ -13,11 +13,11 @@
             <div class="form-group">
                 <label>Lieferant</label>
                 <input
-                    v-model="order.supplier"
+                    v-model="order.supplier_email"
                     type="text"
                     class="form-control"
                     placeholder="Liefernant inenspeibn"
-                    :readonly="readonly"
+                    :readonly="readonly || readonlySupplierEmail"
                     required
                 >
             </div>
@@ -147,6 +147,9 @@ export default {
         updateToken: {
             type: String,
         },
+        email: {
+            type: String,
+        },
     },
     data: function () {
         return {
@@ -158,6 +161,7 @@ export default {
             editable: false,
             errorMessage: '',
             successMessage: '',
+            readonlySupplierEmail: false,
         }
     },
     computed: {
@@ -177,8 +181,12 @@ export default {
             this.getOrder(to)
         }
     },
-    async created () {
+    created () {
         this.getOrder(this.orderID)
+        if (this.email && this.editable) {
+            this.order.supplier_email = this.email
+            this.readonlySupplierEmail = true
+        }
     },
     methods: {
         async getOrder (id) {
