@@ -1,7 +1,6 @@
 <template>
     <input
         type="text"
-        v-bind="inputAttributes"
     />
 </template>
 
@@ -14,9 +13,6 @@ export default {
             validator (value) {
                 return value === null || value instanceof Date || typeof value === 'string' || value instanceof String || value instanceof this.$moment
             }
-        },
-        inputAttributes: {
-            type: Object
         }
     },
     data () {

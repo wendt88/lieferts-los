@@ -2,13 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Index from './components/Index'
-import Login from './components/auth/Login'
-import Register from './components/auth/Register'
+// import Login from './components/auth/Login'
+// import Register from './components/auth/Register'
 import NotFound from './components/NotFound'
 import store from './store'
 
-const supplier = import('./components/supplier/index')
-const customer = import('./components/customer/index')
+// const supplier = import('./components/supplier/index')
+// const customer = import('./components/customer/index')
 const order = import('./pages/Order')
 
 Vue.use(VueRouter)
@@ -22,21 +22,21 @@ const router = new VueRouter({
             name: 'index',
             component: Index
         },
-        {
-            path: '/login',
-            name: 'login',
-            component: Login
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component: Register
-        },
-        {
-            path: '/supplier',
-            name: 'supplier',
-            component: () => supplier.then(components => components.Supplier)
-        },
+        // {
+        //     path: '/login',
+        //     name: 'login',
+        //     component: Login
+        // },
+        // {
+        //     path: '/register',
+        //     name: 'register',
+        //     component: Register
+        // },
+        // {
+        //     path: '/supplier',
+        //     name: 'supplier',
+        //     component: () => supplier.then(components => components.Supplier)
+        // },
         {
             path: '/orders/:orderID',
             name: 'order detail',
@@ -47,29 +47,29 @@ const router = new VueRouter({
                 email: route.query.email,
             }),
         },
-        {
-            path: '/customer',
-            name: 'customer',
-            component: () => customer.then(components => components.Customer),
-            children: [
-                {
-                    path: 'orders',
-                    name: 'orders',
-                    component: () => customer.then(components => components.Orders),
-                    meta: {
-                        isProtected: true
-                    }
-                },
-                {
-                    path: 'profile',
-                    name: 'profile',
-                    component: () => customer.then(components => components.Profile),
-                    meta: {
-                        isProtected: true
-                    }
-                },
-            ],
-        },
+        // {
+        //     path: '/customer',
+        //     name: 'customer',
+        //     component: () => customer.then(components => components.Customer),
+        //     children: [
+        //         {
+        //             path: 'orders',
+        //             name: 'orders',
+        //             component: () => customer.then(components => components.Orders),
+        //             meta: {
+        //                 isProtected: true
+        //             }
+        //         },
+        //         {
+        //             path: 'profile',
+        //             name: 'profile',
+        //             component: () => customer.then(components => components.Profile),
+        //             meta: {
+        //                 isProtected: true
+        //             }
+        //         },
+        //     ],
+        // },
         {
             path: '*',
             component: NotFound

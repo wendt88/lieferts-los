@@ -16,7 +16,7 @@
                 <input
                     v-model="order.supplier_email"
                     name="supplier_email"
-                    type="text"
+                    type="email"
                     class="form-control"
                     placeholder="Liefernant inenspeibn"
                     :readonly="readonly || readonlySupplierEmail"
