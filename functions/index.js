@@ -1,8 +1,9 @@
 const functions = require('firebase-functions')
 const nodemailer = require('nodemailer')
 const Firestore = require('@google-cloud/firestore')
-const Crypto = require('crypto')
-const Config = require('./config/config')
+const crypto = require('crypto')
+const config = require('./config')
+
 const PROJECTID = 'bringr-io-dev'
 const ORDERS = 'orders'
 
@@ -16,30 +17,51 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
     response.send('Hello from Flori!')
 })
 
-exports.order = functions.https.onRequest((request, response) => {
-    if (request.method === 'POST') {
-        // store/insert a new document
-        try {
-            let json = typeof request.body === 'string' ? JSON.parse(request.body)
-                : request.body instanceof Object ? request.body : {}
-            json.created_at = new Date()
-            return firestore.collection(ORDERS)
-                .add(json)
-                .then(doc => {
-                    return response.status(200).send(doc['_path'].segments[1])
-                })
-                .catch(err => {
-                    console.error(err)
-                    return response.status(404).send({ error: 'unable to store', err })
-                })
+exports.orders = functions.https.onRequest(async (request, response) => {
+    let data = typeof request.body === 'string' ? JSON.parse(request.body)
+        : request.body instanceof Object ? request.body : {}
+
+    try {
+
+        if (request.method === 'POST') {
+            data.created_at = new Date()
+
+            const doc = await firestore.collection(ORDERS)
+                .add(data)
+
+            if (data.supplier_email) {
+                await sendSupplierMail(data.supplier_email, doc.id)
+            }
+
+            return response.status(200)
+                .send(doc.id)
+
         }
-        catch (err) {
-            console.error(err)
-            return response.status(404).send({ error: 'unable to store', err })
+
+        else if (request.method === 'PUT') {
+            const doc = await firestore.collection(ORDERS)
+                .doc(data.id)
+                .get()
+            if (!doc || !doc.exists) {
+                return response.status(404).send({ message: 'order not found' })
+            }
+
+            if (!data.updateToken || data.updateToken !== await getUpdateToken(doc.id)) {
+                return response.status(400).send({ error: 'wrong updateToken' })
+            }
+
+            await doc.update({
+                status: data.status,
+                estimated_deliverey: data.estimated_deliverey,
+            })
+
+            return response.status(200)
         }
+
     }
-    else if (request.method === 'PUT') {
-        return response.send('updatn mogsch??')
+    catch (err) {
+        console.error(err)
+        return response.status(500).send({ error: err })
     }
 
     return response.send('GEA LERN AMOL WIA DE REQUESTS ZU MOCHN SEIN')
@@ -48,25 +70,19 @@ exports.order = functions.https.onRequest((request, response) => {
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: Config.MAIL_ADDRESS,
-        pass: Config.MAIL_PASS
+        user: config.mailAccountName,
+        pass: config.mailPassword
     }
 })
 
 function sendMail (mailOptions) {
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error)
-        }
-        else {
-            console.log('Email sent: ' + info.response)
-        }
-    })
+    return transporter.sendMail(mailOptions)
 }
 
 function getUpdateToken (docId) {
-    return Crypto.createHash('md5').update(`${Config.SALT}${docId}`)
-        .digest('hex')
+    return crypto.createHash('sha256')
+        .update(`${docId}${config.pepper}`)
+        .digest('base64')
 }
 
 // Listens for new orders that are created and send a mail to the shop.
@@ -79,7 +95,7 @@ exports.createOrder = functions.firestore
 
 
         if (order.supplier_email) {
-            const supplier = Config.MAIL_ADDRESS //order.supplier_email
+            const supplier = config.MAIL_ADDRESS //order.supplier_email
             const link = `https://localhost:1234/order/${snap.id}?update_token=${updateToken}`
             const mailOptions = {
                 from: 'bringr@gmail.com',
@@ -101,3 +117,14 @@ exports.createOrder = functions.firestore
         }
         return true
     })
+
+async function sendSupplierMail (mail, id) {
+    const link = `https://${config.frontend_url_authority}/orders/${id}?updateToken=${await getUpdateToken(id)}`
+    const mailOptions = {
+        from: config.mailAccountName,
+        to: mail,
+        subject: 'New Order for you',
+        text: `Link: ${link}`
+    }
+    await sendMail(mailOptions)
+}
