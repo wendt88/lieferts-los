@@ -149,6 +149,7 @@
                                 id="customSwitch1"
                                 type="checkbox"
                                 class="custom-control-input"
+                                :disabled="disabled"
                                 required
                             >
                             <label
