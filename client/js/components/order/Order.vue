@@ -27,6 +27,35 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
+                        <label>Email</label>
+                        <input
+                            v-model="order.email"
+                            name="email"
+                            type="email"
+                            class="form-control"
+                            placeholder="Email"
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Telefonnummer</label>
+                        <input
+                            v-model="order.phone_number"
+                            name="phone_number"
+                            type="text"
+                            class="form-control"
+                            placeholder="Telefonnummer"
+                            required
+                            :readonly="readonly"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
                         <label>Vornum</label>
                         <input
                             v-model="order.name"
@@ -109,6 +138,24 @@
                             required
                             :readonly="readonly"
                         >
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input
+                                id="customSwitch1"
+                                type="checkbox"
+                                class="custom-control-input"
+                                required
+                            >
+                            <label
+                                class="custom-control-label"
+                                for="customSwitch1"
+                            >Mit dem auswählen dieser Checkbox erkläre ich mich einverstanden, dass diese Seite die von mir angegebenen Daten speichert und and die, auf dieser Seite angegebenen, e-Mail Adressen verschickt.</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -217,6 +264,8 @@
                 @click="sanitizeProducts"
             >
         </form>
+    </div>
+    </form>
     </div>
 </template>
 
