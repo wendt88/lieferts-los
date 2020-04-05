@@ -23,4 +23,4 @@ if (!config.frontend_url_authority) {
     throw new Error('no config.frontend_url_authority set')
 }
 
-exports = Object.assign(defaults, config)
+module.exports = Object.assign(defaults, config)
