@@ -39,7 +39,6 @@ exports.order = functions.https.onRequest((request, response) => {
         }
     }
     else if (request.method === 'PUT') {
-
         return response.send('updatn mogsch??')
     }
 
