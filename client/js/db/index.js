@@ -73,10 +73,10 @@ const db = {
     async saveOrder (data) {
         let res
         if (data.id) {
-            res = await createOrder(data)
+            res = await updateOrder(data)
         }
         else {
-            res = await updateOrder(data)
+            res = await createOrder(data)
         }
         data.id = res.id
         return data
@@ -92,15 +92,18 @@ const db = {
         return doc
     },
     async saveUser (data) {
-        let res
         if (data.id) {
+            data[FIELDS.UPDATED_AT] = new Date()
             await firestore.collection(COLLECTIONS.USERS)
                 .doc(data.id)
                 .update(data)
             return data
         }
-        res = await orders(data)
-        data.id = res.id
+        data[FIELDS.CREATED_AT] = new Date()
+        await firestore.collection(COLLECTIONS.USERS)
+            .doc(auth.currentUserId())
+            .set(data)
+        data.id = auth.currentUserId()
         return data
     },
     async findShop (email) {
