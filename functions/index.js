@@ -20,59 +20,37 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-exports.createOrder = functions.https.onRequest(async (request, response) => {
-    try {
-        let data = typeof request.body === 'string' ? JSON.parse(request.body)
-            : request.body instanceof Object ? request.body : {}
+exports.createOrder = functions.https.onCall(async (data) => {
+    data.created_at = new Date()
 
-        data.created_at = new Date()
+    const doc = await firestore.collection(ORDERS)
+        .add(data)
 
-        const doc = await firestore.collection(ORDERS)
-            .add(data)
-
-        if (data.supplier_email) {
-            await sendSupplierMail(data.supplier_email, doc.id)
-        }
-
-        return response.status(200)
-            .send({ id: doc.id })
-
+    if (data.supplier_email) {
+        await sendSupplierMail(data.supplier_email, doc.id)
     }
-    catch (err) {
-        console.error(err)
-        return response.status(500).send({ error: err })
-    }
+
+    return { id: doc.id }
 })
 
-exports.updateOrder = functions.https.onRequest(async (request, response) => {
-    try {
-        let data = typeof request.body === 'string' ? JSON.parse(request.body)
-            : request.body instanceof Object ? request.body : {}
-
-        const doc = await firestore.collection(ORDERS)
-            .doc(data.id)
-            .get()
-        if (!doc || !doc.exists) {
-            return response.status(404).send({ message: 'order not found' })
-        }
-
-        if (!data.updateToken || data.updateToken !== await getUpdateToken(doc.id)) {
-            return response.status(400).send({ error: 'wrong updateToken' })
-        }
-
-        await doc.update({
-            status: data.status,
-            estimated_deliverey: data.estimated_deliverey,
-        })
-
-        return response.status(200)
-            .send({ id: doc.id })
-
+exports.updateOrder = functions.https.onCall(async (data) => {
+    const doc = await firestore.collection(ORDERS)
+        .doc(data.id)
+        .get()
+    if (!doc || !doc.exists) {
+        throw new functions.https.HttpsError('order-not-found', 'order not found')
     }
-    catch (err) {
-        console.error(err)
-        return response.status(500).send({ error: err })
+
+    if (!data.updateToken || data.updateToken !== await getUpdateToken(doc.id)) {
+        throw new functions.https.HttpsError('order-wrong-updateToken', 'wrong updateToken')
     }
+
+    await doc.update({
+        status: data.status,
+        estimated_deliverey: data.estimated_deliverey,
+    })
+
+    return { id: doc.id }
 })
 
 
