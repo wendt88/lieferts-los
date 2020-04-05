@@ -15,6 +15,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 const firestore = firebase.firestore()
+const createOrder = firebase.functions().httpsCallable('createOrder')
+const updateOrder = firebase.functions().httpsCallable('updateOrder')
+
 const COLLECTIONS = {
     ORDERS: 'orders',
     USERS: 'users',
@@ -67,20 +70,16 @@ const db = {
             col = col.startAfter(lastDocument[orderBy] || null)
         return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
     },
-    async saveOrder (orderData) {
-        if (orderData.id) {
-            orderData[FIELDS.UPDATED_AT] = new Date()
-            await firestore.collection(COLLECTIONS.ORDERS)
-                .doc(orderData.id)
-                .update(orderData)
-            return orderData
+    async saveOrder (data) {
+        let res
+        if (data.id) {
+            res = await createOrder(data)
         }
-        orderData[FIELDS.CREATED_AT] = new Date()
-        orderData[FIELDS.USER_ID] = auth.currentUserId()
-        const docRef = await firestore.collection(COLLECTIONS.ORDERS)
-            .add(orderData)
-        orderData.id = docRef.id
-        return orderData
+        else {
+            res = await updateOrder(data)
+        }
+        data.id = res.id
+        return data
     },
     async user () {
         const doc = (await firestore.collection(COLLECTIONS.USERS)
@@ -93,18 +92,15 @@ const db = {
         return doc
     },
     async saveUser (data) {
+        let res
         if (data.id) {
-            data[FIELDS.UPDATED_AT] = new Date()
             await firestore.collection(COLLECTIONS.USERS)
                 .doc(data.id)
                 .update(data)
             return data
         }
-        data[FIELDS.CREATED_AT] = new Date()
-        await firestore.collection(COLLECTIONS.USERS)
-            .doc(auth.currentUserId())
-            .set(data)
-        data.id = auth.currentUserId()
+        res = await orders(data)
+        data.id = res.id
         return data
     },
     async findShop (email) {
