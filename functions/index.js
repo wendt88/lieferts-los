@@ -18,10 +18,9 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 })
 
 exports.orders = functions.https.onRequest(async (request, response) => {
-    let data = typeof request.body === 'string' ? JSON.parse(request.body)
-        : request.body instanceof Object ? request.body : {}
-
     try {
+        let data = typeof request.body === 'string' ? JSON.parse(request.body)
+            : request.body instanceof Object ? request.body : {}
 
         if (request.method === 'POST') {
             data.created_at = new Date()
