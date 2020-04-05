@@ -20,56 +20,61 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-exports.orders = functions.https.onRequest(async (request, response) => {
+exports.createOrder = functions.https.onRequest(async (request, response) => {
     try {
         let data = typeof request.body === 'string' ? JSON.parse(request.body)
             : request.body instanceof Object ? request.body : {}
 
-        if (request.method === 'POST') {
-            data.created_at = new Date()
+        data.created_at = new Date()
 
-            const doc = await firestore.collection(ORDERS)
-                .add(data)
+        const doc = await firestore.collection(ORDERS)
+            .add(data)
 
-            if (data.supplier_email) {
-                await sendSupplierMail(data.supplier_email, doc.id)
-            }
-
-            return response.status(200)
-                .send({ id: doc.id })
-
+        if (data.supplier_email) {
+            await sendSupplierMail(data.supplier_email, doc.id)
         }
 
-        else if (request.method === 'PUT') {
-
-            const doc = await firestore.collection(ORDERS)
-                .doc(data.id)
-                .get()
-            if (!doc || !doc.exists) {
-                return response.status(404).send({ message: 'order not found' })
-            }
-
-            if (!data.updateToken || data.updateToken !== await getUpdateToken(doc.id)) {
-                return response.status(400).send({ error: 'wrong updateToken' })
-            }
-
-            await doc.update({
-                status: data.status,
-                estimated_deliverey: data.estimated_deliverey,
-            })
-
-            return response.status(200)
-                .send({ id: doc.id })
-        }
+        return response.status(200)
+            .send({ id: doc.id })
 
     }
     catch (err) {
         console.error(err)
         return response.status(500).send({ error: err })
     }
-
-    return response.send('GEA LERN AMOL WIA DE REQUESTS ZU MOCHN SEIN')
 })
+
+exports.updateOrder = functions.https.onRequest(async (request, response) => {
+    try {
+        let data = typeof request.body === 'string' ? JSON.parse(request.body)
+            : request.body instanceof Object ? request.body : {}
+
+        const doc = await firestore.collection(ORDERS)
+            .doc(data.id)
+            .get()
+        if (!doc || !doc.exists) {
+            return response.status(404).send({ message: 'order not found' })
+        }
+
+        if (!data.updateToken || data.updateToken !== await getUpdateToken(doc.id)) {
+            return response.status(400).send({ error: 'wrong updateToken' })
+        }
+
+        await doc.update({
+            status: data.status,
+            estimated_deliverey: data.estimated_deliverey,
+        })
+
+        return response.status(200)
+            .send({ id: doc.id })
+
+    }
+    catch (err) {
+        console.error(err)
+        return response.status(500).send({ error: err })
+    }
+})
+
 
 function sendMail (mailOptions) {
     return transporter.sendMail(mailOptions)
