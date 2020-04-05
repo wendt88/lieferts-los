@@ -4,7 +4,7 @@
             class="container mx-auto my-5"
             style="max-width: 1000px;"
         >
-            <div class="jumbotron">
+            <div class="jumbotron mb-0">
                 <h1 class="display-4">
                     Bringr.io
                 </h1>
@@ -28,7 +28,7 @@
                                 ref="email"
                                 v-model="email"
                                 type="email"
-                                class="form-control"
+                                class="form-control form-control-lg"
                                 required
                             >
                             <div class="invalid-feedback">

@@ -10,7 +10,7 @@ import router from './vueRouter'
 import store from './store'
 import db from './db'
 import auth from './auth'
-import firebase from 'firebase'
+// import firebase from 'firebase'
 
 import DatePicker from './components/DatePicker'
 
@@ -28,13 +28,11 @@ Vue.use({
     }
 })
 
-firebase.auth().onAuthStateChanged(user => {
-    store.dispatch('fetchUser', user)
-
-    new Vue({
-        render: createElement => createElement('router-view'),
-        store,
-        router,
-    })
-        .$mount('body > div')
-})
+// firebase.auth().onAuthStateChanged(user => {
+//     store.dispatch('fetchUser', user)
+new Vue({
+    render: createElement => createElement('router-view'),
+    store,
+    router,
+}).$mount('body > div')
+// })

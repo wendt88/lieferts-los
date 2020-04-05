@@ -19,12 +19,11 @@
             </div>
             <div class="form-group">
                 <label>Voraussichtliche Lieferung am</label>
-                <input
+                <date-time
                     v-model="order.estimated_deliverey"
-                    type="text"
                     class="form-control"
                     placeholder="Geschätztes Datum und Uhrzeit der Lieferung"
-                >
+                ></date-time>
             </div>
             <div
                 v-if="errorMessage"
