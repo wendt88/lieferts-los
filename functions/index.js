@@ -45,10 +45,12 @@ exports.updateOrder = functions.https.onCall(async (data) => {
         throw new functions.https.HttpsError('order-wrong-updateToken', 'wrong updateToken')
     }
 
-    await doc.update({
-        status: data.status,
-        estimated_deliverey: data.estimated_deliverey,
-    })
+    await firestore.collection(ORDERS)
+        .doc(data.id)
+        .update({
+            status: data.status,
+            estimated_deliverey: data.estimated_deliverey,
+        })
 
     return { id: doc.id }
 })
@@ -61,7 +63,7 @@ function sendMail (mailOptions) {
 function getUpdateToken (docId) {
     return crypto.createHash('sha256')
         .update(`${docId}${config.pepper}`)
-        .digest('base64')
+        .digest('hex')
 }
 
 async function sendSupplierMail (mail, id) {

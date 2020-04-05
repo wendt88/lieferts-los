@@ -1,11 +1,15 @@
 <template>
     <div>
         <h4>Status</h4>
-        <form v-if="updateToken">
+        <form
+            v-if="updateToken"
+            @submit="saveOrder"
+        >
             <div class="form-group">
                 <select
                     v-model="order.status"
                     class="form-control"
+                    :disabled="disabled"
                     required
                 >
                     <option
@@ -23,6 +27,7 @@
                     v-model="order.estimated_deliverey"
                     class="form-control"
                     placeholder="Geschätztes Datum und Uhrzeit der Lieferung"
+                    :disabled="disabled"
                 ></date-time>
             </div>
             <div
@@ -78,15 +83,42 @@ export default {
     },
     data: function () {
         return {
+            editable: true,
             STATUS_MAPPING,
             STATUS_TEXT,
             errorMessage: '',
             successMessage: '',
         }
     },
+    computed: {
+        readonly () {
+            return this.editable ? false : 'readonly'
+        },
+        disabled () {
+            return this.editable ? false : 'disabled'
+        }
+    },
     created () {
         if (!this.order.status) {
             this.order.status = 'unrecognized'
+        }
+    },
+    methods: {
+        async saveOrder () {
+            event.preventDefault()
+
+            this.editable = false
+            this.errorMessage = ''
+            this.successMessage = ''
+            try {
+                await this.$db.saveOrder({ ...this.order, updateToken: this.updateToken })
+                this.successMessage = 'Erfolgreich ogschickt!'
+            }
+            catch (e) {
+                console.error(e)
+                this.errorMessage = e.message
+            }
+            this.editable = true
         }
     }
 }

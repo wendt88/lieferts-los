@@ -36,6 +36,7 @@ const db = {
             .doc(id)
             .get())
             .data()
+        doc.id = id
         return doc
     },
     async odersBySupplier (suppliermail) {
@@ -73,7 +74,12 @@ const db = {
     async saveOrder (data) {
         let res
         if (data.id) {
-            res = await updateOrder(data)
+            res = await updateOrder({
+                id: data.id,
+                status: data.status,
+                estimated_deliverey: data.estimated_deliverey,
+                updateToken: data.updateToken,
+            })
         }
         else {
             res = await createOrder(data)
