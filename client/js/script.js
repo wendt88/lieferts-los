@@ -4,6 +4,7 @@ import $ from 'jquery'
 require('bootstrap')
 import 'pc-bootstrap4-datetimepicker'
 import moment from 'moment'
+import 'moment/locale/de'
 import '@fortawesome/fontawesome-free/css/all.css'
 
 import router from './vueRouter'
@@ -20,6 +21,7 @@ Vue.component('DatePicker', DatePicker)
 Vue.use(AsyncComputed)
 Vue.use({
     install: (Vue) => {
+        moment.locale('de')
         Object.assign(Vue.prototype, {
             $db: db,
             $auth: auth,
