@@ -205,21 +205,15 @@
                 </div>
             </div>
             <h3>Bstellung</h3>
-            <div class="row d-none d-md-block">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <h4>Moß</h4>
-                    </div>
+            <div class="row d-none d-md-flex">
+                <div class="col-md-4 my-3">
+                    <h4>Moß</h4>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <h4>Menge</h4>
-                    </div>
+                <div class="col-md-4 my-3">
+                    <h4>Menge</h4>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <h4>Zuig</h4>
-                    </div>
+                <div class="col-md-4 my-3">
+                    <h4>Zuig</h4>
                 </div>
             </div>
             <div
@@ -279,7 +273,9 @@
                         <input
                             :id="`amount-${index}`"
                             v-model.number="order.products[index].amount"
-                            type="text"
+                            type="number"
+                            step=".1"
+                            min=".1"
                             class="form-control"
                             placeholder="Menge - sollet a Zohl sein bittschian 😘"
                             required

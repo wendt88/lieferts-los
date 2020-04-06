@@ -21,14 +21,17 @@
                     </option>
                 </select>
             </div>
-            <div class="form-group">
+            <div
+                v-if="order.status === 'processing'"
+                class="form-group position-relative"
+            >
                 <label>Voraussichtliche Lieferung am</label>
-                <date-time
+                <date-picker
                     v-model="order.estimated_deliverey"
                     class="form-control"
                     placeholder="Geschätztes Datum und Uhrzeit der Lieferung"
                     :disabled="disabled"
-                ></date-time>
+                ></date-picker>
             </div>
             <div
                 v-if="errorMessage"
