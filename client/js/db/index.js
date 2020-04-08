@@ -84,7 +84,7 @@ const db = {
         else {
             res = await createOrder(data)
         }
-        data.id = res.id
+        data.id = res.data.id
         return data
     },
     async user () {
