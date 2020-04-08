@@ -307,6 +307,13 @@
                 {{ errorMessage }}
             </div>
             <div
+                v-if="loadingMessage"
+                class="alert alert-light"
+                role="alert"
+            >
+                {{ loadingMessage }}
+            </div>
+            <div
                 v-if="successMessage"
                 class="alert alert-success"
                 role="alert"
@@ -348,6 +355,7 @@ export default {
     data: function () {
         return {
             errorMessage: '',
+            loadingMessage: '',
             successMessage: '',
             readonlySupplierEmail: false,
             validationErrors: {}
@@ -394,7 +402,9 @@ export default {
                 event.target.classList.remove('was-validated')
                 this.$set(this, 'validationErrors', {})
 
+                this.editable = false;
                 this.errorMessage = ''
+                this.loadingMessage = 'Bestellung wird gespeichert und versendet...'
                 this.successMessage = ''
                 try {
                     let order = await this.$db.saveOrder(this.order)
@@ -412,6 +422,7 @@ export default {
                     this.errorMessage = e.message
                     this.editable = true
                 }
+                this.loadingMessage = ''
             }
             else {
                 $(':invalid[id]', event.target)
