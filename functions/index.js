@@ -30,7 +30,10 @@ exports.createOrder = functions.https.onCall(async (data) => {
         .add(data)
 
     if (data.supplier_email) {
-        await sendSupplierMail(data, doc.id)
+        await sendNewOrderMailForSupplier(data, doc.id)
+    }
+    if (data.email) {
+        await sendNewOrderMailToCustomer(data, doc.id)
     }
 
     return { id: doc.id }
@@ -68,7 +71,7 @@ function getUpdateToken (docId) {
         .digest('hex')
 }
 
-async function sendSupplierMail (data, docId) {
+async function sendNewOrderMailForSupplier (data, docId) {
     const link = `https://${config.frontend_url_authority}/orders/${docId}?updateToken=${await getUpdateToken(docId)}`
     const mailOptions = {
         from: config.mailAccountName,
@@ -85,7 +88,29 @@ async function getNewOrderForSupplierHtml (data, link) {
 }
 
 async function getNewOrderForSupplierTxt (data, link) {
-    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForSupplier.html', 'utf8')), data, link)
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForSupplier.txt', 'utf8')), data, link)
+}
+
+async function sendNewOrderMailToCustomer (data, docId) {
+    if (data.email) {
+        const link = `https://${config.frontend_url_authority}/orders/${docId}`
+        const mailOptions = {
+            from: config.mailAccountName,
+            to: data.email,
+            subject: 'Die Bestellung wurde gesendet! L\'ordine è stato inviato!',
+            html: await getNewOrderForCustomerHtml(data, link),
+            text: await getNewOrderForCustomerTxt(data, link)
+        }
+        await sendMail(mailOptions)
+    }
+}
+
+async function getNewOrderForCustomerHtml (data, link) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForCustomer.html', 'utf8')), data, link)
+}
+
+async function getNewOrderForCustomerTxt (data, link) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForCustomer.txt', 'utf8')), data, link)
 }
 
 function replaceStringsInMail (mail, data, link) {

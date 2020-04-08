@@ -1,0 +1,29 @@
+Danke {{ name }} für das Abschicken der Bestellung mittels Bringr.io!
+
+Wir haben die Bestellung an das Unternehmen weitergeleitet.
+Für das Annehmen und Bearbeiten der Bestellung ist das Unternehmen selbst verantwortlich.
+Sollte sich also das Unternehmen nicht innerhalb von 2 Arbeitstagen zurückmelden,
+werden wir die Bestellung als zu alt und ungültig markieren.
+
+Link: {{ linkToOrder }}
+
+Beste Grüße,
+das Bringr.io Team
+
+Kontakt: bringr.io@gmail.com
+
+------------------------------------------------------------------------------
+
+Grazie {{ name }} per aver inviato l'ordine tramite Bringr.io!
+
+Abbiamo inoltrato l'ordine all'azienda.
+L'azienda stessa è responsabile dell'accettazione e dell'elaborazione dell'ordine.
+Quindi se l'azienda non risponde entro 2 giorni lavorativi,
+segneremo l'ordine come troppo vecchio e non valido.
+
+Link: {{ linkToOrder }}
+
+Cari saluti,
+il team da Bringr.io
+
+Contatto: bringr.io@gmail.com
