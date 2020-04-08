@@ -197,13 +197,13 @@
             </div>
             <h3>Bstellung</h3>
             <div class="row d-none d-md-flex">
-                <div class="col-md-4 my-3">
-                    <h4>Moß</h4>
-                </div>
-                <div class="col-md-4 my-3">
+                <div class="col-md-2 my-3">
                     <h4>Menge</h4>
                 </div>
-                <div class="col-md-4 my-3">
+                <div class="col-md-2 my-3">
+                    <h4>Moß</h4>
+                </div>
+                <div class="col-md-8 my-3">
                     <h4>Zuig</h4>
                 </div>
             </div>
@@ -215,47 +215,7 @@
                 }"
                 class="row"
             >
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label
-                            :for="`unit-${index}`"
-                            class="d-md-none"
-                        >Moß</label>
-                        <select
-                            :id="`unit-${index}`"
-                            v-model="order.products[index].unit"
-                            class="form-control"
-                            :disabled="disabled"
-                            required
-                        >
-                            <option value="kg">
-                                Kilo
-                            </option>
-                            <option value="g">
-                                Gramm
-                            </option>
-                            <option value="pieces">
-                                Stuck
-                            </option>
-                            <option value="l">
-                                Liter
-                            </option>
-                            <option value="mv">
-                                Maul voll
-                            </option>
-                            <option value="tiggisch">
-                                Wollten awian
-                            </option>
-                            <option value="flietscha">
-                                Schun awian a flietscha
-                            </option>
-                        </select>
-                        <div class="invalid-feedback">
-                            {{ validationErrors[`unit-${index}`] }}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
+                <div class="col-6 col-md-2">
                     <div class="form-group">
                         <label
                             :for="`amount-${index}`"
@@ -277,7 +237,44 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-6 col-md-2">
+                    <div class="form-group">
+                        <label
+                            :for="`unit-${index}`"
+                            class="d-md-none"
+                        >Moß</label>
+                        <select
+                            :id="`unit-${index}`"
+                            v-model="order.products[index].unit"
+                            class="form-control"
+                            :disabled="disabled"
+                            required
+                        >
+                            <option value="pieces">
+                                Stück
+                            </option>
+                            <option value="g">
+                                Gramm
+                            </option>
+                            <option value="kg">
+                                Kilogramm
+                            </option>
+                            <option value="l">
+                                Liter
+                            </option>
+                            <option value="l">
+                                Milliliter
+                            </option>
+                            <option value="other">
+                                Anderes
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            {{ validationErrors[`unit-${index}`] }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
                     <div class="form-group">
                         <label
                             :for="`product-${index}`"
@@ -388,7 +385,7 @@ export default {
                 return
             }
             if (this.order.products.length-1 === index) {
-                this.order.products.push({})
+                this.order.products.push({ unit: 'pieces' })
             }
         },
         sanitizeProducts () {

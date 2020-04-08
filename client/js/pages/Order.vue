@@ -75,7 +75,7 @@ export default {
         return {
             order: {
                 products: [
-                    {},
+                    { unit: 'pieces' },
                 ],
             },
         }
@@ -105,7 +105,7 @@ export default {
             if (id === 'new') {
                 this.order = {
                     products: [
-                        {},
+                        { unit: 'pieces' },
                     ],
                 }
             }
