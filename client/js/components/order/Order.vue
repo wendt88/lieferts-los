@@ -1,14 +1,5 @@
 <template>
     <div>
-        <h1>
-            <span class="fa fa-drumstick-bite"></span>
-            Bestellung
-        </h1>
-        <order-status
-            class="my-5"
-            :order="order"
-            :update-token="updateToken"
-        ></order-status>
         <form
             class="needs-validation"
             novalidate
@@ -335,18 +326,13 @@
 
 <script>
 
-import OrderStatus from './OrderStatus'
-
 // TODO: photo upload per product
 // TODO: barcode scanner per product
 
 export default {
-    components: {
-        OrderStatus,
-    },
     props: {
-        orderID: {
-            type: [String, Number],
+        order: {
+            type: Object,
             required: true
         },
         updateToken: {
@@ -355,15 +341,12 @@ export default {
         email: {
             type: String,
         },
+        editable: {
+            type: Boolean,
+        }
     },
     data: function () {
         return {
-            order: {
-                products: [
-                    {},
-                ],
-            },
-            editable: false,
             errorMessage: '',
             successMessage: '',
             readonlySupplierEmail: false,
@@ -384,31 +367,14 @@ export default {
                 return
             }
             this.$set(this, 'successMessage', '')
-            this.getOrder(to)
         }
     },
     created () {
-        this.getOrder(this.orderID)
         if (this.email && this.editable) {
-            this.order.supplier_email = this.email
             this.readonlySupplierEmail = true
         }
     },
     methods: {
-        async getOrder (id) {
-            if (id === 'new') {
-                this.editable = true
-                this.order = {
-                    products: [
-                        {},
-                    ],
-                }
-            }
-            else {
-                this.editable = false
-                this.order = await this.$db.order(id)
-            }
-        },
         addNewRowIfLast (index) {
             if (!this.editable) {
                 return
@@ -428,12 +394,17 @@ export default {
                 event.target.classList.remove('was-validated')
                 this.$set(this, 'validationErrors', {})
 
-                this.editable = false
                 this.errorMessage = ''
                 this.successMessage = ''
                 try {
-                    this.order = await this.$db.saveOrder(this.order)
-                    this.$router.push({ name: 'order detail', params: { orderID: this.order.id } })
+                    let order = await this.$db.saveOrder(this.order)
+                    this.$emit('orderchanged', order)
+                    this.$router.push({
+                        name: 'order detail',
+                        params: {
+                            orderID: order.id
+                        }
+                    })
                     this.successMessage = 'Erfolgreich ogschickt!'
                 }
                 catch (e) {
