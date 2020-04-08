@@ -6,7 +6,9 @@
     "stylelint:fix": "./node_modules/.bin/stylelint \"**/*.scss\" --fix",
     "watch": "parcel watch ./client/html/* --public-url / -d ./output",
     "build": "parcel build ./client/html/* --public-url / -d ./output --no-source-maps",
-    "start": "parcel ./client/html/* --public-url / -d ./output"
+    "start": "parcel ./client/html/* --public-url / -d ./output",
+    "deploy-dev-page": "npm run build && firebase deploy --only hosting",
+    "deploy-dev-functions": "firebase deploy --only functions"
   },
   "stylelint": {
     "extends": "stylelint-config-twbs-bootstrap/scss",

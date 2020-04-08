@@ -1,0 +1,25 @@
+Eine neue Bestellung!
+
+{{ name }} {{ surname }} möchte mittels Bringr.io eine Bestellung an Sie senden.
+Öffnen Sie einfach den Link um die Bestellung ansehen, sie zu bearbeiten und mit {{ name }} in Kontakt zu treten!
+
+Link: {{ linkToOrder }}
+
+Beste Grüße,
+das Bringr.io Team
+
+Kontakt: bringr.io@gmail.com
+
+------------------------------------------------------------------------------
+
+Un nuovo ordine!
+
+{{ name }} {{ surname }} desidera inviare un ordine tramite Bringr.io!
+Basta aprire il link per modificarlo e contattare {{ name }}!
+
+Link: {{ linkToOrder }}
+
+Cari saluti,
+il team da Bringr.io
+
+Contatto: bringr.io@gmail.com

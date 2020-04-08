@@ -1,5 +1,8 @@
 const functions = require('firebase-functions')
 const nodemailer = require('nodemailer')
+const fs = require('fs')
+const { promisify } = require('util')
+const readFile = promisify(fs.readFile)
 const Firestore = require('@google-cloud/firestore')
 const crypto = require('crypto')
 const config = require('./config')
@@ -27,7 +30,10 @@ exports.createOrder = functions.https.onCall(async (data) => {
         .add(data)
 
     if (data.supplier_email) {
-        await sendSupplierMail(data.supplier_email, doc.id)
+        await sendNewOrderMailForSupplier(data, doc.id)
+    }
+    if (data.email) {
+        await sendNewOrderMailToCustomer(data, doc.id)
     }
 
     return { id: doc.id }
@@ -55,7 +61,6 @@ exports.updateOrder = functions.https.onCall(async (data) => {
     return { id: doc.id }
 })
 
-
 function sendMail (mailOptions) {
     return transporter.sendMail(mailOptions)
 }
@@ -66,13 +71,50 @@ function getUpdateToken (docId) {
         .digest('hex')
 }
 
-async function sendSupplierMail (mail, id) {
-    const link = `https://${config.frontend_url_authority}/orders/${id}?updateToken=${await getUpdateToken(id)}`
+async function sendNewOrderMailForSupplier (data, docId) {
+    const link = `https://${config.frontend_url_authority}/orders/${docId}?updateToken=${await getUpdateToken(docId)}`
     const mailOptions = {
         from: config.mailAccountName,
-        to: mail,
-        subject: 'New Order for you',
-        text: `Link: ${link}`
+        to: data.supplier_email,
+        subject: 'Eine neue Bestellung! Un nuovo ordine!',
+        html: await getNewOrderForSupplierHtml(data, link),
+        text: await getNewOrderForSupplierTxt(data, link)
     }
     await sendMail(mailOptions)
+}
+
+async function getNewOrderForSupplierHtml (data, link) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForSupplier.html', 'utf8')), data, link)
+}
+
+async function getNewOrderForSupplierTxt (data, link) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForSupplier.txt', 'utf8')), data, link)
+}
+
+async function sendNewOrderMailToCustomer (data, docId) {
+    if (data.email) {
+        const link = `https://${config.frontend_url_authority}/orders/${docId}`
+        const mailOptions = {
+            from: config.mailAccountName,
+            to: data.email,
+            subject: 'Die Bestellung wurde gesendet! L\'ordine è stato inviato!',
+            html: await getNewOrderForCustomerHtml(data, link),
+            text: await getNewOrderForCustomerTxt(data, link)
+        }
+        await sendMail(mailOptions)
+    }
+}
+
+async function getNewOrderForCustomerHtml (data, link) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForCustomer.html', 'utf8')), data, link)
+}
+
+async function getNewOrderForCustomerTxt (data, link) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForCustomer.txt', 'utf8')), data, link)
+}
+
+function replaceStringsInMail (mail, data, link) {
+    return mail.replace(/{{ name }}/gi, data.name)
+        .replace(/{{ surname }}/gi, data.surname)
+        .replace(/{{ linkToOrder }}/gi, link)
 }
