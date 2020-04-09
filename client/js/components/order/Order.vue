@@ -196,14 +196,41 @@
                 </div>
             </div>
             <h3>Bstellung</h3>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label
+                            for="type"
+                            class="d-md-none"
+                        >Typ</label>
+                        <select
+                            id="type"
+                            v-model="order.type"
+                            class="form-control"
+                            :disabled="disabled"
+                            required
+                        >
+                            <option value="delivery">
+                                Lieferung
+                            </option>
+                            <option value="collection">
+                                Abholung
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            {{ validationErrors['type'] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row d-none d-md-flex">
-                <div class="col-md-2 my-3">
+                <div class="col-md-2">
                     <h4>Menge</h4>
                 </div>
-                <div class="col-md-2 my-3">
+                <div class="col-md-2">
                     <h4>Moß</h4>
                 </div>
-                <div class="col-md-8 my-3">
+                <div class="col-md-8">
                     <h4>Zuig</h4>
                 </div>
             </div>
@@ -225,8 +252,7 @@
                             :id="`amount-${index}`"
                             v-model.number="order.products[index].amount"
                             type="number"
-                            step=".1"
-                            min=".1"
+                            min="0"
                             class="form-control"
                             placeholder="Menge - sollet a Zohl sein bittschian 😘"
                             required
@@ -399,7 +425,7 @@ export default {
                 event.target.classList.remove('was-validated')
                 this.$set(this, 'validationErrors', {})
 
-                this.editable = false;
+                this.editable = false
                 this.errorMessage = ''
                 this.loadingMessage = 'Bestellung wird gespeichert und versendet...'
                 this.successMessage = ''
