@@ -28,15 +28,16 @@ exports.createOrder = functions.https.onCall(async (data) => {
 
     const doc = await firestore.collection(ORDERS)
         .add(data)
+    const docID = doc.id
 
     if (data.supplier_email) {
-        await sendNewOrderMailForSupplier(data, doc.id)
+        await sendNewOrderMailForSupplier(data, docID)
     }
     if (data.email) {
-        await sendNewOrderMailToCustomer(data, doc.id)
+        await sendNewOrderMailToCustomer(data, docID)
     }
 
-    return { id: doc.id }
+    return { id: docID }
 })
 
 exports.updateOrder = functions.https.onCall(async (data) => {
