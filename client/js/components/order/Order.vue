@@ -411,7 +411,7 @@ export default {
                 return
             }
             if (this.order.products.length-1 === index) {
-                this.order.products.push({ unit: 'pieces' })
+                this.order.products.push({ amount: 1, unit: 'pieces' })
             }
         },
         sanitizeProducts () {
