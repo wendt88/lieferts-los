@@ -201,7 +201,6 @@
                     <div class="form-group">
                         <label
                             for="type"
-                            class="d-md-none"
                         >Typ</label>
                         <select
                             id="type"
