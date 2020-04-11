@@ -29,12 +29,13 @@ exports.createOrder = functions.https.onCall(async (data) => {
     const doc = await firestore.collection(ORDERS)
         .add(data)
     const docID = doc.id
+    const orderPositions = await getOrderPositionsMailTexts(data)
 
     if (data.supplier_email) {
-        await sendNewOrderMailForSupplier(data, docID)
+        await sendNewOrderMailForSupplier(data, docID, orderPositions)
     }
     if (data.email) {
-        await sendNewOrderMailToCustomer(data, docID)
+        await sendNewOrderMailToCustomer(data, docID, orderPositions)
     }
 
     return { id: docID }
@@ -72,50 +73,118 @@ function getUpdateToken (docId) {
         .digest('hex')
 }
 
-async function sendNewOrderMailForSupplier (data, docId) {
+async function sendNewOrderMailForSupplier (data, docId, orderPos) {
     const link = `https://${config.frontend_url_authority}/orders/${docId}?updateToken=${await getUpdateToken(docId)}`
     const mailOptions = {
         from: config.mailAccountName,
         to: data.supplier_email,
         subject: 'Eine neue Bestellung! Un nuovo ordine!',
-        html: await getNewOrderForSupplierHtml(data, link),
-        text: await getNewOrderForSupplierTxt(data, link)
+        html: await getNewOrderForSupplierHtml(data, link, orderPos),
+        text: await getNewOrderForSupplierTxt(data, link, orderPos)
+    }
+    if (data.email) {
+        mailOptions.replyTo = data.email
     }
     await sendMail(mailOptions)
 }
 
-async function getNewOrderForSupplierHtml (data, link) {
-    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForSupplier.html', 'utf8')), data, link)
+async function getNewOrderForSupplierHtml (data, link, orderPos) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForSupplier.html', 'utf8')), data, link, orderPos.html)
 }
 
-async function getNewOrderForSupplierTxt (data, link) {
-    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForSupplier.txt', 'utf8')), data, link)
+async function getNewOrderForSupplierTxt (data, link, orderPos) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForSupplier.txt', 'utf8')), data, link, orderPos.text)
 }
 
-async function sendNewOrderMailToCustomer (data, docId) {
+async function sendNewOrderMailToCustomer (data, docId, orderPos) {
     if (data.email) {
         const link = `https://${config.frontend_url_authority}/orders/${docId}`
         const mailOptions = {
             from: config.mailAccountName,
             to: data.email,
             subject: 'Die Bestellung wurde gesendet! L\'ordine è stato inviato!',
-            html: await getNewOrderForCustomerHtml(data, link),
-            text: await getNewOrderForCustomerTxt(data, link)
+            html: await getNewOrderForCustomerHtml(data, link, orderPos),
+            text: await getNewOrderForCustomerTxt(data, link, orderPos)
         }
         await sendMail(mailOptions)
     }
 }
 
-async function getNewOrderForCustomerHtml (data, link) {
-    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForCustomer.html', 'utf8')), data, link)
+async function getNewOrderForCustomerHtml (data, link, orderPos) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForCustomer.html', 'utf8')), data, link, orderPos.html)
 }
 
-async function getNewOrderForCustomerTxt (data, link) {
-    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForCustomer.txt', 'utf8')), data, link)
+async function getNewOrderForCustomerTxt (data, link, orderPos) {
+    return replaceStringsInMail((await readFile('./mailTemplates/newOrderForCustomer.txt', 'utf8')), data, link, orderPos.text)
 }
 
-function replaceStringsInMail (mail, data, link) {
+function replaceStringsInMail (mail, data, link, orderPos) {
     return mail.replace(/{{ name }}/gi, data.name)
         .replace(/{{ surname }}/gi, data.surname)
+        .replace(/{{ created_at }}/gi, getDateString(data.created_at))
+        .replace(/{{ type }}/gi, getTypeOfOrder(data.type))
+        .replace(/{{ street }}/gi, data.street || '')
+        .replace(/{{ street_number }}/gi, data.street_number || '')
+        .replace(/{{ zip_code }}/gi, data.zip_code || '')
+        .replace(/{{ city }}/gi, data.city || '')
+        .replace(/{{ phone_number }}/gi, data.phone_number || '')
+        .replace(/{{ email }}/gi, data.email || '')
         .replace(/{{ linkToOrder }}/gi, link)
+        .replace(/{{ orderPositions }}/gi, orderPos)
+}
+
+async function getOrderPositionsMailTexts (data) {
+    const singleOrderPosHtml = await readFile('./mailTemplates/orderPosTableRowHtml.txt', 'utf8')
+    const singleOrderPosTxt = await readFile('./mailTemplates/orderPosTableRowTxt.txt', 'utf8')
+    var composedHtml = ''
+    var composedTxt = ''
+
+    const products = data.products
+    if (products) {
+        for (var i = 0; i < products.length; i++) {
+            var p = products[i]
+            const unit = getUnitForMail(p.unit)
+
+            var orderPosHtml = singleOrderPosHtml.replace(/{{ quantity }}/gi, p.amount)
+                .replace(/{{ unit }}/gi, unit)
+                .replace(/{{ article }}/gi, p.description)
+            if (i%2 == 0)
+                orderPosHtml = orderPosHtml.replace(/{{ background-color }}/, 'background-color: rgb(221, 221, 221);')
+            composedHtml = `${composedHtml}${orderPosHtml}`
+
+            var orderPosTxt = singleOrderPosTxt.replace(/{{ quantity }}/gi, p.amount)
+                .replace(/{{ unit }}/gi, unit)
+                .replace(/{{ article }}/gi, p.description)
+            composedTxt = `${composedTxt}${orderPosTxt}`
+        }
+    }
+
+    return {
+        html: composedHtml,
+        text: composedTxt
+    }
+}
+
+function getDateString (date) {
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+        .toISOString()
+        .split('T')[0]
+}
+
+function getTypeOfOrder (type) {
+    switch (type) {
+        case 'collection':
+            return 'Abholung von/Ritiro da'
+        default:
+            return 'Lieferung an/Consegna a'
+    }
+}
+
+function getUnitForMail (unit) {
+    switch (unit) {
+        case 'pieces':
+            return 'Stk./Pz.'
+        default:
+            return unit
+    }
 }
