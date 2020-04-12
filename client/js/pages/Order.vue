@@ -19,6 +19,7 @@
                     <order-status
                         :order="order"
                         :update-token="updateToken"
+                        :status="status"
                     ></order-status>
                 </div>
                 <div class="col-md-6">
@@ -65,6 +66,9 @@ export default {
             required: true
         },
         updateToken: {
+            type: String,
+        },
+        status: {
             type: String,
         },
         email: {
