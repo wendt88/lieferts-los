@@ -12,7 +12,14 @@
                     local shopping made easy
                 </h2>
                 <p class="lead">
-                    Suppliers manage their orders and clients can track them, all by supporting local businesses and the environment!
+                    Eine einfache Bestellplatform um Einkäufe schneller und sicherer zu organisieren:
+                </p>
+                <p>
+                    <ul>
+                        <li>Einfache Einkaufsliste wird in klarer Form übermittelt</li>
+                        <li>Abholung/Lieferung minimiert das Risiko einer Ansteckung an Covid-19 des Verkaufspersonals!</li>
+                        <li>Keine langen Warteschlangen vor den Supermärkten mehr!</li>
+                    </ul>
                 </p>
                 <hr class="my-4">
                 <form
@@ -21,8 +28,8 @@
                     @submit.prevent="submit"
                 >
                     <div class="form-row mb-3">
-                        <div class="col-md-6">
-                            <label for="email">Insert the Email address of your desired supplier</label>
+                        <div class="col-md-12">
+                            <label for="email">Einfach die Mail des gewünschten Geschäftes oder Betriebes eintragen:</label>
                             <input
                                 id="email"
                                 ref="email"
@@ -40,9 +47,26 @@
                         class="btn btn-lg btn-primary"
                         type="submit"
                     >
-                        Create your order
+                        Mit dem Bestellen loslegen!
                     </button>
                 </form>
+                <div
+                    style="padding: 50px 0 0;">
+                    <p class="lead">
+                        Wie sieht eine Bestellung beim Händler aus?
+                    </p>
+                    <div class="align-items-center">
+                        <div
+                            class="container mx-auto"
+                            style="max-width: 500px;"
+                        >
+                            <img
+                                style="width: 100%;"
+                                src="../../assets/example-order.png"
+                                alt="">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
