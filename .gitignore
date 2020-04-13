@@ -2,3 +2,5 @@
 .firebase
 node_modules
 output
+
+config.js

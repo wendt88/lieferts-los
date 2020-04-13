@@ -13,7 +13,7 @@ npm run start
 - `cd functions`
 - `npm i`
 - `firebase login`
-- `firebase deploy`
+- `firebase deploy --only functions`
 
 # Publish firebase "static files" hosting
 within main folder

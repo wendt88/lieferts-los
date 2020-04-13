@@ -6,6 +6,7 @@ const readFile = promisify(fs.readFile)
 const Firestore = require('@google-cloud/firestore')
 const crypto = require('crypto')
 const config = require('./config')
+const axios = require('axios')
 
 const PROJECTID = 'bringr-io-dev'
 const ORDERS = 'orders'
@@ -23,7 +24,39 @@ const transporter = nodemailer.createTransport({
     }
 })
 
+async function validateReCaptcha (response) {
+    try {
+        const httpResponse = await axios.post('https://www.google.com/recaptcha/api/siteverify', {
+            response,
+            secret: config.reCaptchaSecret,
+        })
+        if (!httpResponse.data.success) {
+            throw Error(`reCaptcha not valid ${JSON.stringify(httpResponse.data, null, 3)}`)
+        }
+        return httpResponse.data
+    }
+    catch (e) {
+        if (e.isAxiosError) {
+            console.error(e.response.data)
+        }
+        throw e
+    }
+}
+
 exports.createOrder = functions.https.onCall(async (data) => {
+
+    const reCaptchaResponse = data.reCaptchaResponse
+    if (!reCaptchaResponse) {
+        throw new functions.https.HttpsError('reCaptchaResponse-prop-missing', 'reCaptchaResponse prop not contained in body')
+    }
+
+    try {
+        await validateReCaptcha(reCaptchaResponse)
+    }
+    catch (e) {
+        throw new functions.https.HttpsError('reCaptcha-validation-error', `reCaptcha validation failed with error: ${e.message}`)
+    }
+
     data.created_at = new Date()
 
     const doc = await firestore.collection(ORDERS)
