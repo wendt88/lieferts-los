@@ -321,6 +321,13 @@
                     </div>
                 </div>
             </div>
+            <vue-recaptcha
+                class="mb-2"
+                :sitekey="reCaptchaSiteKey"
+                @verify="reCaptchaValidated"
+                @expired="reCaptchaOnExpired"
+            >
+            </vue-recaptcha>
             <div
                 v-if="errorMessage"
                 class="alert alert-danger"
@@ -355,10 +362,16 @@
 
 <script>
 
+import VueRecaptcha from 'vue-recaptcha'
+import config from '../../config'
+
 // TODO: photo upload per product
 // TODO: barcode scanner per product
 
 export default {
+    components: {
+        VueRecaptcha,
+    },
     props: {
         order: {
             type: Object,
@@ -376,6 +389,7 @@ export default {
     },
     data: function () {
         return {
+            reCaptchaSiteKey: config.reCaptchaSiteKey,
             errorMessage: '',
             loadingMessage: '',
             successMessage: '',
@@ -403,6 +417,11 @@ export default {
         if (this.email && this.editable) {
             this.readonlySupplierEmail = true
         }
+        if (this.editable) {
+            let recaptchaScript = document.createElement('script')
+            recaptchaScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit')
+            document.head.appendChild(recaptchaScript)
+        }
     },
     methods: {
         addNewRowIfLast (index) {
@@ -420,12 +439,16 @@ export default {
         },
         async saveOrder (event) {
             event.target.classList.add('was-validated')
+            this.errorMessage = ''
+            if (!this.order.reCaptchaResponse) {
+                this.errorMessage = 'Bitte reCaptcha lösen'
+                return
+            }
             if (event.target.checkValidity()) {
                 event.target.classList.remove('was-validated')
                 this.$set(this, 'validationErrors', {})
 
                 this.editable = false
-                this.errorMessage = ''
                 this.loadingMessage = 'Bestellung wird gespeichert und versendet...'
                 this.successMessage = ''
                 try {
@@ -452,7 +475,13 @@ export default {
                         this.$set(this.validationErrors, el.id, el.validationMessage)
                     })
             }
+        },
+        reCaptchaValidated (response) {
+            this.order.reCaptchaResponse = response
+        },
+        reCaptchaOnExpired () {
+            this.order.reCaptchaResponse = null
         }
-    }
+    },
 }
 </script>
