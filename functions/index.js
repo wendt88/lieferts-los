@@ -7,6 +7,7 @@ const Firestore = require('@google-cloud/firestore')
 const crypto = require('crypto')
 const config = require('./config')
 const axios = require('axios')
+const querystring = require('querystring')
 
 const PROJECTID = 'bringr-io-dev'
 const ORDERS = 'orders'
@@ -24,46 +25,18 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-function log (entry) {
-    let l = {}
-    if (typeof entry === 'object') {
-        if (entry instanceof Error) {
-            l.type = 'error'
-            l.message = entry.message
-            l.stack = entry.stack.split(/\n/)
-            Object.keys(entry)
-                .forEach(prop => l[prop] = entry[prop])
-        }
-        else {
-            l = entry
-        }
-        console.log('{figge: \'soa figg\'}')
-        console.log({figge: 'soa figg2'})
-        console.log(l)
-    }
-    else {
-        console.log(entry)
-    }
-}
-
 async function validateReCaptcha (response) {
-    try {
-        const httpResponse = await axios.post('https://recaptcha.google.com/recaptcha/api/siteverify', {
+    const httpResponse = await axios.post(
+        'https://recaptcha.google.com/recaptcha/api/siteverify',
+        querystring.stringify({
             response,
             secret: config.reCaptchaSecret,
-        })
-        if (!httpResponse.data.success) {
-            log(httpResponse)
-            throw Error(`reCaptcha not valid ${httpResponse.data, null, 3}`)
-        }
-        return httpResponse.data
+        }),
+    )
+    if (!httpResponse.data.success) {
+        throw Error(`reCaptcha not valid ${JSON.stringify(httpResponse.data, null, 3)}`)
     }
-    catch (e) {
-        if (e.isAxiosError) {
-            log(e)
-        }
-        throw e
-    }
+    return httpResponse.data
 }
 
 exports.createOrder = functions.https.onCall(async (data) => {
@@ -77,8 +50,7 @@ exports.createOrder = functions.https.onCall(async (data) => {
         await validateReCaptcha(reCaptchaResponse)
     }
     catch (e) {
-        log(e)
-        throw new functions.https.HttpsError('invalid-argument', `reCaptcha validation failed with error: ${e.message}`, e)
+        throw new functions.https.HttpsError('internal', `reCaptcha validation failed with error: ${e.message}`, e)
     }
 
     data.created_at = new Date()
