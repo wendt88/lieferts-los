@@ -70,7 +70,7 @@ exports.createOrder = functions.https.onCall(async (data) => {
 
     const reCaptchaResponse = data.reCaptchaResponse
     if (!reCaptchaResponse) {
-        throw new functions.https.HttpsError('reCaptchaResponse-prop-missing', 'reCaptchaResponse prop not contained in body')
+        throw new functions.https.HttpsError('invalid-argument', 'reCaptchaResponse prop not contained in body')
     }
 
     try {
@@ -78,7 +78,7 @@ exports.createOrder = functions.https.onCall(async (data) => {
     }
     catch (e) {
         log(e)
-        throw new functions.https.HttpsError('reCaptcha-validation-error', `reCaptcha validation failed with error: ${e.message}`)
+        throw new functions.https.HttpsError('invalid-argument', `reCaptcha validation failed with error: ${e.message}`, e)
     }
 
     data.created_at = new Date()
