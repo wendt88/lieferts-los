@@ -38,8 +38,8 @@ function log (entry) {
             l = entry
         }
         console.log('{figge: \'soa figg\'}')
-        console.log(JSON.stringify({figge: 'soa figg2'}))
-        console.log(JSON.stringify(l))
+        console.log({figge: 'soa figg2'})
+        console.log(l)
     }
     else {
         console.log(entry)
@@ -48,13 +48,13 @@ function log (entry) {
 
 async function validateReCaptcha (response) {
     try {
-        const httpResponse = await axios.post('https://www.google.com/recaptcha/api/siteverify', {
+        const httpResponse = await axios.post('https://recaptcha.google.com/recaptcha/api/siteverify', {
             response,
             secret: config.reCaptchaSecret,
         })
         if (!httpResponse.data.success) {
             log(httpResponse)
-            throw Error(`reCaptcha not valid ${JSON.stringify(httpResponse.data, null, 3)}`)
+            throw Error(`reCaptcha not valid ${httpResponse.data, null, 3}`)
         }
         return httpResponse.data
     }
