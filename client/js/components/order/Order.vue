@@ -64,14 +64,14 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="name">Vornum</label>
+                        <label for="name">Vorname</label>
                         <input
                             id="name"
                             v-model="order.name"
                             name="name"
                             type="text"
                             class="form-control"
-                            placeholder="Vornum"
+                            placeholder="Vorname"
                             required
                             :readonly="readonly"
                         >
@@ -82,14 +82,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="surname">Nochnum</label>
+                        <label for="surname">Nachname</label>
                         <input
                             id="surname"
                             v-model="order.surname"
                             name="surname"
                             type="text"
                             class="form-control"
-                            placeholder="Nochnum"
+                            placeholder="Nachname"
                             required
                             :readonly="readonly"
                         >
@@ -100,14 +100,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="street">Stroße</label>
+                        <label for="street">Straße</label>
                         <input
                             id="street"
                             v-model="order.street"
                             name="street"
                             type="text"
                             class="form-control"
-                            placeholder="Stroße"
+                            placeholder="Straße"
                             required
                             :readonly="readonly"
                         >
@@ -156,14 +156,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="zip_code">Postleitzohl</label>
+                        <label for="zip_code">Postleitzahl</label>
                         <input
                             id="zip_code"
                             v-model="order.zip_code"
                             name="zip_code"
                             type="text"
                             class="form-control"
-                            placeholder="Postleitzohl"
+                            placeholder="Postleitzahl"
                             required
                             :readonly="readonly"
                         >
@@ -195,7 +195,7 @@
                     </div>
                 </div>
             </div>
-            <h3>Bstellung</h3>
+            <h3>Bestellung</h3>
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
@@ -227,10 +227,10 @@
                     <h4>Menge</h4>
                 </div>
                 <div class="col-md-2">
-                    <h4>Moß</h4>
+                    <h4>Maß</h4>
                 </div>
                 <div class="col-md-8">
-                    <h4>Zuig</h4>
+                    <h4>Produkt</h4>
                 </div>
             </div>
             <div
@@ -267,7 +267,7 @@
                         <label
                             :for="`unit-${index}`"
                             class="d-md-none"
-                        >Moß</label>
+                        >Maß</label>
                         <select
                             :id="`unit-${index}`"
                             v-model="order.products[index].unit"
@@ -304,13 +304,13 @@
                         <label
                             :for="`product-${index}`"
                             class="d-md-none"
-                        >Zuig</label>
+                        >Produkt</label>
                         <input
                             :id="`product-${index}`"
                             v-model="order.products[index].description"
                             type="text"
                             class="form-control"
-                            placeholder="Is Produkt woses gern hett"
+                            placeholder="Gewünschtes Produkt"
                             :readonly="readonly"
                             required
                             @keyup="addNewRowIfLast(index)"
@@ -353,7 +353,7 @@
                 v-if="editable"
                 type="submit"
                 class="btn btn-primary"
-                value="Ouschickn"
+                value="Abschicken"
                 @click="sanitizeProducts"
             >
         </form>
@@ -460,7 +460,7 @@ export default {
                             orderID: order.id
                         }
                     })
-                    this.successMessage = 'Erfolgreich ogschickt!'
+                    this.successMessage = 'Erfolgreich versendet!'
                 }
                 catch (e) {
                     console.error(e)
