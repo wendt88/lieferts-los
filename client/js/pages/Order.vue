@@ -19,6 +19,7 @@
                     <order-status
                         :order="order"
                         :update-token="updateToken"
+                        :status="status"
                     ></order-status>
                 </div>
                 <div class="col-md-6">
@@ -67,6 +68,9 @@ export default {
         updateToken: {
             type: String,
         },
+        status: {
+            type: String,
+        },
         email: {
             type: String,
         }
@@ -75,7 +79,7 @@ export default {
         return {
             order: {
                 products: [
-                    {},
+                    { amount: 1, unit: 'pieces' },
                 ],
             },
         }
@@ -105,7 +109,7 @@ export default {
             if (id === 'new') {
                 this.order = {
                     products: [
-                        {},
+                        { amount: 1, unit: 'pieces' },
                     ],
                 }
             }

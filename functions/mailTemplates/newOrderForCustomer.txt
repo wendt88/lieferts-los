@@ -12,6 +12,8 @@ das Bringr.io Team
 
 Kontakt: bringr.io@gmail.com
 
+Gib uns Feedback: https://forms.gle/4zXyM7HpJhyHWR5g8
+
 ------------------------------------------------------------------------------
 
 Grazie {{ name }} per aver inviato l'ordine tramite Bringr.io!
@@ -27,3 +29,5 @@ Cari saluti,
 il team da Bringr.io
 
 Contatto: bringr.io@gmail.com
+
+Per lascarci un Feedback: https://forms.gle/4zXyM7HpJhyHWR5g8

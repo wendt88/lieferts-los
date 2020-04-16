@@ -5,10 +5,14 @@ Eine neue Bestellung!
 
 Link: {{ linkToOrder }}
 
+Die Bestellung finden Sie auch weiter unten.
+
 Beste Grüße,
 das Bringr.io Team
 
 Kontakt: bringr.io@gmail.com
+
+Gib uns Feedback: https://forms.gle/4zXyM7HpJhyHWR5g8
 
 ------------------------------------------------------------------------------
 
@@ -23,3 +27,19 @@ Cari saluti,
 il team da Bringr.io
 
 Contatto: bringr.io@gmail.com
+
+Per lascarci un Feedback: https://forms.gle/4zXyM7HpJhyHWR5g8
+
+------------------------------------------------------------------------------
+
+Die Bestellung // L'ordine {{ created_at }}
+
+{{ type }}
+{{ name }} {{ surname }}
+{{ street }} {{ street_number }}
+{{ zip_code }} {{ city }}
+
+Tel: {{ phone_number }}
+Mail: {{ email }}
+
+{{ orderPositions }}

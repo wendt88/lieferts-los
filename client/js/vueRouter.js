@@ -43,6 +43,7 @@ const router = new VueRouter({
             component: () => order.then(components => components.default),
             props: (route) => ({
                 updateToken: route.query.updateToken,
+                status: route.query.status,
                 orderID: route.params.orderID,
                 email: route.query.email,
             }),

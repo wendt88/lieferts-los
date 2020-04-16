@@ -1,12 +1,22 @@
 # Lieferts los
 Liefer du amol soule
 
-### Run:
+# Run:
 ```
 git clone https://github.com/wendt88/lieferts-los
 cd lieferts-los
 npm i
-npm run watch
+npm run start
 ```
 
-open `./output/index.html` via webserver.
+# Publish firebase functions
+- `cd functions`
+- `npm i`
+- `firebase login`
+- `firebase deploy --only functions`
+
+# Publish firebase "static files" hosting
+within main folder
+- `npm i`
+- `npm run build`
+- `firebase deploy --only hosting`

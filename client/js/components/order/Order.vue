@@ -64,14 +64,14 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="name">Vornum</label>
+                        <label for="name">Vorname</label>
                         <input
                             id="name"
                             v-model="order.name"
                             name="name"
                             type="text"
                             class="form-control"
-                            placeholder="Vornum"
+                            placeholder="Vorname"
                             required
                             :readonly="readonly"
                         >
@@ -82,14 +82,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="surname">Nochnum</label>
+                        <label for="surname">Nachname</label>
                         <input
                             id="surname"
                             v-model="order.surname"
                             name="surname"
                             type="text"
                             class="form-control"
-                            placeholder="Nochnum"
+                            placeholder="Nachname"
                             required
                             :readonly="readonly"
                         >
@@ -100,14 +100,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="street">Stroße</label>
+                        <label for="street">Straße</label>
                         <input
                             id="street"
                             v-model="order.street"
                             name="street"
                             type="text"
                             class="form-control"
-                            placeholder="Stroße"
+                            placeholder="Straße"
                             required
                             :readonly="readonly"
                         >
@@ -156,14 +156,14 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="zip_code">Postleitzohl</label>
+                        <label for="zip_code">Postleitzahl</label>
                         <input
                             id="zip_code"
                             v-model="order.zip_code"
                             name="zip_code"
                             type="text"
                             class="form-control"
-                            placeholder="Postleitzohl"
+                            placeholder="Postleitzahl"
                             required
                             :readonly="readonly"
                         >
@@ -187,7 +187,7 @@
                             <label
                                 class="custom-control-label"
                                 for="accept"
-                            >Mit dem auswählen dieser Checkbox erkläre ich mich einverstanden, dass diese Seite die von mir angegebenen Daten speichert und and die, auf dieser Seite angegebenen, e-Mail Adressen verschickt.</label>
+                            >Mit dem Aktivieren dieser Checkbox erkläre ich mich einverstanden, dass diese Seite die von mir angegebenen Daten speichert und an die, auf dieser Seite angegebenen, e-Mail Adressen verschickt. Außerdem nehme ich zur Kenntnis, dass die Bestellung und Zahlung der Ware vom Empfänger der Bestellung und nicht von dieser Webseite bearbeitet werden.</label>
                             <div class="invalid-feedback">
                                 {{ validationErrors.accept }}
                             </div>
@@ -195,16 +195,42 @@
                     </div>
                 </div>
             </div>
-            <h3>Bstellung</h3>
-            <div class="row d-none d-md-flex">
-                <div class="col-md-4 my-3">
-                    <h4>Moß</h4>
+            <h3>Bestellung</h3>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label
+                            for="type"
+                        >Typ</label>
+                        <select
+                            id="type"
+                            v-model="order.type"
+                            class="form-control"
+                            :disabled="disabled"
+                            required
+                        >
+                            <option value="delivery">
+                                Lieferung
+                            </option>
+                            <option value="collection">
+                                Abholung
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            {{ validationErrors['type'] }}
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 my-3">
+            </div>
+            <div class="row d-none d-md-flex">
+                <div class="col-md-2">
                     <h4>Menge</h4>
                 </div>
-                <div class="col-md-4 my-3">
-                    <h4>Zuig</h4>
+                <div class="col-md-2">
+                    <h4>Maß</h4>
+                </div>
+                <div class="col-md-8">
+                    <h4>Produkt</h4>
                 </div>
             </div>
             <div
@@ -215,47 +241,7 @@
                 }"
                 class="row"
             >
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label
-                            :for="`unit-${index}`"
-                            class="d-md-none"
-                        >Moß</label>
-                        <select
-                            :id="`unit-${index}`"
-                            v-model="order.products[index].unit"
-                            class="form-control"
-                            :disabled="disabled"
-                            required
-                        >
-                            <option value="kg">
-                                Kilo
-                            </option>
-                            <option value="g">
-                                Gramm
-                            </option>
-                            <option value="pieces">
-                                Stuck
-                            </option>
-                            <option value="l">
-                                Liter
-                            </option>
-                            <option value="mv">
-                                Maul voll
-                            </option>
-                            <option value="tiggisch">
-                                Wollten awian
-                            </option>
-                            <option value="flietscha">
-                                Schun awian a flietscha
-                            </option>
-                        </select>
-                        <div class="invalid-feedback">
-                            {{ validationErrors[`unit-${index}`] }}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
+                <div class="col-6 col-md-2">
                     <div class="form-group">
                         <label
                             :for="`amount-${index}`"
@@ -265,8 +251,7 @@
                             :id="`amount-${index}`"
                             v-model.number="order.products[index].amount"
                             type="number"
-                            step=".1"
-                            min=".1"
+                            min="0"
                             class="form-control"
                             placeholder="Menge - sollet a Zohl sein bittschian 😘"
                             required
@@ -277,18 +262,55 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-6 col-md-2">
+                    <div class="form-group">
+                        <label
+                            :for="`unit-${index}`"
+                            class="d-md-none"
+                        >Maß</label>
+                        <select
+                            :id="`unit-${index}`"
+                            v-model="order.products[index].unit"
+                            class="form-control"
+                            :disabled="disabled"
+                            required
+                        >
+                            <option value="pieces">
+                                Stück
+                            </option>
+                            <option value="g">
+                                Gramm
+                            </option>
+                            <option value="kg">
+                                Kilogramm
+                            </option>
+                            <option value="l">
+                                Liter
+                            </option>
+                            <option value="l">
+                                Milliliter
+                            </option>
+                            <option value="other">
+                                Anderes
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            {{ validationErrors[`unit-${index}`] }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
                     <div class="form-group">
                         <label
                             :for="`product-${index}`"
                             class="d-md-none"
-                        >Zuig</label>
+                        >Produkt</label>
                         <input
                             :id="`product-${index}`"
                             v-model="order.products[index].description"
                             type="text"
                             class="form-control"
-                            placeholder="Is Produkt woses gern hett"
+                            placeholder="Gewünschtes Produkt"
                             :readonly="readonly"
                             required
                             @keyup="addNewRowIfLast(index)"
@@ -299,12 +321,26 @@
                     </div>
                 </div>
             </div>
+            <vue-recaptcha
+                class="mb-2"
+                :sitekey="reCaptchaSiteKey"
+                @verify="reCaptchaValidated"
+                @expired="reCaptchaOnExpired"
+            >
+            </vue-recaptcha>
             <div
                 v-if="errorMessage"
                 class="alert alert-danger"
                 role="alert"
             >
                 {{ errorMessage }}
+            </div>
+            <div
+                v-if="loadingMessage"
+                class="alert alert-light"
+                role="alert"
+            >
+                {{ loadingMessage }}
             </div>
             <div
                 v-if="successMessage"
@@ -317,7 +353,7 @@
                 v-if="editable"
                 type="submit"
                 class="btn btn-primary"
-                value="Ouschickn"
+                value="Abschicken"
                 @click="sanitizeProducts"
             >
         </form>
@@ -326,10 +362,16 @@
 
 <script>
 
+import VueRecaptcha from 'vue-recaptcha'
+import config from '../../config'
+
 // TODO: photo upload per product
 // TODO: barcode scanner per product
 
 export default {
+    components: {
+        VueRecaptcha,
+    },
     props: {
         order: {
             type: Object,
@@ -347,7 +389,9 @@ export default {
     },
     data: function () {
         return {
+            reCaptchaSiteKey: config.reCaptchaSiteKey,
             errorMessage: '',
+            loadingMessage: '',
             successMessage: '',
             readonlySupplierEmail: false,
             validationErrors: {}
@@ -373,6 +417,11 @@ export default {
         if (this.email && this.editable) {
             this.readonlySupplierEmail = true
         }
+        if (this.editable) {
+            let recaptchaScript = document.createElement('script')
+            recaptchaScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit')
+            document.head.appendChild(recaptchaScript)
+        }
     },
     methods: {
         addNewRowIfLast (index) {
@@ -380,7 +429,7 @@ export default {
                 return
             }
             if (this.order.products.length-1 === index) {
-                this.order.products.push({})
+                this.order.products.push({ amount: 1, unit: 'pieces' })
             }
         },
         sanitizeProducts () {
@@ -390,11 +439,17 @@ export default {
         },
         async saveOrder (event) {
             event.target.classList.add('was-validated')
+            this.errorMessage = ''
+            if (!this.order.reCaptchaResponse) {
+                this.errorMessage = 'Bitte reCaptcha lösen'
+                return
+            }
             if (event.target.checkValidity()) {
                 event.target.classList.remove('was-validated')
                 this.$set(this, 'validationErrors', {})
 
-                this.errorMessage = ''
+                this.editable = false
+                this.loadingMessage = 'Bestellung wird gespeichert und versendet...'
                 this.successMessage = ''
                 try {
                     let order = await this.$db.saveOrder(this.order)
@@ -405,13 +460,14 @@ export default {
                             orderID: order.id
                         }
                     })
-                    this.successMessage = 'Erfolgreich ogschickt!'
+                    this.successMessage = 'Erfolgreich versendet!'
                 }
                 catch (e) {
                     console.error(e)
                     this.errorMessage = e.message
                     this.editable = true
                 }
+                this.loadingMessage = ''
             }
             else {
                 $(':invalid[id]', event.target)
@@ -419,7 +475,13 @@ export default {
                         this.$set(this.validationErrors, el.id, el.validationMessage)
                     })
             }
+        },
+        reCaptchaValidated (response) {
+            this.order.reCaptchaResponse = response
+        },
+        reCaptchaOnExpired () {
+            this.order.reCaptchaResponse = null
         }
-    }
+    },
 }
 </script>

@@ -23,10 +23,10 @@
                 </select>
             </div>
             <div
-                v-if="order.status === 'processing'"
+                v-if="order.status === 'processing' || order.status === 'accepted'"
                 class="form-group position-relative"
             >
-                <label>Voraussichtliche Lieferung am</label>
+                <label>Voraussichtliche Lieferung/Abholung am</label>
                 <date-picker
                     v-model="order.estimated_deliverey"
                     class="form-control"
@@ -51,7 +51,7 @@
             <input
                 type="submit"
                 class="btn btn-primary mb-1"
-                value="Ouschickn"
+                value="Abschicken"
             >
         </form>
         <div v-else>
@@ -63,16 +63,18 @@
 <script>
 const STATUS_MAPPING = {
     'unrecognized': 'secondary',
+    'accepted': 'warning',
     'processing': 'warning',
     'done': 'success',
     'rejected': 'danger',
 }
 
 const STATUS_TEXT = {
-    'unrecognized': 'Nicht gewohrnt',
-    'processing': 'Sein derbei',
+    'unrecognized': 'Antwort ausständig',
+    'accepted': 'Angenommen',
+    'processing': 'In Arbeit',
     'done': 'Erledigt',
-    'rejected': 'Noa, des mochmer net',
+    'rejected': 'Abgelehnt',
 }
 
 export default {
@@ -82,6 +84,9 @@ export default {
             required: true,
         },
         updateToken: {
+            type: String,
+        },
+        status: {
             type: String,
         },
     },
@@ -106,6 +111,9 @@ export default {
         if (!this.order.status) {
             this.order.status = 'unrecognized'
         }
+        if (this.isValidStatus(this.status)) {
+            this.order.status = this.status
+        }
     },
     methods: {
         async saveOrder () {
@@ -116,13 +124,16 @@ export default {
             this.successMessage = ''
             try {
                 await this.$db.saveOrder({ ...this.order, updateToken: this.updateToken })
-                this.successMessage = 'Erfolgreich ogschickt!'
+                this.successMessage = 'Erfolgreich verschickt!'
             }
             catch (e) {
                 console.error(e)
                 this.errorMessage = e.message
             }
             this.editable = true
+        },
+        isValidStatus(status) {
+            return Object.keys(STATUS_TEXT).filter(st => st === status).length > 0
         }
     }
 }
