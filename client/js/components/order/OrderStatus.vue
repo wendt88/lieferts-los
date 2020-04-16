@@ -1,11 +1,11 @@
 <template>
     <div>
+        <label for="order-sattus">Status</label>
         <form
             v-if="updateToken"
             @submit="saveOrder"
         >
             <div class="form-group">
-                <label for="order-sattus">Status</label>
                 <select
                     id="order-sattus"
                     v-model="order.status"
