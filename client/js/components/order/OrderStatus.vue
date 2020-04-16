@@ -23,7 +23,7 @@
                 </select>
             </div>
             <div
-                v-if="order.status === 'processing'"
+                v-if="order.status === 'processing' || order.status === 'accepted'"
                 class="form-group position-relative"
             >
                 <label>Voraussichtliche Lieferung/Abholung am</label>

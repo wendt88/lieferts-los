@@ -21,6 +21,9 @@
                         <li>Keine langen Warteschlangen vor den Supermärkten mehr!</li>
                     </ul>
                 </p>
+                <p class="lead">
+                    Und das ganz ohne Registrierung!
+                </p>
                 <hr class="my-4">
                 <form
                     class="needs-validation"
