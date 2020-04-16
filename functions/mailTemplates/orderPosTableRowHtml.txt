@@ -1,15 +1,12 @@
 <!-- <tr style="background-color: rgb(221, 221, 221);">  für ungerade zeilen -->
 <tr style="{{ background-color }}">
-  <td style="padding: 5px; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #153643;" width="5%">
-    <input type="checkbox" style="width: 18px; height: 18px;">
-  </td>
   <td style="padding: 5px; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #153643; text-align: right;" width="15%">
     {{ quantity }}
   </td>
   <td style="padding: 5px; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #153643;" width="15%">
     {{ unit }}
   </td>
-  <td style="padding: 5px; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #153643;" width="65%">
+  <td style="padding: 5px; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; color: #153643;" width="70%">
     {{ article }}
   </td>
 </tr>
