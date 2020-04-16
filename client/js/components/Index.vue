@@ -1,5 +1,10 @@
 <template>
-    <div class="min-vh-100 d-flex align-items-center">
+    <div class="min-vh-100 d-flex align-items-center flex-column">
+        <div
+            class="container"
+        >
+            <languages-switcher class="mt-3 float-right"></languages-switcher>
+        </div>
         <div
             class="container mx-auto my-5"
             style="max-width: 1000px;"
@@ -11,8 +16,10 @@
                 <h2 class="display-5 mb-5">
                     local shopping made easy
                 </h2>
-                <p class="lead">
-                    Eine einfache Bestellplatform um Einkäufe schneller und sicherer zu organisieren:
+                <p
+                    class="lead"
+                    v-text="$labels.description"
+                >
                 </p>
                 <p>
                     <ul>
@@ -41,8 +48,10 @@
                                 class="form-control form-control-lg"
                                 required
                             >
-                            <div class="invalid-feedback">
-                                {{ validationError }}
+                            <div
+                                class="invalid-feedback"
+                                v-text="validationError"
+                            >
                             </div>
                         </div>
                     </div>
@@ -54,7 +63,8 @@
                     </button>
                 </form>
                 <div
-                    style="padding: 50px 0 0;">
+                    style="padding: 50px 0 0;"
+                >
                     <p class="lead">
                         Wie sieht eine Bestellung beim Händler aus?
                     </p>
@@ -66,7 +76,8 @@
                             <img
                                 style="width: 100%;"
                                 src="../../assets/example-order.png"
-                                alt="">
+                                alt=""
+                            >
                         </div>
                     </div>
                 </div>

@@ -14,8 +14,8 @@
             <div
                 style="flex-direction: column; display: flex;"
             >
-                <span>{{ currentUser.name }}</span>
-                <span>{{ currentUser.company }}</span>
+                <span v-text="currentUser.name"></span>
+                <span v-text="currentUser.company"></span>
             </div>
             <i class="fas fa-sign-out-alt fa-3x"></i>
         </header>

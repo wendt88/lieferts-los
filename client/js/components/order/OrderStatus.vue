@@ -17,8 +17,8 @@
                         v-for="(value, key) in STATUS_TEXT"
                         :key="key"
                         :value="key"
+                        v-text="value"
                     >
-                        {{ value }}
                     </option>
                 </select>
             </div>
@@ -38,15 +38,15 @@
                 v-if="errorMessage"
                 class="alert alert-danger"
                 role="alert"
+                v-text="errorMessage"
             >
-                {{ errorMessage }}
             </div>
             <div
                 v-if="successMessage"
                 class="alert alert-success"
                 role="alert"
+                v-text="successMessage"
             >
-                {{ successMessage }}
             </div>
             <input
                 type="submit"
@@ -55,7 +55,10 @@
             >
         </form>
         <div v-else>
-            <span :class="`badge badge-pill badge-${STATUS_MAPPING[order.status]}`">{{ STATUS_TEXT[order.status] }}</span>
+            <span
+                :class="`badge badge-pill badge-${STATUS_MAPPING[order.status]}`"
+                v-text="STATUS_TEXT[order.status]"
+            ></span>
         </div>
     </div>
 </template>
@@ -132,7 +135,7 @@ export default {
             }
             this.editable = true
         },
-        isValidStatus(status) {
+        isValidStatus (status) {
             return Object.keys(STATUS_TEXT).filter(st => st === status).length > 0
         }
     }

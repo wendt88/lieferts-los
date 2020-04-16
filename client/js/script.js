@@ -14,10 +14,12 @@ import auth from './auth'
 // import firebase from 'firebase'
 
 import DatePicker from './components/DatePicker'
+import LanguagesSwitcher from './components/LanguagesSwitcher'
 
 global.$ = global.jQuery = $
 
 Vue.component('DatePicker', DatePicker)
+Vue.component('LanguagesSwitcher', LanguagesSwitcher)
 Vue.use(AsyncComputed)
 Vue.use({
     install: (Vue) => {
@@ -25,7 +27,8 @@ Vue.use({
         Object.assign(Vue.prototype, {
             $db: db,
             $auth: auth,
-            $moment: moment
+            $moment: moment,
+            $labels: labels
         })
     }
 })

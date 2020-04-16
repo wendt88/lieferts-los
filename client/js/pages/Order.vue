@@ -24,17 +24,19 @@
                 </div>
                 <div class="col-md-6">
                     <address>
-                        <strong>{{ order.name }} {{ order.surname }}</strong><br>
-                        {{ order.street }} {{ order.street_number }}<br>
-                        {{ order.zip_code }} {{ order.city }}<br>
+                        <strong v-text="`${order.name} ${order.surname}`"></strong><br>
+                        <span v-text="`${order.street } ${order.street_number}`"></span><br>
+                        <span v-text="`${order.zip_code } ${order.city}`"></span><br>
                         <a
                             v-if="order.phone_number"
                             :href="`tel:${order.phone_number}`"
-                        >{{ order.phone_number }}</a><br>
+                            v-text="order.phone_number"
+                        ></a><br>
                         <a
                             v-if="order.email"
                             :href="`mailto:${order.email}`"
-                        >{{ order.email }}</a>
+                            v-text="order.email"
+                        ></a>
                     </address>
                 </div>
             </div>
@@ -43,8 +45,8 @@
                     v-for="(product, i) in order.products"
                     :key="i"
                     class="list-group-item"
+                    v-text="`${product.amount} ${product.unit} ${product.description}`"
                 >
-                    {{ product.amount }} {{ product.unit }} {{ product.description }}
                 </li>
             </ul>
         </template>
