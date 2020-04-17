@@ -20,7 +20,7 @@
                 >
                 <div
                     class="invalid-feedback"
-                    v-text="alidationErrors.supplier_email"
+                    v-text="validationErrors.supplier_email"
                 >
                 </div>
             </div>
@@ -41,7 +41,7 @@
                         >
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.email"
+                            v-text="validationErrors.email"
                         >
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         >
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.phone_number"
+                            v-text="validationErrors.phone_number"
                         >
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         >
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.name"
+                            v-text="validationErrors.name"
                         >
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                         >
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.surname"
+                            v-text="validationErrors.surname"
                         >
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                         >
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.street"
+                            v-text="validationErrors.street"
                         >
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                         >
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.street_number"
+                            v-text="validationErrors.street_number"
                         >
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                         >
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.city"
+                            v-text="validationErrors.city"
                         >
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                         >
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.zip_code"
+                            v-text="validationErrors.zip_code"
                         >
                         </div>
                     </div>
@@ -208,7 +208,7 @@
                             >Mit dem Aktivieren dieser Checkbox erkläre ich mich einverstanden, dass diese Seite die von mir angegebenen Daten speichert und an die, auf dieser Seite angegebenen, e-Mail Adressen verschickt. Außerdem nehme ich zur Kenntnis, dass die Bestellung und Zahlung der Ware vom Empfänger der Bestellung und nicht von dieser Webseite bearbeitet werden.</label>
                             <div
                                 class="invalid-feedback"
-                                v-text="alidationErrors.accept"
+                                v-text="validationErrors.accept"
                             >
                             </div>
                         </div>
@@ -238,7 +238,7 @@
                         </select>
                         <div
                             class="invalid-feedback"
-                            v-text="alidationErrors.type"
+                            v-text="validationErrors.type"
                         >
                         </div>
                     </div>

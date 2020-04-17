@@ -1,13 +1,13 @@
 <template>
     <div>
-        <label for="order-sattus">Status</label>
+        <label for="order-status">Status</label>
         <form
             v-if="updateToken"
             @submit="saveOrder"
         >
             <div class="form-group">
                 <select
-                    id="order-sattus"
+                    id="order-status"
                     v-model="order.status"
                     class="form-control"
                     :disabled="disabled"
