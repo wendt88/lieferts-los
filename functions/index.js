@@ -75,11 +75,11 @@ exports.updateOrder = functions.https.onCall(async (data) => {
         .doc(data.id)
         .get()
     if (!doc || !doc.exists) {
-        throw new functions.https.HttpsError('order-not-found', 'order not found')
+        throw new functions.https.HttpsError('not-found', 'order not found')
     }
 
     if (!data.updateToken || data.updateToken !== await getUpdateToken(doc.id)) {
-        throw new functions.https.HttpsError('order-wrong-updateToken', 'wrong updateToken')
+        throw new functions.https.HttpsError('permission-denied', 'wrong updateToken')
     }
 
     await firestore.collection(ORDERS)
