@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "stylelint:fix": "./node_modules/.bin/stylelint \"**/*.scss\" --fix",
-    "watch": "parcel watch ./client/hbs/* --public-url / -d ./output",
-    "build": "parcel build ./client/hbs/* --public-url / -d ./output --no-source-maps",
-    "start": "parcel ./client/hbs/* --public-url / -d ./output",
+    "watch": "parcel watch ./client/hbs/index.hbs ./client/hbs/**/index.hbs --public-url / -d ./output",
+    "build": "parcel build ./client/hbs/index.hbs ./client/hbs/**/index.hbs --public-url / -d ./output --no-source-maps",
+    "start": "parcel ./client/hbs/index.hbs ./client/hbs/**/index.hbs --public-url / -d ./output --log-level 4",
     "deploy-dev-page": "npm i&& npm run build&& firebase deploy --only hosting",
     "deploy-dev-functions": "npm i&& firebase deploy --only functions"
   },
