@@ -28,7 +28,7 @@ Vue.use({
             $db: db,
             $auth: auth,
             $moment: moment,
-            $labels: labels
+            $labels: window.labels
         })
     }
 })
