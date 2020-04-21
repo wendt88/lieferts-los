@@ -6,7 +6,7 @@
     "stylelint:fix": "./node_modules/.bin/stylelint \"**/*.scss\" --fix",
     "watch": "parcel watch ./client/html/* --public-url / -d ./output",
     "build": "parcel build ./client/html/* --public-url / -d ./output --no-source-maps",
-    "start": "parcel ./client/html/* --public-url / -d ./output",
+    "start": "set PORT=1234&& node ./server/index.js",
     "deploy-dev-page": "npm i&& npm run build&& firebase deploy --only hosting",
     "deploy-dev-functions": "npm i&& firebase deploy --only functions"
   },
@@ -35,6 +35,7 @@
     }
   },
   "dependencies": {
+    "express": "^4.17.1",
     "vue-hot-reload-api": "^2.3.4",
     "vue-recaptcha": "^1.3.0"
   },
