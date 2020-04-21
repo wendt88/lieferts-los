@@ -36,7 +36,10 @@
                             class="toggle"
                             type="checkbox"
                         />
-                        <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
+                        <label
+                            @dblclick="editTodo(todo)"
+                            v-text="todo.title"
+                        ></label>
                         <button
                             class="destroy"
                             @click="removeTodo(todo)"
@@ -60,7 +63,9 @@
             class="footer"
         >
             <span class="todo-count">
-                <strong>{{ remaining }}</strong> {{ remaining | pluralize }} übrig
+                <strong
+                    v-text="remaining"
+                ></strong>&nbsp;<span v-text="remaining | pluralize"></span> übrig
             </span>
             <ul class="filters">
                 <li>

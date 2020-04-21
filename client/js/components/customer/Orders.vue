@@ -31,13 +31,13 @@
                 }"
                 class="list-group-item list-group-item-action"
             >
-                <h3>{{ order.supplier }}</h3>
+                <h3 v-text="order.supplier"></h3>
                 <ul>
                     <li
                         v-for="(product, i) in order.products"
                         :key="i"
+                        v-text="`${product.amount} ${product.unit} ${product.description}`"
                     >
-                        {{ product.amount }} {{ product.unit }} {{ product.description }}
                     </li>
                 </ul>
             </router-link>

@@ -18,8 +18,10 @@
                     :readonly="readonly || readonlySupplierEmail"
                     required
                 >
-                <div class="invalid-feedback">
-                    {{ validationErrors.supplier_email }}
+                <div
+                    class="invalid-feedback"
+                    v-text="validationErrors.supplier_email"
+                >
                 </div>
             </div>
             <h4>Kunde</h4>
@@ -37,8 +39,10 @@
                             :readonly="readonly"
                             :required="!order.phone_number"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors.email }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.email"
+                        >
                         </div>
                     </div>
                 </div>
@@ -55,8 +59,10 @@
                             :required="!order.email"
                             :readonly="readonly"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors.phone_number }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.phone_number"
+                        >
                         </div>
                     </div>
                 </div>
@@ -75,8 +81,10 @@
                             required
                             :readonly="readonly"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors.name }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.name"
+                        >
                         </div>
                     </div>
                 </div>
@@ -93,8 +101,10 @@
                             required
                             :readonly="readonly"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors.surname }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.surname"
+                        >
                         </div>
                     </div>
                 </div>
@@ -111,8 +121,10 @@
                             required
                             :readonly="readonly"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors.street }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.street"
+                        >
                         </div>
                     </div>
                 </div>
@@ -131,8 +143,10 @@
                             required
                             :readonly="readonly"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors.street_number }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.street_number"
+                        >
                         </div>
                     </div>
                 </div>
@@ -149,8 +163,10 @@
                             required
                             :readonly="readonly"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors.city }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.city"
+                        >
                         </div>
                     </div>
                 </div>
@@ -167,8 +183,10 @@
                             required
                             :readonly="readonly"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors.zip_code }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.zip_code"
+                        >
                         </div>
                     </div>
                 </div>
@@ -188,8 +206,10 @@
                                 class="custom-control-label"
                                 for="accept"
                             >Mit dem Aktivieren dieser Checkbox erkläre ich mich einverstanden, dass diese Seite die von mir angegebenen Daten speichert und an die, auf dieser Seite angegebenen, e-Mail Adressen verschickt. Außerdem nehme ich zur Kenntnis, dass die Bestellung und Zahlung der Ware vom Empfänger der Bestellung und nicht von dieser Webseite bearbeitet werden.</label>
-                            <div class="invalid-feedback">
-                                {{ validationErrors.accept }}
+                            <div
+                                class="invalid-feedback"
+                                v-text="validationErrors.accept"
+                            >
                             </div>
                         </div>
                     </div>
@@ -216,8 +236,10 @@
                                 Abholung
                             </option>
                         </select>
-                        <div class="invalid-feedback">
-                            {{ validationErrors['type'] }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors.type"
+                        >
                         </div>
                     </div>
                 </div>
@@ -257,8 +279,10 @@
                             required
                             :readonly="readonly"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors[`amount-${index}`] }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors[`amount-${index}`]"
+                        >
                         </div>
                     </div>
                 </div>
@@ -294,8 +318,10 @@
                                 Anderes
                             </option>
                         </select>
-                        <div class="invalid-feedback">
-                            {{ validationErrors[`unit-${index}`] }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors[`unit-${index}`]"
+                        >
                         </div>
                     </div>
                 </div>
@@ -315,8 +341,10 @@
                             required
                             @keyup="addNewRowIfLast(index)"
                         >
-                        <div class="invalid-feedback">
-                            {{ validationErrors[`product-${index}`] }}
+                        <div
+                            class="invalid-feedback"
+                            v-text="validationErrors[`product-${index}`]"
+                        >
                         </div>
                     </div>
                 </div>
@@ -332,22 +360,22 @@
                 v-if="errorMessage"
                 class="alert alert-danger"
                 role="alert"
+                v-text="errorMessage"
             >
-                {{ errorMessage }}
             </div>
             <div
                 v-if="loadingMessage"
                 class="alert alert-light"
                 role="alert"
+                v-text="loadingMessage"
             >
-                {{ loadingMessage }}
             </div>
             <div
                 v-if="successMessage"
                 class="alert alert-success"
                 role="alert"
+                v-text="successMessage"
             >
-                {{ successMessage }}
             </div>
             <input
                 v-if="editable"

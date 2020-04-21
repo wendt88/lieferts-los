@@ -129,15 +129,15 @@
                 v-if="errorMessage"
                 class="alert alert-danger"
                 role="alert"
+                v-text="errorMessage"
             >
-                {{ errorMessage }}
             </div>
             <div
                 v-if="successMessage"
                 class="alert alert-success"
                 role="alert"
+                v-text="successMessage"
             >
-                {{ successMessage }}
             </div>
             <input
                 v-if="editable"

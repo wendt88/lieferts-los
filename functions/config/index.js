@@ -2,7 +2,7 @@ const defaults = {
     pepper: undefined, // long random string
     mailAccountName: undefined, // account name using to log
     mailPassword: undefined, // password to log,
-    frontenURLAuthority: undefined, // the url authority of the client
+    frontendURLAuthority: undefined, // the url authority of the client
     reCaptchaSecret: undefined, // the google reCaptcha v2 secret key
 }
 

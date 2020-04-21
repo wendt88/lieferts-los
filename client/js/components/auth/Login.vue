@@ -10,8 +10,8 @@
                         <div
                             v-if="error"
                             class="alert alert-danger"
+                            v-text="error"
                         >
-                            {{ error }}
                         </div>
                         <form
                             action="#"

@@ -17,7 +17,8 @@
     ],
     "globals": {
         "$": true,
-        "import": true
+        "import": true,
+        "labels": true
     },
     "rules": {
         "vue/require-default-prop": [

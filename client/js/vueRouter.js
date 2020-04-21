@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import $ from 'jquery'
 
 import Index from './components/Index'
 // import Login from './components/auth/Login'
@@ -13,6 +14,7 @@ const order = import('./pages/Order')
 
 Vue.use(VueRouter)
 const router = new VueRouter({
+    base: $('meta[name="base-uri"]').attr('content'),
     mode: 'history',
     linkActiveClass: 'active',
     linkExactActiveClass: 'active',

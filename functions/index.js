@@ -103,7 +103,7 @@ function getUpdateToken (docId) {
 }
 
 async function sendNewOrderMailForSupplier (data, docId, orderPos) {
-    const link = `https://${config.frontenURLAuthority}/orders/${docId}?updateToken=${await getUpdateToken(docId)}`
+    const link = `https://${config.frontendURLAuthority}/orders/${docId}?updateToken=${await getUpdateToken(docId)}`
     const mailOptions = {
         from: config.mailAccountName,
         to: data.supplier_email,
@@ -127,7 +127,7 @@ async function getNewOrderForSupplierTxt (data, link, orderPos) {
 
 async function sendNewOrderMailToCustomer (data, docId, orderPos) {
     if (data.email) {
-        const link = `https://${config.frontenURLAuthority}/orders/${docId}`
+        const link = `https://${config.frontendURLAuthority}/orders/${docId}`
         const mailOptions = {
             from: config.mailAccountName,
             to: data.email,

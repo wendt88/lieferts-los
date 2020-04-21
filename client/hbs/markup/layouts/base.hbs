@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="{{language}}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{labels.title}}</title>
+        <meta name="description" content="{{labels.description}}">
+        <meta name="base-uri" content="{{uri}}">
+        {{#and site.protocol site.domain}}
+            {{#if uri}}
+                <link rel="canonical" href="{{site.protocol}}://{{site.domain}}{{uri}}">
+            {{/if}}
+            {{#each alternates}}
+                {{#and uri language}}
+                    <link rel="alternate" href="{{@root.site.protocol}}://{{@root.site.domain}}{{uri}}" hreflang="{{language}}">
+                {{/and}}
+            {{/each}}
+        {{/and}}
+        <link rel="stylesheet" href="../scss/style.scss">
+    </head>
+    <body>
+        <div>
+            <div class="min-vh-100 d-flex align-items-center justify-content-center">
+                <div role="status" class="spinner-grow text-primary">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            /* <![CDATA[ */var labels = {{{JSONstringify labels }}}/* ]]> */
+        </script>
+        <script type="text/javascript" src="../js/script.js"></script>
+    </body>
+</html>
