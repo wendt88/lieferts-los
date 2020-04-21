@@ -1,5 +1,6 @@
 .cache
 .firebase
+.vscode
 node_modules
 output
 
