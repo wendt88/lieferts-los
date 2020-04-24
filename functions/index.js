@@ -8,6 +8,7 @@ const crypto = require('crypto')
 const config = require('./config')
 const axios = require('axios')
 const querystring = require('querystring')
+const template = require('./template')
 
 const PROJECTID = 'bringr-io-dev'
 const ORDERS = 'orders'
@@ -82,14 +83,29 @@ exports.updateOrder = functions.https.onCall(async (data) => {
         throw new functions.https.HttpsError('permission-denied', 'wrong updateToken')
     }
 
+    const update = {
+        status: data.status,
+        estimated_deliverey: data.estimated_deliverey,
+    }
     await firestore.collection(ORDERS)
         .doc(data.id)
-        .update({
-            status: data.status,
-            estimated_deliverey: data.estimated_deliverey,
-        })
+        .update(update)
 
-    return { id: doc.id }
+    let isUpdateMailSent = false
+    let mailError = undefined
+    try {
+        await sendUpdateOrderMailToCustomer({ ...doc.data(), ...update }, doc.id)
+        isUpdateMailSent = true
+    }
+    catch (e) {
+        mailError = e
+    }
+
+    return {
+        id: doc.id,
+        isUpdateMailSent,
+        mailError,
+    }
 })
 
 function sendMail (mailOptions) {
@@ -102,8 +118,43 @@ function getUpdateToken (docId) {
         .digest('hex')
 }
 
+async function getOrderLinkSupplier (docId) {
+    return `https://${config.frontendURLAuthority}/orders/${docId}?updateToken=${await getUpdateToken(docId)}`
+}
+
+function getOrderLinkCustomer (docId) {
+    return `https://${config.frontendURLAuthority}/orders/${docId}`
+}
+
+async function sendUpdateOrderMailToCustomer (data, docId) {
+    const link = getOrderLinkCustomer(docId)
+    const mailOptions = {
+        from: config.mailAccountName,
+        to: data.email,
+        subject: 'Ihre Bestellung wurde aktualisiert! Il tuo ordine è stato aggiornato!',
+        html: await getUpdateOrderForSupplierHtml(data, link),
+        text: await getUpdateOrderForSupplierTxt(data, link),
+        replyTo: data.supplier_email,
+    }
+    await sendMail(mailOptions)
+}
+
+async function getUpdateOrderForSupplierHtml (data, link) {
+    data.linkToOrder = link
+    data = translateOrderStatus(data)
+    let string = await readFile('./mailTemplates/updateOrderForCustomer.html', 'utf8')
+    return template.replaceTags(string, data)
+}
+
+async function getUpdateOrderForSupplierTxt (data, link) {
+    data.linkToOrder = link
+    data = translateOrderStatus(data)
+    let string = await readFile('./mailTemplates/updateOrderForCustomer.txt', 'utf8')
+    return template.replaceTags(string, data)
+}
+
 async function sendNewOrderMailForSupplier (data, docId, orderPos) {
-    const link = `https://${config.frontendURLAuthority}/orders/${docId}?updateToken=${await getUpdateToken(docId)}`
+    const link = await getOrderLinkSupplier(docId)
     const mailOptions = {
         from: config.mailAccountName,
         to: data.supplier_email,
@@ -127,7 +178,7 @@ async function getNewOrderForSupplierTxt (data, link, orderPos) {
 
 async function sendNewOrderMailToCustomer (data, docId, orderPos) {
     if (data.email) {
-        const link = `https://${config.frontendURLAuthority}/orders/${docId}`
+        const link = getOrderLinkCustomer(docId)
         const mailOptions = {
             from: config.mailAccountName,
             to: data.email,
@@ -148,18 +199,11 @@ async function getNewOrderForCustomerTxt (data, link, orderPos) {
 }
 
 function replaceStringsInMail (mail, data, link, orderPos) {
-    return mail.replace(/{{ name }}/gi, data.name)
-        .replace(/{{ surname }}/gi, data.surname)
-        .replace(/{{ created_at }}/gi, getDateString(data.created_at))
-        .replace(/{{ type }}/gi, getTypeOfOrder(data.type))
-        .replace(/{{ street }}/gi, data.street || '')
-        .replace(/{{ street_number }}/gi, data.street_number || '')
-        .replace(/{{ zip_code }}/gi, data.zip_code || '')
-        .replace(/{{ city }}/gi, data.city || '')
-        .replace(/{{ phone_number }}/gi, data.phone_number || '')
-        .replace(/{{ email }}/gi, data.email || '')
-        .replace(/{{ linkToOrder }}/gi, link)
-        .replace(/{{ orderPositions }}/gi, orderPos)
+    data.linkToOrder = link
+    data.orderPositions = orderPos
+    data.created_at = getDateString(data.created_at)
+    data.type = getTypeOfOrder(data.type)
+    return template.replaceTags(mail, data)
 }
 
 async function getOrderPositionsMailTexts (data) {
@@ -216,4 +260,41 @@ function getUnitForMail (unit) {
         default:
             return unit
     }
+}
+
+function translateOrderStatus (data) {
+    let translation = {}
+    switch (data.status) {
+        case 'unrecognized':
+            translation = {
+                status_de: 'Noch nicht erfasst',
+                status_it: 'Non registrato',
+            }
+            break
+        case 'accepted':
+            translation = {
+                status_de: 'Angenommen',
+                status_it: 'Accettato',
+            }
+            break
+        case 'processing':
+            translation = {
+                status_de: 'In Bearbeitung',
+                status_it: 'In elaborazione',
+            }
+            break
+        case 'done':
+            translation = {
+                status_de: 'Erledigt',
+                status_it: 'Chiuso',
+            }
+            break
+        case 'rejected':
+            translation = {
+                status_de: 'Abgelehnt',
+                status_it: 'Rifiutato',
+            }
+            break
+    }
+    return Object.assign(data, translation)
 }

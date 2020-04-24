@@ -1,0 +1,29 @@
+Ihre Bestellung wurde von {{ supplier_email }} aktualisiert.
+
+Status: {{ status_de }}
+Geschätze Lieferung: {{ estimated_deliverey }}
+
+Link: {{ linkToOrder }}
+
+Beste Grüße,
+das Bringr.io Team
+
+Kontakt: bringr.io@gmail.com
+
+Gib uns Feedback: https://forms.gle/4zXyM7HpJhyHWR5g8
+
+------------------------------------------------------------------------------
+
+Il suo ordine è stato aggiornato da {{ supplier_email }}.
+
+Stato: {{ status_it }}
+Data di consegna prevista: {{ estimated_deliverey }}
+
+Link: {{ linkToOrder }}
+
+Cari saluti,
+il team da Bringr.io
+
+Contatto: bringr.io@gmail.com
+
+Per lascarci un Feedback: https://forms.gle/4zXyM7HpJhyHWR5g8
