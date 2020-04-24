@@ -19,6 +19,7 @@ npm run start
 within main folder
 - `npm i`
 - `npm run build`
+- `firebase login`
 - `firebase deploy --only hosting`
 
 # Multilanguage:
