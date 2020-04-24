@@ -41,70 +41,84 @@ async function validateReCaptcha (response) {
 }
 
 exports.createOrder = functions.https.onCall(async (data) => {
-
-    const reCaptchaResponse = data.reCaptchaResponse
-    if (!reCaptchaResponse) {
-        throw new functions.https.HttpsError('invalid-argument', 'reCaptchaResponse prop not contained in body')
-    }
-
     try {
-        await validateReCaptcha(reCaptchaResponse)
+        const reCaptchaResponse = data.reCaptchaResponse
+        if (!reCaptchaResponse) {
+            throw new functions.https.HttpsError('invalid-argument', 'reCaptchaResponse prop not contained in body')
+        }
+
+        try {
+            await validateReCaptcha(reCaptchaResponse)
+        }
+        catch (e) {
+            throw new functions.https.HttpsError('internal', `reCaptcha validation failed with error: ${e.message}`, e)
+        }
+
+        data.created_at = new Date()
+
+        const doc = await firestore.collection(ORDERS)
+            .add(data)
+        const docID = doc.id
+        const orderPositions = await getOrderPositionsMailTexts(data)
+
+        if (data.supplier_email) {
+            await sendNewOrderMailForSupplier(data, docID, orderPositions)
+        }
+        if (data.email) {
+            await sendNewOrderMailToCustomer(data, docID, orderPositions)
+        }
+        return { id: docID }
     }
     catch (e) {
-        throw new functions.https.HttpsError('internal', `reCaptcha validation failed with error: ${e.message}`, e)
+        if (e instanceof functions.https.HttpsError) {
+            throw e
+        }
+        throw new functions.https.HttpsError('internal', `error while creating order: ${e.message}`, e)
     }
-
-    data.created_at = new Date()
-
-    const doc = await firestore.collection(ORDERS)
-        .add(data)
-    const docID = doc.id
-    const orderPositions = await getOrderPositionsMailTexts(data)
-
-    if (data.supplier_email) {
-        await sendNewOrderMailForSupplier(data, docID, orderPositions)
-    }
-    if (data.email) {
-        await sendNewOrderMailToCustomer(data, docID, orderPositions)
-    }
-
-    return { id: docID }
 })
 
 exports.updateOrder = functions.https.onCall(async (data) => {
-    const doc = await firestore.collection(ORDERS)
-        .doc(data.id)
-        .get()
-    if (!doc || !doc.exists) {
-        throw new functions.https.HttpsError('not-found', 'order not found')
-    }
-
-    if (!data.updateToken || data.updateToken !== await getUpdateToken(doc.id)) {
-        throw new functions.https.HttpsError('permission-denied', 'wrong updateToken')
-    }
-
-    const update = {
-        status: data.status,
-        estimated_deliverey: data.estimated_deliverey,
-    }
-    await firestore.collection(ORDERS)
-        .doc(data.id)
-        .update(update)
-
-    let isUpdateMailSent = false
-    let mailError = undefined
     try {
-        await sendUpdateOrderMailToCustomer({ ...doc.data(), ...update }, doc.id)
-        isUpdateMailSent = true
+        const doc = await firestore.collection(ORDERS)
+            .doc(data.id)
+            .get()
+        if (!doc || !doc.exists) {
+            throw new functions.https.HttpsError('not-found', 'order not found')
+        }
+
+        if (!data.updateToken || data.updateToken !== await getUpdateToken(doc.id)) {
+            throw new functions.https.HttpsError('permission-denied', 'wrong updateToken')
+        }
+
+        const update = {
+            status: data.status,
+            estimated_deliverey: data.estimated_deliverey,
+        }
+        await firestore.collection(ORDERS)
+            .doc(data.id)
+            .update(update)
+
+        let isUpdateMailSent = false
+        let mailError = undefined
+        try {
+            await sendUpdateOrderMailToCustomer({ ...doc.data(), ...update }, doc.id)
+            isUpdateMailSent = true
+        }
+        catch (e) {
+            mailError = e
+        }
+
+        return {
+            id: doc.id,
+            isUpdateMailSent,
+            mailError,
+        }
     }
     catch (e) {
-        mailError = e
-    }
-
-    return {
-        id: doc.id,
-        isUpdateMailSent,
-        mailError,
+        if (e instanceof functions.https.HttpsError) {
+            throw e
+        }
+        throw new functions.https.HttpsError('internal', `error while updating order: ${e.message}`, e)
     }
 })
 
@@ -199,6 +213,7 @@ async function getNewOrderForCustomerTxt (data, link, orderPos) {
 }
 
 function replaceStringsInMail (mail, data, link, orderPos) {
+    data = Object.assign({}, data)
     data.linkToOrder = link
     data.orderPositions = orderPos
     data.created_at = getDateString(data.created_at)
