@@ -84,11 +84,7 @@ export default {
                     { amount: 1, unit: 'pieces' },
                 ],
             },
-        }
-    },
-    computed: {
-        editable () {
-            return this.orderID === 'new'
+            editable: this.orderID === 'new'
         }
     },
     watch: {

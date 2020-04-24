@@ -41,10 +41,12 @@ export default {
                     today: 'fa fa-calendar-day',
                     clear: 'fa fa-trash-alt',
                     close: 'fa fa-times'
-                }
+                },
+                minDate: new Date()
             })
             .on('dp.change', e => {
-                this.$emit('input', e.date ? e.date.toDate() : null)
+                this.$emit('input', e.date ? e.date.toDate().toISOString() : null)
+                this.dp.hide()
             })
             .data('DateTimePicker')
     },

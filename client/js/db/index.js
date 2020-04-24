@@ -1,7 +1,7 @@
 import * as firebase from 'firebase/app'
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/functions';
+import 'firebase/auth'
+import 'firebase/firestore'
+import 'firebase/functions'
 import auth from '../auth'
 import config from '../config'
 
