@@ -14,7 +14,7 @@ Gib uns Feedback: https://forms.gle/4zXyM7HpJhyHWR5g8
 
 ------------------------------------------------------------------------------
 
-Il suo ordine è stato aggiornato da {{ supplier_email }}.
+Il Suo ordine è stato aggiornato da {{ supplier_email }}.
 
 Stato: {{ status_it }}
 Data di consegna prevista: {{ estimated_deliverey }}
