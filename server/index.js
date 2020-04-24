@@ -5,9 +5,9 @@ const fs = require('fs')
 
 app.use(express.static('output'))
 
-app.get('/:language([a-z]{2})?/:path?', (req, res) => {
+app.get('/:language([a-z]{2})?/*', (req, res) => {
     let p = getFilePath(req.params.language)
-    fs.exists(path, exists => {
+    fs.exists(p, exists => {
         if (!exists)
             p = getFilePath()
         res.sendFile(path.resolve(p))
