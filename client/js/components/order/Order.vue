@@ -476,7 +476,7 @@ export default {
                 event.target.classList.remove('was-validated')
                 this.$set(this, 'validationErrors', {})
 
-                this.editable = false
+                this.$set(this.$parent, 'editable', false)
                 this.loadingMessage = 'Bestellung wird gespeichert und versendet...'
                 this.successMessage = ''
                 try {
@@ -493,7 +493,7 @@ export default {
                 catch (e) {
                     console.error(e)
                     this.errorMessage = e.message
-                    this.editable = true
+                    this.$set(this.$parent, 'editable', false)
                 }
                 this.loadingMessage = ''
             }
