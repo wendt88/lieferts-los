@@ -126,7 +126,11 @@ export default {
             this.errorMessage = ''
             this.successMessage = ''
             try {
-                await this.$db.saveOrder({ ...this.order, updateToken: this.updateToken })
+                await this.$db.saveOrder({
+                    ...this.order,
+                    updateToken: this.updateToken,
+                    supplier_timezone_offset: new Date().getTimezoneOffset()
+                })
                 this.successMessage = 'Erfolgreich verschickt!'
             }
             catch (e) {

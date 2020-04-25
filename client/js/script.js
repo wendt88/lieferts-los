@@ -5,12 +5,14 @@ require('bootstrap')
 import 'pc-bootstrap4-datetimepicker'
 import moment from 'moment'
 import 'moment/locale/de'
+import 'moment/locale/it'
 import '@fortawesome/fontawesome-free/css/all.css'
 
 import router from './vueRouter'
 import store from './store'
 import db from './db'
 import auth from './auth'
+import * as helpers from './helpers'
 // import firebase from 'firebase'
 
 import DatePicker from './components/DatePicker'
@@ -23,12 +25,13 @@ Vue.component('LanguagesSwitcher', LanguagesSwitcher)
 Vue.use(AsyncComputed)
 Vue.use({
     install: (Vue) => {
-        moment.locale('de')
+        const lang = helpers.getUserLanguage()
+        moment.locale(lang)
         Object.assign(Vue.prototype, {
             $db: db,
             $auth: auth,
             $moment: moment,
-            $labels: window.labels
+            $labels: window.labels,
         })
     }
 })

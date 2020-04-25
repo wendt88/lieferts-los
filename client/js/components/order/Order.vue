@@ -480,7 +480,11 @@ export default {
                 this.loadingMessage = 'Bestellung wird gespeichert und versendet...'
                 this.successMessage = ''
                 try {
-                    let order = await this.$db.saveOrder(this.order)
+                    let order = await this.$db.saveOrder({
+                        ...this.order,
+                        customer_timezone_offset: new Date().getTimezoneOffset(),
+                        customer_locale: this.$moment.locale(),
+                    })
                     this.$emit('orderchanged', order)
                     this.$router.push({
                         name: 'order detail',

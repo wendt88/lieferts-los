@@ -142,6 +142,7 @@ function getOrderLinkCustomer (docId) {
 
 async function sendUpdateOrderMailToCustomer (data, docId) {
     const link = getOrderLinkCustomer(docId)
+    data = prepareUpdateOrderForSupplierData(data, link)
     const mailOptions = {
         from: config.mailAccountName,
         to: data.email,
@@ -153,16 +154,19 @@ async function sendUpdateOrderMailToCustomer (data, docId) {
     await sendMail(mailOptions)
 }
 
-async function getUpdateOrderForSupplierHtml (data, link) {
+function prepareUpdateOrderForSupplierData (data, link) {
     data.linkToOrder = link
     data = translateOrderStatus(data)
+    data.estimated_deliverey = getDateString(new Date(data.estimated_deliverey), data.customer_timezone_offset, data.customer_locale)
+    return data
+}
+
+async function getUpdateOrderForSupplierHtml (data) {
     let string = await readFile('./mailTemplates/updateOrderForCustomer.html', 'utf8')
     return template.replaceTags(string, data)
 }
 
-async function getUpdateOrderForSupplierTxt (data, link) {
-    data.linkToOrder = link
-    data = translateOrderStatus(data)
+async function getUpdateOrderForSupplierTxt (data) {
     let string = await readFile('./mailTemplates/updateOrderForCustomer.txt', 'utf8')
     return template.replaceTags(string, data)
 }
@@ -216,7 +220,7 @@ function replaceStringsInMail (mail, data, link, orderPos) {
     data = Object.assign({}, data)
     data.linkToOrder = link
     data.orderPositions = orderPos
-    data.created_at = getDateString(data.created_at)
+    data.created_at = getDateString(data.created_at, data.customer_timezone_offset, data.customer_locale)
     data.type = getTypeOfOrder(data.type)
     return template.replaceTags(mail, data)
 }
@@ -253,10 +257,12 @@ async function getOrderPositionsMailTexts (data) {
     }
 }
 
-function getDateString (date) {
-    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-        .toISOString()
-        .split('T')[0]
+function getDateString (date, timezoneOffset = date.getTimezoneOffset(), locale = 'de') {
+    return new Date(
+        date.getTime()
+        - (timezoneOffset * 60000)
+    )
+        .toLocaleString(locale)
 }
 
 function getTypeOfOrder (type) {
