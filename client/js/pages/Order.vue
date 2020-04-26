@@ -7,14 +7,14 @@
         <div
             v-if="loading"
             class="d-flex justify-content-center align-items-center"
-            style="height: 20vh"
+            style="height: 20vh;"
         >
             <i class="fas fa-sync fa-spin fa-2x"></i>
         </div>
         <div
             v-else-if="errorMessage"
             class="d-flex justify-content-center align-items-center"
-            style="height: 20vh"
+            style="height: 20vh;"
             v-text="errorMessage"
         >
         </div>
@@ -54,7 +54,16 @@
                         </address>
                     </div>
                 </div>
-                <ul class="list-group mt-5">
+                <div class="row mt-4">
+                    <h6 class="col-md-12">Anmerkung des Kunden:</h6>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-12"
+                        style="margin-left: 20px;"
+                        v-text="`${order.note}`">
+                    </div>
+                </div>
+                <ul class="list-group mt-3">
                     <li
                         v-for="(product, i) in order.products"
                         :key="i"

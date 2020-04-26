@@ -349,6 +349,22 @@
                     </div>
                 </div>
             </div>
+            <div class="pb-3">
+                <label
+                    :for="`note`"
+                >
+                    <h6>Zusatzinfos zur Bestellung:</h6>
+                </label>
+                <input
+                    :id="`note`"
+                    v-model="order.note"
+                    type="text"
+                    class="form-control"
+                    placeholder="Z.B.: Gewünschte Abhol-/Lieferzeit"
+                    :readonly="readonly"
+                >
+            </div>
+
             <vue-recaptcha
                 v-if="!readonly"
                 class="mb-2"

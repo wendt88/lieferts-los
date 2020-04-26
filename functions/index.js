@@ -65,11 +65,12 @@ exports.createOrder = functions.https.onCall(async (data) => {
         const docID = doc.id
         const orderPositions = await getOrderPositionsMailTexts(data)
 
-        if (data.supplier_email) {
-            await sendNewOrderMailForSupplier(data, docID, orderPositions)
+        const dataForMail = prepareOrderObjectForMail(data)
+        if (dataForMail.supplier_email) {
+            await sendNewOrderMailForSupplier(dataForMail, docID, orderPositions)
         }
-        if (data.email) {
-            await sendNewOrderMailToCustomer(data, docID, orderPositions)
+        if (dataForMail.email) {
+            await sendNewOrderMailToCustomer(dataForMail, docID, orderPositions)
         }
         return { id: docID }
     }
@@ -134,6 +135,13 @@ function getUpdateToken (docId) {
     return crypto.createHash('sha256')
         .update(`${docId}${config.pepper}`)
         .digest('hex')
+}
+
+/** To not have any undefined Texts in the Mail. */
+function prepareOrderObjectForMail (data) {
+    if (!data.note)
+        data.note = '-'
+    return data
 }
 
 async function getOrderLinkSupplier (docId) {

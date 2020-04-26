@@ -42,4 +42,6 @@ Die Bestellung // L'ordine {{ created_at }}
 Tel: {{ phone_number }}
 Mail: {{ email }}
 
+Anmerkung // Nota: {{ note }}
+
 {{ orderPositions }}
