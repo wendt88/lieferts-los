@@ -411,7 +411,7 @@ export default {
         email: {
             type: String,
         },
-        editable: {
+        isEditable: {
             type: Boolean,
         }
     },
@@ -422,7 +422,8 @@ export default {
             loadingMessage: '',
             successMessage: '',
             readonlySupplierEmail: false,
-            validationErrors: {}
+            validationErrors: {},
+            editable: false,
         }
     },
     computed: {
@@ -442,6 +443,7 @@ export default {
         }
     },
     created () {
+        this.editable = !!this.isEditable
         if (this.email && this.editable) {
             this.readonlySupplierEmail = true
         }
@@ -496,7 +498,7 @@ export default {
                 catch (e) {
                     console.error(e)
                     this.errorMessage = e.message
-                    this.editable = true
+                    this.editable = this.isEditable
                 }
                 this.loadingMessage = ''
             }

@@ -11,13 +11,20 @@
         >
             <i class="fas fa-sync fa-spin fa-2x"></i>
         </div>
+        <div
+            v-else-if="errorMessage"
+            class="d-flex justify-content-center align-items-center"
+            style="height: 20vh"
+            v-text="errorMessage"
+        >
+        </div>
         <div v-else>
             <order
                 v-if="editable"
                 :order="order"
                 :update-token="updateToken"
                 :email="email"
-                :editable="editable"
+                :is-editable="editable"
             >
             </order>
             <template v-else>
@@ -113,6 +120,7 @@ export default {
     },
     methods: {
         async getOrder (id) {
+            this.errorMessage = ''
             if (id === 'new') {
                 this.order = {
                     products: [
@@ -121,7 +129,13 @@ export default {
                 }
             }
             else {
-                this.order = await this.$db.order(id)
+                try {
+                    this.order = await this.$db.order(id)
+                }
+                catch (e) {
+                    this.errorMessage = 'order not found'
+                    console.error(e)
+                }
             }
             this.loading = false
         }
