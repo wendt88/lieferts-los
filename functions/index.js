@@ -1,14 +1,17 @@
 const functions = require('firebase-functions')
 const nodemailer = require('nodemailer')
+const Firestore = require('@google-cloud/firestore')
+const axios = require('axios')
+const moment = require('moment')
+
 const fs = require('fs')
 const { promisify } = require('util')
 const readFile = promisify(fs.readFile)
-const Firestore = require('@google-cloud/firestore')
 const crypto = require('crypto')
-const config = require('./config')
-const axios = require('axios')
 const querystring = require('querystring')
+
 const template = require('./template')
+const config = require('./config')
 
 const PROJECTID = 'bringr-io-dev'
 const ORDERS = 'orders'
@@ -258,11 +261,10 @@ async function getOrderPositionsMailTexts (data) {
 }
 
 function getDateString (date, timezoneOffset = date.getTimezoneOffset(), locale = 'de') {
-    return new Date(
-        date.getTime()
-        - (timezoneOffset * 60000)
-    )
-        .toLocaleString(locale)
+    return moment(date)
+        .utcOffset(timezoneOffset*-1)
+        .locale(locale)
+        .format('lll')
 }
 
 function getTypeOfOrder (type) {
