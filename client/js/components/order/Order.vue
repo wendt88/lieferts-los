@@ -7,7 +7,7 @@
         >
             <h4>Lieferant</h4>
             <div class="form-group">
-                <label for="supplier_email">Email</label>
+                <label for="supplier_email">E-Mail</label>
                 <input
                     id="supplier_email"
                     v-model="order.supplier_email"
@@ -28,14 +28,14 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email">E-Mail</label>
                         <input
                             id="email"
                             v-model="order.email"
                             name="email"
                             type="email"
                             class="form-control"
-                            placeholder="Email"
+                            placeholder="E-Mail"
                             :readonly="readonly"
                             :required="!order.phone_number"
                         >
@@ -205,7 +205,7 @@
                             <label
                                 class="custom-control-label"
                                 for="accept"
-                            >Mit dem Aktivieren dieser Checkbox erkläre ich mich einverstanden, dass diese Seite die von mir angegebenen Daten speichert und an die, auf dieser Seite angegebenen, e-Mail Adressen verschickt. Außerdem nehme ich zur Kenntnis, dass die Bestellung und Zahlung der Ware vom Empfänger der Bestellung und nicht von dieser Webseite bearbeitet werden.</label>
+                            >Mit dem Aktivieren dieser Checkbox erkläre ich mich einverstanden, dass diese Seite die von mir angegebenen Daten speichert und an die, auf dieser Seite angegebenen, E-Mail Adressen verschickt. Außerdem nehme ich zur Kenntnis, dass die Bestellung und Zahlung der Ware vom Empfänger der Bestellung und nicht von dieser Webseite bearbeitet werden.</label>
                             <div
                                 class="invalid-feedback"
                                 v-text="validationErrors.accept"

@@ -31,12 +31,12 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Email</label>
+                        <label>E-Mail</label>
                         <input
                             v-model="profile.email"
                             type="email"
                             class="form-control"
-                            placeholder="Email"
+                            placeholder="E-Mail"
                             required
                             :readonly="readonly"
                         >
