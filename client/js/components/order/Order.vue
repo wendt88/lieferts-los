@@ -476,7 +476,7 @@ export default {
                 event.target.classList.remove('was-validated')
                 this.$set(this, 'validationErrors', {})
 
-                this.$set(this.$parent, 'editable', false)
+                this.editable = false
                 this.loadingMessage = 'Bestellung wird gespeichert und versendet...'
                 this.successMessage = ''
                 try {
@@ -485,7 +485,6 @@ export default {
                         customer_timezone_offset: new Date().getTimezoneOffset(),
                         customer_locale: this.$moment.locale(),
                     })
-                    this.$emit('orderchanged', order)
                     this.$router.push({
                         name: 'order detail',
                         params: {
@@ -497,7 +496,7 @@ export default {
                 catch (e) {
                     console.error(e)
                     this.errorMessage = e.message
-                    this.$set(this.$parent, 'editable', false)
+                    this.editable = true
                 }
                 this.loadingMessage = ''
             }

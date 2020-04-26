@@ -110,15 +110,24 @@ export default {
             return this.editable ? false : 'disabled'
         }
     },
-    created () {
-        if (!this.order.status) {
-            this.order.status = 'unrecognized'
-        }
-        if (this.isValidStatus(this.status)) {
-            this.order.status = this.status
+    watch: {
+        order () {
+            this.handleOrderStatus()
         }
     },
+    created () {
+        this.handleOrderStatus()
+
+    },
     methods: {
+        handleOrderStatus () {
+            if (!this.order.status) {
+                this.order.status = 'unrecognized'
+            }
+            if (this.isValidStatus(this.status)) {
+                this.order.status = this.status
+            }
+        },
         async saveOrder () {
             event.preventDefault()
 
