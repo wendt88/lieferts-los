@@ -350,6 +350,7 @@
                 </div>
             </div>
             <vue-recaptcha
+                v-if="!readonly"
                 class="mb-2"
                 :sitekey="reCaptchaSiteKey"
                 @verify="reCaptchaValidated"
