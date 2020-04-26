@@ -52,6 +52,7 @@ exports.createOrder = functions.https.onCall(async (data) => {
 
         try {
             await validateReCaptcha(reCaptchaResponse)
+            delete data.reCaptchaResponse
         }
         catch (e) {
             throw new functions.https.HttpsError('internal', `reCaptcha validation failed with error: ${e.message}`, e)
