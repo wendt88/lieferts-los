@@ -1,4 +1,5 @@
 const defaults = {
+    firebaseProjectId: undefined, // firebase project id
     pepper: undefined, // long random string
     mailAccountName: undefined, // account name using to log
     mailPassword: undefined, // password to log,

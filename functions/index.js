@@ -13,7 +13,7 @@ const querystring = require('querystring')
 const template = require('./template')
 const config = require('./config')
 
-const PROJECTID = 'bringr-io-dev'
+const PROJECTID = config.firebaseProjectId
 const ORDERS = 'orders'
 
 const firestore = new Firestore({
