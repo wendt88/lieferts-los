@@ -197,6 +197,7 @@
                         <div class="custom-control custom-switch">
                             <input
                                 id="accept"
+                                v-model="order.is_accept_policy"
                                 type="checkbox"
                                 class="custom-control-input"
                                 :disabled="disabled"
@@ -311,7 +312,7 @@
                             <option value="l">
                                 Liter
                             </option>
-                            <option value="l">
+                            <option value="ml">
                                 Milliliter
                             </option>
                             <option value="other">
@@ -514,7 +515,13 @@ export default {
                 }
                 catch (e) {
                     console.error(e)
-                    this.errorMessage = e.message
+                    if (e.type === 'validation-error') {
+                        this.errorMessage = e.validationErrors.map(e => e.message)
+                            .join(',')
+                    }
+                    else [
+                        this.errorMessage = e.message
+                    ]
                     this.editable = this.isEditable
                 }
                 this.loadingMessage = ''

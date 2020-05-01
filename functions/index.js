@@ -12,6 +12,7 @@ const querystring = require('querystring')
 
 const template = require('./template')
 const config = require('./config')
+const validation = require('./validation')
 
 const PROJECTID = 'bringr-io-dev'
 const ORDERS = 'orders'
@@ -48,6 +49,13 @@ exports.createOrder = functions.https.onCall(async (data) => {
         const reCaptchaResponse = data.reCaptchaResponse
         if (!reCaptchaResponse) {
             throw new functions.https.HttpsError('invalid-argument', 'reCaptchaResponse prop not contained in body')
+        }
+
+        try {
+            data = validation.validateOrder(data, data.customer_locale)
+        }
+        catch (e) {
+            throw new functions.https.HttpsError('internal', 'validation-error', e)
         }
 
         try {

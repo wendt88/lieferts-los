@@ -65,20 +65,31 @@ const db = {
         return (await col.get()).docs.map(d => ({ id: d.id, ...d.data() }))
     },
     async saveOrder (data) {
-        let res
-        if (data.id) {
-            res = await updateOrder({
-                id: data.id,
-                status: data.status,
-                estimated_deliverey: data.estimated_deliverey,
-                updateToken: data.updateToken,
-            })
+        try {
+            let res
+            if (data.id) {
+                res = await updateOrder({
+                    id: data.id,
+                    status: data.status,
+                    estimated_deliverey: data.estimated_deliverey,
+                    updateToken: data.updateToken,
+                })
+            }
+            else {
+                res = await createOrder(data)
+            }
+            data.id = res.data.id
+            return data
         }
-        else {
-            res = await createOrder(data)
+        catch (e) {
+            if (e.message === 'validation-error') {
+                const error = new Error('validation error')
+                error.type = 'validation-error'
+                error.validationErrors = e.details.details
+                throw error
+            }
+            throw e
         }
-        data.id = res.data.id
-        return data
     },
     async user () {
         const doc = (await firestore.collection(COLLECTIONS.USERS)
