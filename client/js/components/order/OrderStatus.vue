@@ -137,13 +137,19 @@ export default {
                 await this.$db.saveOrder({
                     ...this.order,
                     updateToken: this.updateToken,
-                    supplier_timezone_offset: new Date().getTimezoneOffset()
+                    supplier_timezone_offset: new Date().getTimezoneOffset(),
                 })
                 this.successMessage = 'Erfolgreich verschickt!'
             }
             catch (e) {
                 console.error(e)
-                this.errorMessage = e.message
+                if (e.type === 'validation-error') {
+                    this.errorMessage = e.validationErrors.map(e => e.message)
+                        .join(',')
+                }
+                else {
+                    this.errorMessage = e.message
+                }
             }
             this.editable = true
         },

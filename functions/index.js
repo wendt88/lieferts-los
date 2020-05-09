@@ -92,6 +92,14 @@ exports.createOrder = functions.https.onCall(async (data) => {
 
 exports.updateOrder = functions.https.onCall(async (data) => {
     try {
+
+        try {
+            data = validation.validateOrderUpdateSupplier(data, data.locale)
+        }
+        catch (e) {
+            throw new functions.https.HttpsError('internal', 'validation-error', e)
+        }
+
         const doc = await firestore.collection(ORDERS)
             .doc(data.id)
             .get()
@@ -106,6 +114,7 @@ exports.updateOrder = functions.https.onCall(async (data) => {
         const update = {
             status: data.status,
             estimated_deliverey: data.estimated_deliverey,
+            supplier_timezone_offset: data.supplier_timezone_offset,
         }
         await firestore.collection(ORDERS)
             .doc(data.id)

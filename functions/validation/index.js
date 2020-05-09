@@ -16,11 +16,21 @@ const PRODUCT_UNITS = [
     'other',
 ]
 
+const ORDER_STATUS = [
+    'unrecognized',
+    'accepted',
+    'processing',
+    'done',
+    'rejected',
+]
+
 module.exports = {
     ERROR_TYPE,
+    ORDER_STATUS,
     ORDER_TYPES,
     PRODUCT_UNITS,
     validateOrder,
+    validateOrderUpdateSupplier,
 }
 
 const supplier = {
@@ -89,7 +99,7 @@ const order = {
 
 }
 
-const apiRequest = {
+const createOrderRequest = {
 
     reCaptchaResponse: Joi.string()
         .required(),
@@ -100,18 +110,45 @@ const apiRequest = {
 
 }
 
-const orderUnregisteredUser = Joi.object(order)
+const supplierUpdateOrderSchema = Joi.object({
+
+    id: Joi.string(),
+
+    updateToken: Joi.string()
+        .required(),
+
+    status: Joi.string()
+        .valid(...ORDER_STATUS)
+        .required(),
+
+    estimated_deliverey: Joi.date(),
+
+    supplier_timezone_offset: Joi.number(),
+
+})
+
+const orderUnregisteredUserSchema = Joi.object(order)
     .append(supplier)
     .append(user)
-    .append(apiRequest)
+    .append(createOrderRequest)
 
-function validateOrder (data, locale = 'de') {
-    const { value, error } = orderUnregisteredUser.validate(data, {
+function validationOptions (locale = 'de') {
+    return {
         abortEarly: false,
         errors: {
             language: locale,
         }
-    })
+    }
+}
+
+function validateOrder (data, locale = undefined) {
+    const { value, error } = orderUnregisteredUserSchema.validate(data, validationOptions(locale))
+    handleError(error)
+    return value
+}
+
+function validateOrderUpdateSupplier (data, locale = undefined) {
+    const { value, error } = supplierUpdateOrderSchema.validate(data, validationOptions(locale))
     handleError(error)
     return value
 }

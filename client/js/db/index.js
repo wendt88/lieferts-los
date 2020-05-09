@@ -72,6 +72,7 @@ const db = {
                     id: data.id,
                     status: data.status,
                     estimated_deliverey: data.estimated_deliverey,
+                    supplier_timezone_offset: data.supplier_timezone_offset,
                     updateToken: data.updateToken,
                 })
             }
