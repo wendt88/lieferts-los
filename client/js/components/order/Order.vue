@@ -519,9 +519,9 @@ export default {
                         this.errorMessage = e.validationErrors.map(e => e.message)
                             .join(',')
                     }
-                    else [
+                    else {
                         this.errorMessage = e.message
-                    ]
+                    }
                     this.editable = this.isEditable
                 }
                 this.loadingMessage = ''
